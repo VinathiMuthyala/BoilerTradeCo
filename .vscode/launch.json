@@ -8,7 +8,7 @@
             "name": "Python Debugger: Django",
             "type": "debugpy",
             "request": "launch",
-            "program": "prototypes/vinathi/storefront/manage.py",
+            "program": "${workspaceFolder}/prototypes/Isha/manage.py",
             "args": [
                 "runserver",
                 "9000"
