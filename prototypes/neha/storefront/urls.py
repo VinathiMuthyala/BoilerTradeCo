@@ -20,6 +20,7 @@ from django.urls import path, include
 # playground/hello - all requests starting with playground will be redirected here
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('playground/', include('playground.urls'))
+    path('playground/', include('playground.urls')),
+    path('', admin.site.urls)
 ]
 
