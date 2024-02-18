@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 # playground/hello - all requests starting with playground will be redirected here
+# added default path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('playground/', include('playground.urls')),
