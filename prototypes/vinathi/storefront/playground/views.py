@@ -12,6 +12,8 @@ def calculate():
     return x
 
 def say_hello(request):
-    #return HttpResponse('Hello World')
+    # pull data from db
+    # transform
+    # send email
     x = calculate()
-    return render(request, 'hello.html', { 'name': 'Mosh'})
+    return render(request, 'hello.html', {'name': 'Vinathi'})
