@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
 
 # Create your views here.
+def layout(request):
+    return render(request, 'app2/index.html')
 
-
+def add_product(request):
+    return render(request, 'app2/add-product.html')
 
 # Backend code
 
