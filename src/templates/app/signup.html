@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Homepage</title>
-    <link rel="stylesheet" href=#>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'signup_style.css'%}">
   </head>
   <body>
 
-    <h3>Sign Up</h3>
-
     <form action="" method="post">
+        <h3>Sign Up</h3>
+        <br>
     {% csrf_token %}
 
         <label for="First Name">First Name</label>
