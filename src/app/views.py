@@ -19,7 +19,7 @@ def signup(request):
         password = request.POST.get('password')
         password_conf = request.POST.get('password_conf')
 
-        # check if username already exists
+        # check if email already exists
         if User.objects.filter(email=email):
             messages.error(request, "Email already registered!")
             error_message = "Email already registered!"

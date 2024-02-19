@@ -8,12 +8,18 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'signup_style.css'%}">
+
+    <style>
+        #popup-message {
+            display: none;
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+
   </head>
   <body>
-
-    <div id="popup-message" style="display: none;">
-        <p id="popup-text"></p>
-    </div>
 
     <div class="container">
         <div class = "side-panel">
@@ -25,6 +31,12 @@
         </div>
     </div>
     <div class="main-panel">
+
+        <!-- Display the error message at the top of the form -->
+        <div id="popup-message">
+            <p id="popup-text"></p>
+        </div>
+
         <form action="" method="post">
            <br>
             {% csrf_token %}
@@ -65,7 +77,14 @@
             if (errorMessage) {
                 document.getElementById('popup-text').innerText = errorMessage;
                 document.getElementById('popup-message').style.display = 'block';
+            
+                // Clear the error message after a delay (e.g., 5000 milliseconds or 5 seconds)
+                setTimeout(function () {
+                    document.getElementById('popup-text').innerText = '';
+                    document.getElementById('popup-message').style.display = 'none';
+                }, 5000);
             }
+
         });
     </script>
 
