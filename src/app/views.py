@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages 
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def home(request):
@@ -18,14 +19,24 @@ def signup(request):
         password = request.POST.get('password')
         password_conf = request.POST.get('password_conf')
 
+        # check if username already exists
+        if User.objects.filter(email=email):
+            messages.error(request, "Email already registered!")
+            error_message = "Email already registered!"
+            return HttpResponseRedirect(f'/signup/?error_message={error_message}')
+            #return redirect('signup')
+            #return render(request, 'signup', {'error_message': "Email already registered!"})
+
         # check to see if inputted passwords match
         if password and password_conf and password != password_conf:
-            raise forms.ValidationError("Passwords don't match.")
-        
+        #    raise forms.ValidationError("Passwords don't match.")
+            messages.error(request, "Passwords don't match.")
+            
         # check overall length of the email
         length_of_email = len(email)
         if (length_of_email <= 10):
-            raise forms.ValidationError("Email isn't valid.")
+            # raise forms.ValidationError("Email isn't valid.")
+            messages.error(request, "Email isn't valid")
         
         # check if email suffix is purdue.edu
         email_suffix = email[-10:]

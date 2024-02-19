@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="{% static 'signup_style.css'%}">
   </head>
   <body>
+
+    <div id="popup-message" style="display: none;">
+        <p id="popup-text"></p>
+    </div>
+
     <div class="container">
         <div class = "side-panel">
             <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
@@ -49,6 +54,20 @@
         </div>
     </div>
     <script src="" async defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the pop-up message is present in the URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorMessage = urlParams.get('error_message');
+
+            // If there's an error message, display the pop-up
+            if (errorMessage) {
+                document.getElementById('popup-text').innerText = errorMessage;
+                document.getElementById('popup-message').style.display = 'block';
+            }
+        });
+    </script>
 
   </body>
 </html>
