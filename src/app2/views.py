@@ -2,6 +2,10 @@ from django.shortcuts import render
 
 # Create your views here.
 
+
+
+# Backend code
+
 class Product():
     def __init__(self, name, price, description, quality_tag, category_tag, seller_name, seller_email, seller_phone, seller_instagram, is_favorited = False):
         self.name = name
@@ -74,3 +78,16 @@ class CategoryTag(Product):
     
     def set_category(self, category):
         self.category = category
+
+class ProductDirectory(Product):
+    products = [
+
+    ]
+
+    def get_product(products, Product):
+        for i in products:
+            if products[i].name == Product.get_name():
+                return products[i]
+            
+    def set_product(products, Product):
+        products[len(products)] = Product
