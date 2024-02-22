@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profile</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'view_profile.css' %}">
+  </head>
+  <body>
+    <nav>
+      <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Bookmarks</a></li>
+            <li><a href="">Sales</a></li>
+            <li><a href="">Profile</a></li>
+        </ul>
+    </nav>
+    <h1>{{ name }}</h1> 
+    <button type="submit"> <a href="settings/">Profile Settings</a></button>
+    <br>
+    <h2>Ratings</h2> 
+    <br>
+    <h2>My Listings</h2>
+    <script src="" async defer></script>
+  </body>
+</html>

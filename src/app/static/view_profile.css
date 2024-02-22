@@ -1,0 +1,71 @@
+body {
+    background-color: white;
+    color: gold;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+
+nav {
+    padding: 10px;
+}
+
+img {
+    height: 100px;
+}
+
+ul {
+    background-color: gold;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+li {
+    display: inline;
+    margin-right: 20px;
+}
+
+li a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+li a:hover {
+    color: gray;
+    text-decoration: underline;
+}
+
+h1, h2 {
+    color: gold;
+    padding: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+button a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+button:hover {
+    color: gold;
+}
+
+a {
+    color: gold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

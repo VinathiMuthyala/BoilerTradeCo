@@ -5,16 +5,17 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.http import HttpResponseRedirect
 
+current_user = "BoilerTradeCo"
 # Create your views here.
 def home(request):
     return render(request, "app/index.html")
-
     
 def signup(request):
     if request.method == "POST":
         # get variable inputs from POST
         email = request.POST.get('email')
         firstname = request.POST.get('firstname')
+        current_user = firstname
         lastname = request.POST.get('lastname')
         password = request.POST.get('password')
         password_conf = request.POST.get('password_conf')
@@ -69,3 +70,7 @@ def signin(request):
 
 def signout(request):
     pass
+
+def viewprofile(request):
+    name = current_user
+    return render(request, "app/profile.html", {'name': name})
