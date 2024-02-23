@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profile Settings</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'settings.css' %}">
+  </head>
+
+  <body>
+    <nav>
+      <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Bookmarks</a></li>
+            <li><a href="">Sales</a></li>
+            <li><a href="profile/">Profile</a></li>
+        </ul>
+    </nav>
+
+    <h1>Profile Settings</h1>
+    
+    <div class="dashboard">
+        <div class="slider">
+            <label for="sections">Choose a section:</label>
+            <select id="sections" name="sections">
+                <option value="profile">Profile</option>
+                <option value="notifications">Notifications</option>
+                <option value="accessibility">Accessibility</option>
+            </select>
+        </div>
+
+        <div class="content">
+            <!-- Profile Section -->
+            <div id="profile" class="section">
+                <h1>Profile Settings</h1>
+                <form>
+                    <label for="fname">First Name:</label>
+                    <input type="text" id="fname" name="fname">
+                    <label for="lname">Last Name:</label>
+                    <input type="text" id="lname" name="lname">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password">
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+
+            <!-- Notifications Section -->
+            <div id="notifications" class="section">
+                <h1>Notification Settings</h1>
+                <!-- Add notification settings options here -->
+            </div>
+
+            <!-- Accessibility Section -->
+            <div id="accessibility" class="section">
+                <h1>Accessibility Settings</h1>
+                <label for="mode">Dark Mode:</label>
+                <input type="range" id="mode" name="mode" min="0" max="1" step="1" value="0">
+                <!-- Add other accessibility settings here -->
+            </div>
+        </div>
+    </div>
+
+    <button type="submit">Save Changes</button>
+    <script src="" async defer></script>
+  </body>
+</html>
