@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 current_user = "BoilerTradeCo"
 # Create your views here.
@@ -47,7 +47,10 @@ def signup(request):
     
         # create and save user locally
         # TODO: when database is situated, must store info in database
-        myuser = User.objects.create_user(email, email, password)
+        myuser = User.objects.create_user()
+        myuser.username = email
+        myuser.password = password
+        myuser.email = email
         myuser.first_name = firstname
         myuser.last_name = lastname
 
@@ -70,9 +73,11 @@ def signin(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
+        none = "none"
 
         user = authenticate(username=email, password=password)
 
+        print("check: " + user.is_authenticated)
         if user is not None:
             login(request, user)
             firstname = user.first_name
@@ -80,12 +85,14 @@ def signin(request):
         # null if user not authenticated
         else:
             messages.error(request, "Username or Password is incorrect!")
-            return redirect('home')
+            return render(request, 'authentication/index.html')
 
     return render(request, "authentication/signin.html")
 
 def signout(request):
-    pass
+    logout(request)
+    messages.success(request, "Logged Out Successfully")
+    return redirect('home')
 
 def viewprofile(request):
     name = current_user
