@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 
 current_user = "BoilerTradeCo"
 # Create your views here.
-def home(request):
+def index(request):
     return render(request, "authentication/index.html")
     
 def signup(request):
@@ -92,7 +92,7 @@ def signin(request):
 def signout(request):
     logout(request)
     messages.success(request, "Logged Out Successfully")
-    return redirect('home')
+    return redirect('index')
 
 def viewprofile(request):
     name = current_user
