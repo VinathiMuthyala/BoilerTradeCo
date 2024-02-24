@@ -66,14 +66,14 @@ def signup(request):
 
 
 def signin(request):
-    return render(request, "app/signin.html")
+    return render(request, "authentication/signin.html")
 
 def signout(request):
     pass
 
 def viewprofile(request):
     name = current_user
-    return render(request, "authetication/profile.html", {'name': name})
+    return render(request, "authentication/profile.html", {'name': name})
 
 def settings(request):
     return render(request, "authentication/settings.html")
