@@ -73,7 +73,7 @@ def signout(request):
 
 def viewprofile(request):
     name = current_user
-    return render(request, "app/profile.html", {'name': name})
+    return render(request, "authetication/profile.html", {'name': name})
 
 def settings(request):
-    return render(request, "app/settings.html")
+    return render(request, "authentication/settings.html")
