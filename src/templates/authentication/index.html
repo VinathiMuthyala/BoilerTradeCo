@@ -9,18 +9,10 @@
   </head>
   <body>
 
-    <h1>Welcome to Homepage</h1> 
+    <h1>Sign Up or Sign In Page</h1> 
 
-    {% if user.is_authenticated %}
-    <h3>Hello {{ firstname }}</h3>
-    <h4>You're successfully logged in.</h4>
-    <button type="submit"> <a href="signout/">Sign Out</a></button>
-    <button type="submit"> <a href="profile/">Profile</a></button>
-    {% else %}
-    <button type="submit"> <a href="signup/">Sign Up</a></button>
-    <button type="submit"> <a href="signin/">Sign In</a></button>
-    {% endif %}
-  
+    <button type="submit"> <a href="/signup/">Sign Up</a></button>
+    <button type="submit"> <a href="/signin/">Sign In</a></button>
 
     <script src="" async defer></script>
 

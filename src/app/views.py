@@ -77,11 +77,12 @@ def signin(request):
 
         user = authenticate(username=email, password=password)
 
-        print("check: " + user.is_authenticated)
+        print("check: " + str(user.is_authenticated))
+
         if user is not None:
             login(request, user)
             firstname = user.first_name
-            return render(request, 'authentication/index.html', {'firstname': firstname})
+            return render(request, 'authentication/home.html', {'firstname': firstname})
         # null if user not authenticated
         else:
             messages.error(request, "Username or Password is incorrect!")

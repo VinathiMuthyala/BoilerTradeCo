@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="#">
+  </head>
+
+  <body>
+
+    <h1>Welcome to Homepage, your signed in</h1> 
+
+    {% if user.is_authenticated %}
+    <h3>Hello {{ firstname }}</h3>
+    <h4>You're successfully logged in.</h4>
+    <button type="submit"> <a href="signout/">Sign Out</a></button>
+    <button type="submit"> <a href="profile/">Profile</a></button>
+    {% else %}
+    <h4>You're not logged in.</h4>
+    <button type="submit"> <a href="signup/">Sign Up</a></button>
+    <button type="submit"> <a href="signin/">Sign In</a></button>
+    {% endif %}
+  
+
+    <script src="" async defer></script>
+
+  </body>
+</html>
