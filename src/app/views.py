@@ -4,11 +4,12 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login
 
 current_user = "BoilerTradeCo"
 # Create your views here.
 def home(request):
-    return render(request, "app/index.html")
+    return render(request, "authentication/index.html")
     
 def signup(request):
     if request.method == "POST":
@@ -62,10 +63,25 @@ def signup(request):
         messages.success(request, "Your account has been successfully created.")
 
         return redirect('signin')
-    return render(request, "app/signup.html")
+    return render(request, "authentication/signup.html")
 
 
 def signin(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        password = request.POST['password']
+
+        user = authenticate(username=email, password=password)
+
+        if user is not None:
+            login(request, user)
+            firstname = user.first_name
+            return render(request, 'authentication/index.html', {'firstname': firstname})
+        # null if user not authenticated
+        else:
+            messages.error(request, "Username or Password is incorrect!")
+            return redirect('home')
+
     return render(request, "authentication/signin.html")
 
 def signout(request):
