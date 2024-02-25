@@ -6,7 +6,8 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 
-current_user = "BoilerTradeCo"
+users = []
+current_number = 0
 # Create your views here.
 def index(request):
     return render(request, "authentication/index.html")
@@ -19,7 +20,6 @@ def signup(request):
         # get variable inputs from POST
         email = request.POST.get('email')
         firstname = request.POST.get('firstname')
-        current_user = firstname
         lastname = request.POST.get('lastname')
         password = request.POST.get('password')
         password_conf = request.POST.get('password_conf')
@@ -82,8 +82,10 @@ def signin(request):
         none = "none"
 
         user = authenticate(username=email, password=password)
+        users.append(user)
+        #current_number = int(current_number) + 1
 
-        print("check: " + str(user.is_authenticated))
+        # print("check: " + str(user.is_authenticated))
 
         if user is not None:
             login(request, user)
@@ -91,8 +93,8 @@ def signin(request):
             return render(request, 'authentication/home.html', {'firstname': firstname})
         # null if user not authenticated
         else:
-            messages.error(request, "Username or Password is incorrect!")
-            return render(request, 'authentication/index.html')
+            user_invalid = "Email/Password is incorrect!"
+            return HttpResponseRedirect(f'/signin/?error_message={user_invalid}')
 
     return render(request, "authentication/signin.html")
 
@@ -102,8 +104,9 @@ def signout(request):
     return redirect('index')
 
 def viewprofile(request):
-    name = current_user
-    return render(request, "authentication/profile.html", {'name': name})
+    #user = user[current_number]
+    #user_name = user.first_name
+    return render(request, "authentication/profile.html")
 
 def settings(request):
     return render(request, "authentication/settings.html")
