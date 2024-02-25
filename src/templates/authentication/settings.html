@@ -4,9 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Profile Settings</title>
+    <title>System Settings</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'settings.css' %}">
+    <title>Light/Dark Mode Toggle</title>
+    <style>
+        /* CSS for light mode */
+        body {
+            background-color: #f4f4f4;
+            color: #333;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        /* CSS for dark mode */
+        body.dark-mode {
+            background-color: #333;
+            color: #f4f4f4;
+        }
+
+        .toggle-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        .toggle-label {
+            display: inline-block;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .toggle-input {
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+            background-color: #ccc;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-input::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #fff;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 2px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .toggle-input.checked {
+            background-color: #00c851; /* Green color for toggle in dark mode */
+        }
+
+        .toggle-input.checked::after {
+            left: calc(100% - 18px);
+            transform: translateY(-50%) translateX(-100%);
+            background-color: #333; /* Darker color for toggle ball in dark mode */
+        }
+    </style>
   </head>
 
   <body>
@@ -20,7 +82,7 @@
         </ul>
     </nav>
 
-    <h1>Profile Settings</h1>
+    <h1>System Settings</h1>
 
     <div class="dashboard">
         <div class="slider">
@@ -67,5 +129,43 @@
 
     <button type="submit">Save Changes</button>
     <script src="" async defer></script>
+
+    <div class="toggle-container">
+        <span class="toggle-label">Light/Dark Mode:</span>
+        <label class="toggle-input">
+          <input type="checkbox" id="darkModeToggle">
+        </label>
+    </div>
+      
+    <script>
+        // JavaScript to toggle dark mode
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const body = document.body;
+      
+        // Check local storage for user's preferred mode
+        if (localStorage.getItem('darkMode') === 'on') {
+          enableDarkMode();
+          darkModeToggle.checked = true;
+        }
+      
+        // Toggle dark mode when checkbox is clicked
+        darkModeToggle.addEventListener('change', function() {
+          if (this.checked) {
+            enableDarkMode();
+            localStorage.setItem('darkMode', 'on');
+          } else {
+            disableDarkMode();
+            localStorage.setItem('darkMode', 'off');
+          }
+        });
+      
+        function enableDarkMode() {
+          body.classList.add('dark-mode');
+        }
+      
+        function disableDarkMode() {
+          body.classList.remove('dark-mode');
+        }
+    </script>
   </body>
 </html>
