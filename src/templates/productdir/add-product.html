@@ -1,11 +1,77 @@
-<h1>Add Product Here</h1>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #d5b3e9;
+            color: white;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #d08eea;
+        }
+    </style>
+</head>
+<body>
 
-<label>Enter product name:</label><br>
+    <h2>Add Product</h2>
 
-<label >Enter price:</label><br>
+    <!-- null image placeholder -->
+    <img alt="Product Image" style="max-width: 100%; height: auto; margin-bottom: 16px;">
 
-<label>Enter description:</label><br>
+    <form action="process_product.php" method="post">
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" name="productName" required>
 
-<label >Enter seller name:</label><br>
+        <label for="productPrice">Product Price:</label>
+        <input type="number" id="productPrice" name="productPrice" step="0.50" required>
 
-<label >Enter seller email:</label><br>
+        <label for="productDescription">Product Description:</label>
+        <textarea id="productDescription" name="productDescription" rows="4" required></textarea>
+
+        <label for="qualityTag">Quality:</label>
+        <select id="qualityTag" name="qualityTag" required>
+            <option value="" disabled selected>Select Quality</option>
+            <option value="Like New">Like New</option>
+            <option value="Good">Good</option>
+            <option value="Acceptable">Acceptable</option>
+        </select>
+
+        <label for="categoryTag">Category:</label>
+        <select id="categoryTag" name="categoryTag" required>
+            <option value="" disabled selected>Select Category</option>
+            <option value="Furniture">Furniture</option>
+            <option value="Appliances">Appliances</option>
+            <option value="Textbooks">Textbooks</option>
+            <option value="School supplies">School supplies</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Game tickets">Game tickets</option>
+        </select>
+
+        <input type="submit" value="Add your Product!">
+    </form>
+
+</body>
+</html>

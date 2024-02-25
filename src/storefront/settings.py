@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+#import django_heroku
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -129,5 +130,5 @@ STATIC_FILES_DIRS = [
 ]
 
 # Configure Django App for Heroku
-import django_on_heroku
-django_on_heroku.settings(locals())
+#import django_on_heroku
+#django_on_heroku.settings(locals())
