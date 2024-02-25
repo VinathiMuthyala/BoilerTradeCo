@@ -21,15 +21,6 @@
   </head>
   <body>
 
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-      <strong>Message:</strong> {{ message }}
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    {% endfor %}
-
     <div class="container">
         <div class = "side-panel">
             <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
@@ -44,6 +35,14 @@
         <!-- Display the error message at the top of the form -->
         <div id="popup-message">
             <p id="popup-text"></p>
+            <!-- {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <strong>Message:</strong> {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %} -->
         </div>
 
         <form action="" method="post">
@@ -88,10 +87,12 @@
                 document.getElementById('popup-message').style.display = 'block';
             
                 // Clear the error message after a delay (e.g., 5000 milliseconds or 5 seconds)
+                /*
                 setTimeout(function () {
                     document.getElementById('popup-text').innerText = '';
                     document.getElementById('popup-message').style.display = 'none';
                 }, 5000);
+                */
             }
 
         });

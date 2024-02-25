@@ -15,12 +15,12 @@
     {% if user.is_authenticated %}
     <h3>Hello {{ firstname }}</h3>
     <h4>You're successfully logged in.</h4>
-    <button type="submit"> <a href="signout/">Sign Out</a></button>
-    <button type="submit"> <a href="profile/">Profile</a></button>
+    <button type="submit"> <a href="/">Sign Out</a></button>
+    <button type="submit"> <a href="/profile">Profile</a></button>
     {% else %}
     <h4>You're not logged in.</h4>
-    <button type="submit"> <a href="signup/">Sign Up</a></button>
-    <button type="submit"> <a href="signin/">Sign In</a></button>
+    <button type="submit"> <a href="/signup">Sign Up</a></button>
+    <button type="submit"> <a href="/signin">Sign In</a></button>
     {% endif %}
   
 

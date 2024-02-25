@@ -10,6 +10,9 @@ current_user = "BoilerTradeCo"
 # Create your views here.
 def index(request):
     return render(request, "authentication/index.html")
+
+def home(request):
+    return render(request, "authentication/home.html")
     
 def signup(request):
     if request.method == "POST":
@@ -33,24 +36,27 @@ def signup(request):
         if password and password_conf and password != password_conf:
         #    raise forms.ValidationError("Passwords don't match.")
             messages.error(request, "Passwords don't match.")
+            password_error = "Passwords don't match."
+            return HttpResponseRedirect(f'/signup/?error_message={password_error}')
             
         # check overall length of the email
         length_of_email = len(email)
         if (length_of_email <= 10):
             # raise forms.ValidationError("Email isn't valid.")
+            email_error = "Email isn't valid!"
+            return HttpResponseRedirect(f'/signup/?error_message={email_error}')
             messages.error(request, "Email isn't valid")
         
         # check if email suffix is purdue.edu
         email_suffix = email[-10:]
         if email_suffix != "purdue.edu":
-            raise forms.ValidationError("Email is not valid! Please enter a Purdue")
+            # raise forms.ValidationError("Email is not valid! Please enter a Purdue")
+            purdue_error = "Email is not valid! Please enter a Purdue email!"
+            return HttpResponseRedirect(f'/signup/?error_message={purdue_error}')
     
         # create and save user locally
         # TODO: when database is situated, must store info in database
-        myuser = User.objects.create_user()
-        myuser.username = email
-        myuser.password = password
-        myuser.email = email
+        myuser = User.objects.create_user(email, email, password)
         myuser.first_name = firstname
         myuser.last_name = lastname
 

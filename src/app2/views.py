@@ -3,10 +3,10 @@ from django.http import HttpResponse
 
 # Create your views here.
 def layout(request):
-    return render(request, 'app2/index.html')
+    return render(request, 'productdir/index.html')
 
 def add_product(request):
-    return render(request, 'app2/add-product.html')
+    return render(request, 'productdir/add-product.html')
 
 # Backend code
 
