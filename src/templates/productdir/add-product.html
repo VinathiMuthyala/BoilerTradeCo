@@ -32,6 +32,12 @@
         input[type="submit"]:hover {
             background-color: #ffd700;
         }
+        #calendar {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 200px;
+            text-align: center;
+        }
     </style>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
@@ -51,7 +57,7 @@
         <input type="number" id="productPrice" name="productPrice" step="0.50" required>
 
         <label for="sellerName">Seller name:</label>
-        <input type="text" id="sellerName" name="sellerName" step="0.50" required>
+        <input type="text" id="sellerName" name="sellerName" required>
 
         <label for="productDescription">Product Description:</label>
         <textarea id="productDescription" name="productDescription" rows="4" required></textarea>
@@ -74,6 +80,24 @@
             <option value="Clothing">Clothing</option>
             <option value="Game tickets">Game tickets</option>
         </select>
+
+        <label for="datePosted">Date Posted:</label>
+        <div id="calendar"></div>
+        <script>
+            function displayDate() {
+              var today = new Date();
+              var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+              var formattedDate = today.toLocaleDateString('en-US', options);
+              
+              var calendarDiv = document.getElementById('calendar');
+              calendarDiv.innerHTML = formattedDate;
+            }
+            displayDate();
+        </script>
+
+        <div>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
 
         <input type="submit" value="Add a Product!">
     </form>
