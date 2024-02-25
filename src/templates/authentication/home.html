@@ -7,11 +7,12 @@
     <title>Homepage</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
-  </head>
+  </head> 
 
   <body>
     <nav>
-      <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
+      <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" style="height: 150px; width: 150px">
+      <h1 style="text-align: center; margin-top: -50px;"> Welcome to the BoilerTradeCo Homepage!</h1> 
         <ul>
             <li><a href="">Home</a></li>
             <li><a href="">Bookmarks</a></li>
@@ -20,7 +21,6 @@
         </ul>
     </nav>
 
-    <h1>Welcome to the Homepage!</h1> 
     <!-- can change this later, when project directory is finished (its just an identifier for now) -->
     {% if user.is_authenticated %}
     <h4>You're successfully logged in.</h4>

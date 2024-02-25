@@ -27,3 +27,7 @@ li a:hover {
     color: gray;
     text-decoration: underline;
 }
+
+h1 {
+    justify-content: center;
+}
