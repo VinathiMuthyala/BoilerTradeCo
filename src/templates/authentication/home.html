@@ -5,16 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Homepage</title>
-    <link rel="stylesheet" href="#">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
   </head>
 
   <body>
+    <nav>
+      <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="">Bookmarks</a></li>
+            <li><a href="">Sales</a></li>
+            <li><a href="">Profile</a></li>
+        </ul>
+    </nav>
 
-    <h1>Welcome to Homepage, your signed in</h1> 
-
+    <h1>Welcome to the Homepage!</h1> 
+    <!-- can change this later, when project directory is finished (its just an identifier for now) -->
     {% if user.is_authenticated %}
-    <h3>Hello {{ firstname }}</h3>
     <h4>You're successfully logged in.</h4>
+    <h5> Vinni and Isha add your html to this page. </h5>
     <button type="submit"> <a href="/">Sign Out</a></button>
     <button type="submit"> <a href="/profile">Profile</a></button>
     {% else %}

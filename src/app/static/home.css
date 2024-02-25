@@ -1,0 +1,29 @@
+img {
+    height: 100px;
+}
+
+ul {
+    background-color: gold;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+li {
+    display: inline;
+    margin-right: 20px;
+}
+
+li a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+li a:hover {
+    color: gray;
+    text-decoration: underline;
+}
