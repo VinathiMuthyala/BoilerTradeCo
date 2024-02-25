@@ -1,0 +1,72 @@
+/* index.css */
+
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1c1c1c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container h1 {
+    text-align: center;
+    color: #dbbf25;
+    padding: 20px;
+}
+
+.container img {
+    display: block;
+    margin: 20px auto;
+}
+
+.container button {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ffd700;
+    border: 2px solid #d4c83f;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container button:hover {
+    background-color: #e7dda9;
+    color: #ffffff;
+}
+
+.container a {
+    text-decoration: none;
+    color: #000000;
+}
+
+.container {
+    display: inline-block;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-radius: 8%;
+    background-color: rgb(231, 231, 220);
+}
+
+/* Center the link text inside the button */
+.container button a {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+/* Responsive styling for smaller screens */
+@media screen and (max-width: 600px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+}

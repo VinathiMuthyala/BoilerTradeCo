@@ -5,14 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Homepage</title>
-    <link rel="stylesheet" href="#">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
   </head>
   <body>
 
-    <h1>Sign Up or Sign In Page</h1> 
+    <div class="container">
+      <h1>Welcome to BoilerTradeCo!</h1> 
 
-    <button type="submit"> <a href="/signup/">Sign Up</a></button>
-    <button type="submit"> <a href="/signin/">Sign In</a></button>
+      <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
+
+      <button type="submit"> <a href="/signup/">Sign Up</a></button>
+      <button type="submit"> <a href="/signin/">Sign In</a></button>
+    </div>
 
     <script src="" async defer></script>
 
