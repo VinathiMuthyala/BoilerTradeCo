@@ -23,8 +23,11 @@
 
     <!-- can change this later, when project directory is finished (its just an identifier for now) -->
     {% if user.is_authenticated %}
-    <h4>You're successfully logged in.</h4>
-    <h5> Vinni and Isha add your html to this page. </h5>
+    <h1>Product Directory</h1>
+    <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
+    <div>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div>
     <button type="submit"> <a href="/">Sign Out</a></button>
     <button type="submit"> <a href="/profile">Profile</a></button>
     {% else %}
