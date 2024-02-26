@@ -1,1 +1,1 @@
-web: gunicorn BoilerTradeCo.wsgi
+web: gunicorn src.wsgi
