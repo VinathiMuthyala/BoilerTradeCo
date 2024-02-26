@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>System Settings</title>
     {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'settings.css' %}">
 
     <title>Light/Dark Mode Toggle</title>
@@ -74,6 +75,7 @@
 
   <body>
     <nav>
+      <!-- navigation -->
       <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
         <ul>
             <li><a href="/home">Home</a></li>
@@ -83,52 +85,85 @@
         </ul>
     </nav>
 
-    <h1>System Settings</h1>
+    <!--start of system settings-->
+    <div class="container light-style flex-grow-1 container-p-y">
 
-    <div class="dashboard">
-        <div class="slider">
-            <label for="sections">Choose a section:</label>
-            <select id="sections" name="sections">
-                <option value="profile">Profile</option>
-                <option value="notifications">Notifications</option>
-                <option value="accessibility">Accessibility</option>
-            </select>
+      <h4 class="font-weight-bold py-3 mb-4">
+        Account settings
+      </h4>
+  
+      <div class="card overflow-hidden">
+        <div class="row no-gutters row-bordered row-border-light">
+          <div class="col-md-3 pt-0">
+            <div class="list-group list-group-flush account-settings-links">
+              <a class="list-group-item list-group-item-action active" data-toggle="list" href="#account-general">Edit Profile</a>
+              <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-change-password">Change password</a>
+              <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-notifications">Notifications</a>
+              <a class="list-group-item list-group-item-action" data-toggle="list" href="#account-other">Other</a>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <div class="tab-content">
+              
+              <!-- Edit Profile Stuff -->
+              <div class="tab-pane fade active show" id="account-general">
+                <hr class="border-light m-0">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-control mb-1" value="Sally">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-control" value="Devikumar">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="text" class="form-control mb-1" value="hi@purdue.edu">
+                  </div>
+                </div>
+  
+              </div>
+              
+              <!-- Change Password -->
+
+
+              <!--Notifications-->
+
+              <!--Other-->
+              <div class="tab-pane fade active show" id="account-other"></div>
+              <div class="card-body">
+                <div class="form-group">
+                  <!--Light/Dark Mode-->
+                  <div class="toggle-container">
+                    <span class="toggle-label">Light/Dark Mode:</span>
+                    <label class="toggle-input">
+                      <input type="checkbox" id="darkModeToggle">
+                    </label>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+
+            </div>
+          </div>
         </div>
-
-        <div class="content">
-            <!-- Profile Section -->
-            <div id="profile" class="section">
-                <h1>Profile Settings</h1>
-                <form>
-                    <label for="fname">First Name:</label>
-                    <input type="text" id="fname" name="fname">
-                    <label for="lname">Last Name:</label>
-                    <input type="text" id="lname" name="lname">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password">
-                    <button type="submit">Save Changes</button>
-                </form>
-            </div>
-
-            <!-- Notifications Section -->
-            <div id="notifications" class="section">
-                <h1>Notification Settings</h1>
-                <!-- Add notification settings options here -->
-            </div>
-
-            <!-- Accessibility Section -->
-            <div id="accessibility" class="section">
-                <h1>Accessibility Settings</h1>
-                <label for="mode">Dark Mode:</label>
-                <input type="range" id="mode" name="mode" min="0" max="1" step="1" value="0">
-                <!-- Add other accessibility settings here -->
-            </div>
-        </div>
+      </div>
+  
+      <div class="text-right mt-3">
+        <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
+        <button type="button" class="btn btn-default">Cancel</button>
+      </div>
+  
     </div>
 
-    <button type="submit">Save Changes</button>
+    
+
+
+
+
+
     <script src="" async defer></script>
 
     <div class="toggle-container">
