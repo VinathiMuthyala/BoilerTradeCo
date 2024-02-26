@@ -126,23 +126,28 @@
               </div>
               
               <!-- Change Password -->
+              <div class="tab-pane fade" id="account-change-password">
 
+              </div>
 
               <!--Notifications-->
+              <div class="tab-pane fade" id="account-notifications">
+
+              </div>
 
               <!--Other-->
-              <div class="tab-pane fade active show" id="account-other"></div>
-              <div class="card-body">
-                <div class="form-group">
-                  <!--Light/Dark Mode-->
-                  <div class="toggle-container">
-                    <span class="toggle-label">Light/Dark Mode:</span>
-                    <label class="toggle-input">
-                      <input type="checkbox" id="darkModeToggle">
-                    </label>
+              <div class="tab-pane fade" id="account-other"></div>
+                <div class="card-body">
+                  <div class="form-group">
+                    <!--Light/Dark Mode-->
+                    <div class="toggle-container">
+                      <span class="toggle-label">Light/Dark Mode:</span>
+                      <label class="toggle-input">
+                        <input type="checkbox" id="darkModeToggle">
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
               </div>
 
 
@@ -172,6 +177,44 @@
           <input type="checkbox" id="darkModeToggle">
         </label>
     </div>
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Get all tabs
+        var tabs = document.querySelectorAll('.account-settings-links a');
+    
+        // Attach click event listeners to each tab
+        tabs.forEach(function(tab) {
+          tab.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Remove active class from all tabs
+            tabs.forEach(function(t) {
+              t.classList.remove('active');
+            });
+            // Add active class to the clicked tab
+            tab.classList.add('active');
+            
+            // Get the target tab content ID
+            var targetId = tab.getAttribute('href').substring(1);
+            
+            // Show the corresponding tab content
+            var tabContent = document.getElementById(targetId);
+            if (tabContent) {
+              // Remove 'show' class from all tab content
+              document.querySelectorAll('.tab-pane').forEach(function(tc) {
+                tc.classList.remove('show', 'active');
+              });
+              // Add 'show' class to the target tab content
+              tabContent.classList.add('show', 'active');
+            }
+          });
+        });
+      });
+    </script>
+
+
+
       
     <script>
         // JavaScript to toggle dark mode
