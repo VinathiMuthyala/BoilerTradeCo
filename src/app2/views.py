@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 def layout(request):
-    return render(request, 'productdir/index.html')
+    return render(request, 'authentication/light-dark-toggle.html') # confirm if this is okay productdir/index.html before
 
 def add_product(request):
     return render(request, 'productdir/add-product.html')
