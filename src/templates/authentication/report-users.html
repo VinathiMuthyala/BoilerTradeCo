@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <button type="report"> <a href="/reportusers">Report Seller</a></button>
+
+    <style>
+        #popup-message {
+            display: none;
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+
+  </head>
+  <body>
+
+
+    <div class="container">
+        <div class = "side-panel">
+            <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
+            <div class="header">
+                <h3> BoilerTradeCo Report Seller </h3>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="main-panel">
+
+        <!-- Display the error message at the top of the form -->
+        <div id="popup-message">
+            <p id="popup-text"></p>
+            <!-- {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    <strong>Message:</strong> {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}  -->
+        </div>
+
+        <form action="" method="post">
+           <br>
+            {% csrf_token %}
+
+            <label for="Seller Name">Name</label>
+            <input type="name" id="name" name="name" placeholder="Enter the seller's name you want to report" Required>
+            <br>
+
+            <label for="Seller Email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter the seller's email you want to report" Required>
+            <br>
+
+            <button type="submit">Report Seller</button>
+            </form>
+        </div>
+    </div>
+    <script src="" async defer></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the pop-up message is present in the URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const errorMessage = urlParams.get('error_message');
+
+            // If there's an error message, display the pop-up
+            if (errorMessage) {
+                document.getElementById('popup-text').innerText = errorMessage;
+                document.getElementById('popup-message').style.display = 'block';
+            
+                // Clear the error message after a delay (e.g., 5000 milliseconds or 5 seconds)
+                /*
+                setTimeout(function () {
+                    document.getElementById('popup-text').innerText = '';
+                    document.getElementById('popup-message').style.display = 'none';
+                }, 5000);
+                */
+            }
+
+        });
+    </script>
+
+  </body>
+</html>
