@@ -1,1 +1,1 @@
-web: gunicorn storefront.wsgi
+web: gunicorn src/storefront.wsgi
