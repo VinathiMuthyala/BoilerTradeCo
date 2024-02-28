@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-#i92niko3u4kv77$emfp*a8!o90adpzb0%-dzcluu^)&d8tg@s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/']
 
 
 # Application definition
@@ -80,7 +80,11 @@ WSGI_APPLICATION = 'storefront.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'ddtrekeup8feb3',
+        'USER': 'kupthcmsxitqcg',
+        'PASSWORD': '834315286ad7581f8dc6f90e218d1a5b31e71e5a3ffd1759a30fb1eb1a07333a',
+        'HOST': 'ec2-34-235-108-214.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
