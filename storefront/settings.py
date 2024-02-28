@@ -135,9 +135,10 @@ django_heroku.settings(locals())
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATIC_FILES_DIRS = [
-    BASE_DIR / "static"
-]
+
+# STATIC_FILES_DIRS = [
+#     BASE_DIR / "static"
+# ]
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
