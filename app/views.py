@@ -105,7 +105,7 @@ def signout(request):
 
 def viewprofile(request):
     current_user = request.user
-    username = current_user.id
+    username = current_user.first_name
     context = { 'username': username}
     return render(request, "authentication/profile.html", context)
 
