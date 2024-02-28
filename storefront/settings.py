@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-#i92niko3u4kv77$emfp*a8!o90adpzb0%-dzcluu^)&d8tg@s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['boiler-trade-co-d5c7c21c59ec.herokuapp.com/']
+ALLOWED_HOSTS = ['boiler-trade-co-d5c7c21c59ec.herokuapp.com/', 'localhost', '127.0.0.1']
 
 
 # Application definition
