@@ -9,6 +9,7 @@ from .models import Profile
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from .forms import UpdateProfileForm
 
 users = []
 current_number = 0
@@ -71,6 +72,8 @@ def signup(request):
             return redirect('signup')
         """
         myuser.save()
+        myprofile = Profile(user=myuser)
+        myprofile.save()
 
         messages.success(request, "Your account has been successfully created.")
 
@@ -162,7 +165,7 @@ def settings(request):
         current_user.save()
         messages.success(request, "Your changes have been saved successfully.")
         return redirect('settings')
-
+        
     password_change_form = PasswordChangeForm(request.user)
 
     context = {
