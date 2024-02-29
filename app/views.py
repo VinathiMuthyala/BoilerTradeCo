@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from .models import Profile
 
 users = []
 current_number = 0
@@ -66,7 +67,6 @@ def signup(request):
             messages.error(request, "This username is already taken")
             return redirect('signup')
         """
-
         myuser.save()
 
         messages.success(request, "Your account has been successfully created.")
@@ -83,9 +83,6 @@ def signin(request):
 
         user = authenticate(username=email, password=password)
         users.append(user)
-        #current_number = int(current_number) + 1
-
-        # print("check: " + str(user.is_authenticated))
 
         if user is not None:
             login(request, user)
