@@ -10,8 +10,8 @@ class Item(models.Model):
 
 class Profile(models.Model):
     # will delete the profile when the user is deleted
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.png', upload_to='profile_pics')
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    avatar = models.ImageField(default='default.png', upload_to='profile_images/')
 
     def __str__(self):
-        return f'{self.user.username} Profile' # show how we want it to be displayed
+        return str(self.user)

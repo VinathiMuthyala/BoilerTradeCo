@@ -10,6 +10,7 @@ from .models import Profile
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from .forms import UpdateProfileForm
 from django.contrib.messages import add_message, INFO
 
 
@@ -74,6 +75,8 @@ def signup(request):
             return redirect('signup')
         """
         myuser.save()
+        myprofile = Profile(user=myuser)
+        myprofile.save()
 
         messages.success(request, "Your account has been successfully created.")
 
@@ -111,7 +114,9 @@ def viewprofile(request):
     firstname = current_user.first_name
     lastname = current_user.last_name
     email = current_user.email
-    context = { 'firstname': firstname, 'lastname': lastname, 'email': email}
+    profile = request.user.profile
+    img = profile.avatar.url
+    context = { 'firstname': firstname, 'lastname': lastname, 'email': email, 'img': img }
     return render(request, "authentication/profile.html", context)
 
 def settings(request):
