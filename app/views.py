@@ -104,9 +104,10 @@ def signout(request):
     return redirect('index')
 
 def viewprofile(request):
-    #user = user[current_number]
-    #user_name = user.first_name
-    return render(request, "authentication/profile.html")
+    current_user = request.user
+    username = current_user.first_name
+    context = { 'username': username}
+    return render(request, "authentication/profile.html", context)
 
 def settings(request):
     return render(request, "authentication/settings.html")
