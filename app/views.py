@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from .models import Profile
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -69,7 +70,6 @@ def signup(request):
             messages.error(request, "This username is already taken")
             return redirect('signup')
         """
-
         myuser.save()
 
         messages.success(request, "Your account has been successfully created.")
@@ -86,9 +86,6 @@ def signin(request):
 
         user = authenticate(username=email, password=password)
         users.append(user)
-        #current_number = int(current_number) + 1
-
-        # print("check: " + str(user.is_authenticated))
 
         if user is not None:
             login(request, user)
@@ -108,8 +105,10 @@ def signout(request):
 
 def viewprofile(request):
     current_user = request.user
-    username = current_user.first_name
-    context = { 'username': username}
+    firstname = current_user.first_name
+    lastname = current_user.last_name
+    email = current_user.email
+    context = { 'firstname': firstname, 'lastname': lastname, 'email': email}
     return render(request, "authentication/profile.html", context)
 
 def settings(request):

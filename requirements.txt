@@ -5,6 +5,7 @@ django-on-heroku==1.1.2
 djangorestframework==3.14.0
 gunicorn==21.2.0
 packaging==23.2
+pillow==10.2.0
 psycopg2==2.9.9
 psycopg2-binary==2.9.9
 python-decouple==3.8
