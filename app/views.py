@@ -1,3 +1,4 @@
+from urllib.parse import urlencode
 from django import forms
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
@@ -9,6 +10,8 @@ from .models import Profile
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.messages import add_message, INFO
+
 
 users = []
 current_number = 0
@@ -121,22 +124,33 @@ def settings(request):
         # Check if the form is for changing the password
         if 'change_password' in request.POST:
             old_password = request.POST.get('old_password')
+            new_password1 = request.POST.get('new_password1')
+            new_password2 = request.POST.get('new_password2')
             
             # Validate old password before proceeding
             user = authenticate(username=current_user.username, password=old_password)
             if user is None:
                 messages.error(request, 'Incorrect current password.')
+                #add_message(request, INFO, 'account-change-password')
                 return redirect('settings')
-
-            password_change_form = PasswordChangeForm(request.user, request.POST)
             
-            if password_change_form.is_valid():
-                user = password_change_form.save()
-                update_session_auth_hash(request, user)  # Important to maintain the user's session
-                messages.success(request, 'Your password was successfully updated!')
-            else:
-                messages.error(request, 'Please correct the error below.')
+            # Check if new passwords match
+            if new_password1 != new_password2:
+                messages.error(request, 'New passwords do not match.')
+                #add_message(request, INFO, 'account-change-password')
+                return redirect('settings')
+            
+            # Change password in the database
+            user.set_password(new_password1)
+            user.save()
 
+            # Update session to prevent the user from being logged out
+            update_session_auth_hash(request, user)
+
+            messages.success(request, 'Your password was successfully updated!')
+            #add_message(request, INFO, 'account-change-password')
+            return redirect('settings')
+        
         # check if the form is changing user profile info
         else:
             new_firstname = request.POST.get('new_firstname')
@@ -159,9 +173,9 @@ def settings(request):
                     return redirect('settings')
                 current_user.email = new_email
 
-        current_user.save()
-        messages.success(request, "Your changes have been saved successfully.")
-        return redirect('settings')
+                current_user.save()
+                messages.success(request, "Your changes have been saved successfully.")
+                return redirect('settings')
 
     password_change_form = PasswordChangeForm(request.user)
 
