@@ -10,7 +10,6 @@ from .models import Profile
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from .forms import UpdateProfileForm
 from django.contrib.messages import add_message, INFO
 
 

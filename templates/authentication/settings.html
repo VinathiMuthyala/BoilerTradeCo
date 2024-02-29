@@ -106,8 +106,25 @@
               
               <!-- Edit Profile Stuff -->
               <div class="tab-pane fade active show" id="account-general">
+
+                <!--profile image-->
+                <div class="card-body media align-items-center">
+                  <img id="profile-image-preview" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="d-block ui-w-80">
+                  <div class="media-body ml-4">
+                    <label class="btn btn-outline-primary">
+                      Upload new photo
+                      <input type="file" class="account-settings-fileinput" id="profile-image-input" style="display: none;" onchange="displayFileName(this)">
+                    </label> &nbsp;
+  
+                    <div class="small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
+                  </div>
+                </div>
+                <hr class="border-light m-0">
+
+                
                 <hr class="border-light m-0">
                 <div class="card-body">
+
                     <form method="post" action="{% url 'settings' %}">
                         {% csrf_token %}
                         <div class="form-group">
@@ -218,6 +235,29 @@
           <input type="checkbox" id="darkModeToggle">
         </label>
     </div> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+          // File input change event
+          $('#profile-image-input').on('change', function() {
+              var input = this;
+  
+              if (input.files && input.files[0]) {
+                  var reader = new FileReader();
+  
+                  reader.onload = function(e) {
+                      // Update the preview image source
+                      $('#profile-image-preview').attr('src', e.target.result);
+                  };
+  
+                  // Read the uploaded file as a data URL
+                  reader.readAsDataURL(input.files[0]);
+              }
+          });
+      });
+    </script>  
 
 
     <script>
