@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 
 users = []
 current_number = 0
@@ -110,4 +113,64 @@ def viewprofile(request):
     return render(request, "authentication/profile.html", context)
 
 def settings(request):
-    return render(request, "authentication/settings.html")
+    current_user = request.user
+    firstname = current_user.first_name
+    lastname = current_user.last_name
+    email = current_user.email
+
+    if request.method == 'POST':
+        # Check if the form is for changing the password
+        if 'change_password' in request.POST:
+            old_password = request.POST.get('old_password')
+            
+            # Validate old password before proceeding
+            user = authenticate(username=current_user.username, password=old_password)
+            if user is None:
+                messages.error(request, 'Incorrect current password.')
+                return redirect('settings')
+
+            password_change_form = PasswordChangeForm(request.user, request.POST)
+            
+            if password_change_form.is_valid():
+                user = password_change_form.save()
+                update_session_auth_hash(request, user)  # Important to maintain the user's session
+                messages.success(request, 'Your password was successfully updated!')
+            else:
+                messages.error(request, 'Please correct the error below.')
+
+        # check if the form is changing user profile info
+        else:
+            new_firstname = request.POST.get('new_firstname')
+            new_lastname = request.POST.get('new_lastname')
+            new_email = request.POST.get('new_email')
+
+            current_user = request.user
+
+            if new_firstname and new_firstname != current_user.first_name:
+                current_user.first_name = new_firstname
+
+            if new_lastname and new_lastname != current_user.last_name:
+                current_user.last_name = new_lastname
+
+            if new_email and new_email != current_user.email:
+                # FIX HERE - CHECK IF IT IS PURDUE EMAIL AGAIN
+                # Check if the new email is unique
+                if User.objects.filter(email=new_email).exclude(id=current_user.id).exists():
+                    messages.error(request, "The provided email is already in use by another user.")
+                    return redirect('settings')
+                current_user.email = new_email
+
+        current_user.save()
+        messages.success(request, "Your changes have been saved successfully.")
+        return redirect('settings')
+
+    password_change_form = PasswordChangeForm(request.user)
+
+    context = {
+        'email': email,
+        'firstname': firstname,
+        'lastname': lastname,
+        'password_change_form': password_change_form,
+    }
+
+    return render(request, "authentication/settings.html", context)

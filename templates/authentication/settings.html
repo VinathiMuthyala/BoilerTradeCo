@@ -9,7 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'settings.css' %}">
 
-    <title>Light/Dark Mode Toggle</title>
     <style>
         /* CSS for light mode */
         body {
@@ -109,41 +108,98 @@
               <div class="tab-pane fade active show" id="account-general">
                 <hr class="border-light m-0">
                 <div class="card-body">
-                  <div class="form-group">
-                    <label class="form-label">First Name</label>
-                    <input type="text" class="form-control mb-1" value="Sally">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" class="form-control" value="Devikumar">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="text" class="form-control mb-1" value="hi@purdue.edu">
-                  </div>
+                    <form method="post" action="{% url 'settings' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control mb-1" name="new_firstname" value="{{ firstname }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" name="new_lastname" value="{{ lastname }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="text" class="form-control mb-1" name="new_email" value="{{ email }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
                 </div>
-  
               </div>
+
               
               <!-- Change Password -->
               <div class="tab-pane fade" id="account-change-password">
+                <hr class="border-light m-0">
+                <div class="card-body">
+                    <!-- Display password change form -->
+                    <form method="post" action="{% url 'settings' %}">
+                        {% csrf_token %}
 
+                        <!-- Display custom error messages -->
+                        {{ password_change_form.non_field_errors }}
+                        
+                        <!-- Fields for the current password -->
+                        <div class="form-group">
+                          <label class="form-label">Current Password</label>
+                          <input type="password" class="form-control mb-1" name="old_password"
+                              placeholder="Enter your current password">
+                          <!-- Display errors for the old password -->
+                          {% for error in password_change_form.old_password.errors %}
+                              <span class="text-danger">{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                        
+                        <!-- Fields for the new password and confirm new password -->
+                        <div class="form-group">
+                          <label class="form-label">New Password</label>
+                          <input type="password" class="form-control mb-1" name="new_password1"
+                              pattern="(?=.*\d)(?=.*[\W_]).{7,}" title="Minimum of 7 characters. Should have at least one special character and one number."
+                              placeholder="Enter your new password">
+                          <!-- Display errors for the new password -->
+                          {% for error in password_change_form.new_password1.errors %}
+                              <span class="text-danger">{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                      <div class="form-group">
+                          <label class="form-label">Confirm New Password</label>
+                          <input type="password" class="form-control" name="new_password2"
+                              placeholder="Confirm your new password">
+                          <!-- Display errors for the confirm password -->
+                          {% for error in password_change_form.new_password2.errors %}
+                              <span class="text-danger">{{ error }}</span>
+                          {% endfor %}
+                      </div>
+                        
+                        <button type="submit" class="btn btn-primary" name="change_password">Change Password</button>
+                    </form>
+                </div>
               </div>
+
 
               <!--Notifications-->
               <div class="tab-pane fade" id="account-notifications">
-
-              </div>
-
-              <!--Other-->
-              <div class="tab-pane fade" id="account-other"></div>
+                <hr class="border-light m-0">
                 <div class="card-body">
                   <div class="form-group">
-                    <!--Light/Dark Mode-->
+                    <label class="form-label">add notification settings here</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Other -->
+              <div class="tab-pane fade" id="account-other">
+                <hr class="border-light m-0">
+                <div class="card-body">
+                  <!-- Other content goes here -->
+
+                  <!-- Light/Dark Mode Toggle in "Other" section -->
+                  <div class="form-group">
+                    <label class="form-label">Toggle Light/Dark Mode:</label>
                     <div class="toggle-container">
                       <span class="toggle-label">Light/Dark Mode:</span>
                       <label class="toggle-input">
-                        <input type="checkbox" id="darkModeToggle">
+                        <input type="checkbox" id="darkModeToggleOther">
                       </label>
                     </div>
                   </div>
@@ -151,32 +207,27 @@
               </div>
 
 
+
             </div>
           </div>
         </div>
       </div>
   
-      <div class="text-right mt-3">
+      <!-- <div class="text-right mt-3">
         <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
         <button type="button" class="btn btn-default">Cancel</button>
-      </div>
+      </div> -->
   
     </div>
 
-    
-
-
-
-
-
     <script src="" async defer></script>
 
-    <div class="toggle-container">
+    <!-- <div class="toggle-container">
         <span class="toggle-label">Light/Dark Mode:</span>
         <label class="toggle-input">
           <input type="checkbox" id="darkModeToggle">
         </label>
-    </div>
+    </div> -->
 
 
     <script>
@@ -216,7 +267,7 @@
 
 
       
-    <script>
+    <!-- <script>
         // JavaScript to toggle dark mode
         const darkModeToggle = document.getElementById('darkModeToggle');
         const body = document.body;
@@ -245,6 +296,6 @@
         function disableDarkMode() {
           body.classList.remove('dark-mode');
         }
-    </script>
+    </script> -->
   </body>
 </html>
