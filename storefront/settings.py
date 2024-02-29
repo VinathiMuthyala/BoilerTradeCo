@@ -13,6 +13,7 @@ import os
 import django_on_heroku
 from pathlib import Path
 import dj_database_url
+from decouple import config 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,10 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#i92niko3u4kv77$emfp*a8!o90adpzb0%-dzcluu^)&d8tg@s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['boiler-trade-co-d5c7c21c59ec.herokuapp.com', 'localhost', '127.0.0.1']
-
+# ALLOWED_HOSTS = ['boiler-trade-co-d5c7c21c59ec.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
 
 # Application definition
 
@@ -60,6 +61,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ["templates"],
         'APP_DIRS': True,
+
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -77,20 +79,26 @@ WSGI_APPLICATION = 'storefront.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ddtrekeup8feb3',
-        'USER': 'kupthcmsxitqcg',
-        'PASSWORD': '834315286ad7581f8dc6f90e218d1a5b31e71e5a3ffd1759a30fb1eb1a07333a',
-        'HOST': 'localhost',#'ec2-34-235-108-214.compute-1.amazonaws.com',
-        'PORT': '5432',
+if config('USE_HEROKU', default=False, cast=bool):
+    # Heroku settings
+    DATABASES = {
+        'default': dj_database_url.config(default=config('DATABASE_URL'))
     }
-}
 
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'ddtrekeup8feb3',
+            'USER': 'kupthcmsxitqcg',
+            'PASSWORD': '834315286ad7581f8dc6f90e218d1a5b31e71e5a3ffd1759a30fb1eb1a07333a',
+            'HOST': 'ec2-34-235-108-214.compute-1.amazonaws.com',
+            'PORT': '5432',
+        }
+    }
+
+#db_from_env = dj_database_url.config(conn_max_age=600)
+#DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -140,4 +148,4 @@ STATIC_FILES_DIRS = [
     BASE_DIR / "static"
 ]
 
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+#DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
