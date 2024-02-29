@@ -125,8 +125,20 @@ def settings(request):
     email = current_user.email
 
     if request.method == 'POST':
+        print(request.FILES)
+        # check if profile img uploaded
+        if 'profile-image-input' in request.FILES:
+            print("made it to first if")
+            new_pfp = request.FILES.get('profile-image-input')
+            if new_pfp and new_pfp != current_user.profile.avatar.url:
+                current_user.profile.avatar = new_pfp
+                current_user.profile.save()
+                messages.success(request, "Your changes have been saved successfully.")
+            return redirect('settings')
+
         # Check if the form is for changing the password
-        if 'change_password' in request.POST:
+        elif 'change_password' in request.POST:
+            print("made it to second if")
             old_password = request.POST.get('old_password')
             new_password1 = request.POST.get('new_password1')
             new_password2 = request.POST.get('new_password2')
@@ -157,14 +169,16 @@ def settings(request):
         
         # check if the form is changing user profile info
         else:
+            print("made it to else")
             new_firstname = request.POST.get('new_firstname')
             new_lastname = request.POST.get('new_lastname')
             new_email = request.POST.get('new_email')
-
+        
             current_user = request.user
 
             if new_firstname and new_firstname != current_user.first_name:
                 current_user.first_name = new_firstname
+                print(str(current_user.first_name))
 
             if new_lastname and new_lastname != current_user.last_name:
                 current_user.last_name = new_lastname
@@ -177,9 +191,9 @@ def settings(request):
                     return redirect('settings')
                 current_user.email = new_email
 
-                current_user.save()
-                messages.success(request, "Your changes have been saved successfully.")
-                return redirect('settings')
+            current_user.save()
+            messages.success(request, "Your changes have been saved successfully.")
+            return redirect('settings')
 
     password_change_form = PasswordChangeForm(request.user)
 
