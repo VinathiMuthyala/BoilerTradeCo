@@ -31,13 +31,16 @@ li a:hover {
 .profile-container {
     text-decoration-color: black;
     display: inline-flex;
-    width: 100%;
-    justify-content: space-around;
+    justify-content: center;
     background-color: #e4e1d1ed;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    margin-top: 30px;
+    padding-top: 20px;
     padding-bottom: 20px;
+    padding-left: 35px;
+    padding-right: 35px;
+    margin-top: 20px;
+    width: 100%;
 }
 
 .profile-image {
@@ -50,6 +53,15 @@ li a:hover {
 
 .icon {
     height: 20px;
+}
+
+.profiledetails {
+    margin-left: 50px;
+}
+
+.whole-profile {
+    margin:0 auto; 
+    max-width: 400px;
 }
 
 button {

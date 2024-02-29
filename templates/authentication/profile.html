@@ -19,24 +19,26 @@
         </ul>
     </nav>
 
-    <div class="profile-container">
-      <div class="profile-image">
-        <img src="{% static 'placeholder.jpg' %}" alt="Profile Image">
+    <div class="whole-profile">
+      <div class="profile-container">
+        <div class="profile-image">
+          <img src="{% static 'placeholder.jpg' %}" alt="Profile Image">
+        </div>
+        <div class="profiledetails">
+          <h2> {{ firstname }}  {{ lastname }}</h2>
+          <h3> {{ email }}</h3>
+          <button onclick="JavaScript:alert('Edit your profile!')">
+          <img src="{% static 'edit-icon.png' %}"  alt="Edit Icon" class="icon">
+          edit! </button>
+          <!-- <button class="system-settings"> <a href="/settings/">edit!</a></button> -->
+        </div>
       </div>
-      <div class="profiledetails">
-        <h2> {{ firstname }}  {{ lastname }}</h2>
-        <h3> {{ email }}</h3>
-        <button onclick="JavaScript:alert('Edit your profile!')">
-        <img src="{% static 'edit-icon.png' %}"  alt="Edit Icon" class="icon">
-        edit! </button>
-        <!-- <button class="system-settings"> <a href="/settings/">edit!</a></button> -->
-      </div>
-    </div>
 
     <br>
     <h2>Ratings</h2> 
     <br>
     <h2>My Listings</h2>
+    </div>
     <script src="" async defer></script>
   </body>
 </html>
