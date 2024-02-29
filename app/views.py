@@ -111,7 +111,9 @@ def viewprofile(request):
     firstname = current_user.first_name
     lastname = current_user.last_name
     email = current_user.email
-    context = { 'firstname': firstname, 'lastname': lastname, 'email': email}
+    profile = request.user.profile
+    img = profile.avatar.url
+    context = { 'firstname': firstname, 'lastname': lastname, 'email': email, 'img': img }
     return render(request, "authentication/profile.html", context)
 
 def settings(request):
