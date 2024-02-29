@@ -105,8 +105,10 @@ def signout(request):
 
 def viewprofile(request):
     current_user = request.user
-    username = current_user.first_name
-    context = { 'username': username}
+    firstname = current_user.first_name
+    lastname = current_user.last_name
+    email = current_user.email
+    context = { 'firstname': firstname, 'lastname': lastname, 'email': email}
     return render(request, "authentication/profile.html", context)
 
 def settings(request):
