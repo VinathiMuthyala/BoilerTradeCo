@@ -130,7 +130,7 @@
                     <form method="post" action="{% url 'settings' %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="card-body media align-items-center">
-                          <img id="profile-image-preview" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="d-block ui-w-80">
+                          <img id="profile-image-preview" src="{{ user.profile.avatar.url }}" alt="" class="d-block ui-w-80">
                           <div class="media-body ml-4">
                             <label class="btn btn-outline-primary">
                               Upload new photo
