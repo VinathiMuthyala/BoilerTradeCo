@@ -27,17 +27,17 @@
         <div class="profiledetails">
           <h2> {{ firstname }}  {{ lastname }}</h2>
           <h3> {{ email }}</h3>
-          <button onclick="JavaScript:alert('Edit your profile!')">
-          <img src="{% static 'edit-icon.png' %}"  alt="Edit Icon" class="icon">
-          edit! </button>
+          <button>
+          <img src="{% static 'edit-icon.png' %}"  alt="Edit Icon" class="icon"> <a href="/settings/"> edit! </a>
+          </button>
           <!-- <button class="system-settings"> <a href="/settings/">edit!</a></button> -->
         </div>
       </div>
 
     <br>
-    <h2>Ratings</h2> 
+    <h2 style="text-decoration: underline;">Ratings</h2> 
     <br>
-    <h2>My Listings</h2>
+    <h2 style="text-decoration: underline;">My Listings</h2>
     </div>
     <script src="" async defer></script>
   </body>
