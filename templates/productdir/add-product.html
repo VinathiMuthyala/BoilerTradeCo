@@ -49,15 +49,16 @@
     <!-- null image placeholder -->
     <img alt="Product Image" style="max-width: 100%; height: auto; margin-bottom: 16px;">
 
-    <form action="process_product.php" method="post">
+    <form id="product_info" method="post" action="{% url 'add_listing' %}">
+        {% csrf_token %}
+        <label for="sellerEmail">Seller Email:</label>
+        <input type="text" id="sellerEmail" name="sellerEmail" required>
+
         <label for="productName">Product Name:</label>
         <input type="text" id="productName" name="productName" required>
 
         <label for="productPrice">Product Price:</label>
         <input type="number" id="productPrice" name="productPrice" step="0.50" required>
-
-        <label for="sellerName">Seller Name:</label>
-        <input type="text" id="sellerName" name="sellerName" required>
 
         <label for="productDescription">Product Description:</label>
         <textarea id="productDescription" name="productDescription" rows="4" required></textarea>
@@ -82,24 +83,20 @@
         </select>
 
         <label for="datePosted">Date Posted:</label>
+        <!-- <input type="hidden" id="datePosted" name="datePosted" value=""> -->
         <div id="calendar"></div>
-        <script>
-            function displayDate() {
-              var today = new Date();
-              var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-              var formattedDate = today.toLocaleDateString('en-US', options);
-              
-              var calendarDiv = document.getElementById('calendar');
-              calendarDiv.innerHTML = formattedDate;
-            }
-            displayDate();
-        </script>
+        <!-- <input type="hidden" id="calendar" name="calendar"> -->
+         <script>
+            var current_date_element = document.getElementById("calendar");
+            var currentDate = new Date().toLocaleDateString();
+            current_date_element.innerHTML = currentDate;
+        </script>      
 
         <div>
             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
         </div>
 
-        <input type="submit" value="Add Product">
+        <button type="submit" name="product_info">Add Product</button>
     </form>
 
 </body>
