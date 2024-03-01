@@ -106,25 +106,15 @@ def signin(request):
     return render(request, "authentication/signin.html")
 
 def signout(request):
-    print("i got here!!!!")
     logout(request)
     messages.success(request, "Logged Out Successfully")
     return redirect('index')
 
 def delete_account(request):
-    print("im getting here")
     current_user = request.user
-    # current_user.profile.delete()
-    # current_user.delete()
     user = User.objects.get(username = current_user.username)
-    print(user.username)
-    user.delete()
-    print(user.username)
-    messages.success(request, "The user is deleted")            
+    user.delete()      
     return redirect('index')
-    
-# def delete_confirmation(request):
-#     return render(request, 'authentication/delete_confirmation.html')
 
 def viewprofile(request):
     current_user = request.user
@@ -143,10 +133,8 @@ def settings(request):
     email = current_user.email
 
     if request.method == 'POST':
-        print(request.FILES)
         # check if profile img uploaded
         if 'profile-image-input' in request.FILES:
-            print("made it to first if")
             new_pfp = request.FILES.get('profile-image-input')
             if new_pfp and new_pfp != current_user.profile.avatar.url:
                 current_user.profile.avatar = new_pfp
@@ -156,7 +144,6 @@ def settings(request):
 
         # Check if the form is for changing the password
         elif 'change_password' in request.POST:
-            print("made it to second if")
             old_password = request.POST.get('old_password')
             new_password1 = request.POST.get('new_password1')
             new_password2 = request.POST.get('new_password2')
@@ -187,7 +174,6 @@ def settings(request):
         
         # check if the form is changing user profile info
         else:
-            print("made it to else")
             new_firstname = request.POST.get('new_firstname')
             new_lastname = request.POST.get('new_lastname')
             new_email = request.POST.get('new_email')
@@ -196,7 +182,6 @@ def settings(request):
 
             if new_firstname and new_firstname != current_user.first_name:
                 current_user.first_name = new_firstname
-                print(str(current_user.first_name))
 
             if new_lastname and new_lastname != current_user.last_name:
                 current_user.last_name = new_lastname
