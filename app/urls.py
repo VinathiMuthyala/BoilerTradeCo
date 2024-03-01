@@ -12,7 +12,8 @@ urlpatterns = [
     path('signup/', views.signup, name = "signup"),
     path('signin/', views.signin, name = "signin"),
     path('profile/', views.viewprofile, name = "profile"),
+    # path('delete_confirmation/', views.delete_confirmation, name='delete_confirmation'),
     path('settings/', views.settings, name="settings"),
     path('reportseller/', views.reportseller, name = "report"),
-    path('emailreport/', emailreport, name = 'emailreport'),
+    path('emailreport/', views.emailreport, name = 'emailreport'),
 ]

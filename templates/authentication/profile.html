@@ -33,12 +33,33 @@
           <!-- <button class="system-settings"> <a href="/settings/">edit!</a></button> -->
         </div>
       </div>
-
+    
     <br>
     <h2 style="text-decoration: underline;">Ratings</h2> 
     <br>
     <h2 style="text-decoration: underline;">My Listings</h2>
-    </div>
-    <script src="" async defer></script>
+    <br>
+    <form id="deleteAccountForm" method="post" action="">
+      {% csrf_token %}
+      <button type="button" onclick="confirmDelete()">Delete Account</button>
+      <input type="hidden" name="delete_action" value="true">
+  </form>
+  
+  <script>
+      function confirmDelete() {
+          var confirmation = confirm("Are you sure you want to delete your account?");
+          if (confirmation) {
+            alert("Account deletion successful.");
+            document.getElementById('deleteAccountForm').method = 'post';
+            document.getElementById('deleteAccountForm').submit();
+          } else {
+              alert("Account deletion canceled.");
+              // Additional code can be added for handling the cancellation.
+          }
+      }
+  </script> 
+  </div>
+  </script>
+  <script src="" async defer></script>
   </body>
 </html>

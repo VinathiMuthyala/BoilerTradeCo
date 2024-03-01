@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'app',
     'app2',
     'anymail',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
