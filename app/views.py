@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages 
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from .models import Profile
 from django.contrib.auth.forms import PasswordChangeForm
@@ -110,6 +110,12 @@ def signout(request):
     messages.success(request, "Logged Out Successfully")
     return redirect('index')
 
+def delete_account(request):
+    current_user = request.user
+    user = User.objects.get(username = current_user.username)
+    user.delete()      
+    return redirect('index')
+
 def viewprofile(request):
     current_user = request.user
     firstname = current_user.first_name
@@ -127,10 +133,8 @@ def settings(request):
     email = current_user.email
 
     if request.method == 'POST':
-        print(request.FILES)
         # check if profile img uploaded
         if 'profile-image-input' in request.FILES:
-            print("made it to first if")
             new_pfp = request.FILES.get('profile-image-input')
             if new_pfp and new_pfp != current_user.profile.avatar.url:
                 current_user.profile.avatar = new_pfp
@@ -140,7 +144,6 @@ def settings(request):
 
         # Check if the form is for changing the password
         elif 'change_password' in request.POST:
-            print("made it to second if")
             old_password = request.POST.get('old_password')
             new_password1 = request.POST.get('new_password1')
             new_password2 = request.POST.get('new_password2')
@@ -171,7 +174,6 @@ def settings(request):
         
         # check if the form is changing user profile info
         else:
-            print("made it to else")
             new_firstname = request.POST.get('new_firstname')
             new_lastname = request.POST.get('new_lastname')
             new_email = request.POST.get('new_email')
@@ -180,7 +182,6 @@ def settings(request):
 
             if new_firstname and new_firstname != current_user.first_name:
                 current_user.first_name = new_firstname
-                print(str(current_user.first_name))
 
             if new_lastname and new_lastname != current_user.last_name:
                 current_user.last_name = new_lastname
@@ -209,20 +210,20 @@ def settings(request):
     return render(request, "authentication/settings.html", context)
 
 def reportseller(request):
-    return render(request, "authentication/profile.html")
+    return render(request, "authentication/report-users.html")
 
 def emailreport(request):
     if request.method == 'POST':
         if 'report_user' in request.POST:
             try:
-                report_text = request.POST.get('reportText', '')
-                report_text = report_text.replace(u'\xa0', u' ')
-                seller_email = request.POST.get('sellerEmail', '')
-                user_email = request.POST.get('userEmail', '')
-                send_mail(subject='User Report', message=report_text, from_email='neharajamani2004@gmail.com', recipient_list=['boilertradeco@gmail.com'], fail_silently=False)
-                return JsonResponse({'message': 'Report submitted successfully.'})
+                print("i got here")
+                report_text = request.POST.get('reportText')
+                seller_email = request.POST.get('sellerEmail')
+                user_email = request.POST.get('userEmail')
+                send_mail(subject='User Report: ' + seller_email + "by " + user_email, message=report_text, from_email='neharajamani2004@gmail.com', recipient_list=['boilertradeco@gmail.com'], fail_silently=False)
+                #mail.send(recipients=['neharajamani2004@gmail.com'], sender='boilertradeco@gmail.com', subject='User Report: ' + seller_email + "by " + user_email, message=report_text, priority='now')
+                report_success = "Report submitted successfully."
+                return HttpResponseRedirect(f'/profile/?success_message={report_success}')
             except Exception as e:
-                print("error:", e)
-                return JsonResponse({'error': str(e)}, status=500)
-        else:
-            return JsonResponse({'error': 'Method not allowed'}, status=405)
+                report_fail = "Report was not submitted successfully."
+                return HttpResponseRedirect(f'/profile/?error_message={report_fail}')

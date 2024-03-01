@@ -118,7 +118,8 @@
     <div>
       <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     </div>
-    <button id="signOutButton" type="submit"> <a href="/">Sign Out</a></button>
+    <button id="signOutButton" type="submit"> <a href="{% url 'logout' %}">Sign Out</a></button>
+    <!-- <button type="button" id="signOutButton" onclick="logoutAndRedirect()">Sign Out</button> -->
     <button type="submit"> <a href="/profile">Profile</a></button>
     {% else %}
     <h4>You're not logged in.</h4>
@@ -143,7 +144,7 @@
           });
         }
       });
-    </script>
+    </script> 
 
     <script>
       $(document).ready(function () {
