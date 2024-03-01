@@ -3,6 +3,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 #from .views import UserProfileUpdateView
+from django.contrib.auth.views import LogoutView
 
 
 urlpatterns = [
@@ -16,4 +17,5 @@ urlpatterns = [
     path('settings/', views.settings, name="settings"),
     path('reportseller/', views.reportseller, name = "report"),
     path('emailreport/', views.emailreport, name = 'emailreport'),
+    path('logout', views.signout, name='logout'),
 ]
