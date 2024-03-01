@@ -228,6 +228,3 @@ def emailreport(request):
             except Exception as e:
                 report_fail = "Report was not submitted successfully."
                 return HttpResponseRedirect(f'/profile/?error_message={report_fail}')
-        else:
-            report_fail = "Report was not submitted successfully."
-            return HttpResponseRedirect(f'/profile/?error_message={report_fail}')
