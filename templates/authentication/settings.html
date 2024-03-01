@@ -10,65 +10,91 @@
     <link rel="stylesheet" type="text/css" href="{% static 'settings.css' %}">
 
     <style>
-        /* CSS for light mode */
-        body {
-            background-color: #f4f4f4;
-            color: #333;
-            transition: background-color 0.5s, color 0.5s;
-        }
+      body {
+    background-color: #f4f4f4;
+    color: #333;
+      }
+      /* CSS for dark mode */
+      body.dark-mode {
+          background-color: #333;
+          color: #fff;
+      }
 
-        /* CSS for dark mode */
-        body.dark-mode {
-            background-color: #333;
-            color: #f4f4f4;
-        }
-
-        .toggle-container {
+      .toggle-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 999;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
         }
 
-        .toggle-label {
-            display: inline-block;
-            font-size: 16px;
-            margin-right: 10px;
-        }
+      /* Switch styles */
+      .switch {
+          position: relative;
+          display: inline-block;
+          width: 60px;
+          height: 34px;
+      }
 
-        .toggle-input {
-            display: inline-block;
-            width: 40px;
-            height: 20px;
-            position: relative;
-            cursor: pointer;
-            background-color: #ccc;
-            border-radius: 20px;
-            transition: background-color 0.3s;
-        }
+      .switch input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+      }
 
-        .toggle-input::after {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background-color: #fff;
-            top: 50%;
-            transform: translateY(-50%);
-            left: 2px;
-            transition: transform 0.3s, background-color 0.3s;
-        }
+      .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          -webkit-transition: .4s;
+          transition: .4s;
+      }
 
-        .toggle-input.checked {
-            background-color: #00c851;
-        }
+      .slider:before {
+          position: absolute;
+          content: "";
+          height: 26px;
+          width: 26px;
+          left: 4px;
+          bottom: 4px;
+          background-color: white;
+          -webkit-transition: .4s;
+          transition: .4s;
+      }
 
-        .toggle-input.checked::after {
-            left: calc(100% - 18px);
-            transform: translateY(-50%) translateX(-100%);
-            background-color: #333;
-        }
+      input:checked + .slider {
+          background-color: #2196F3;
+      }
+
+      input:focus + .slider {
+          box-shadow: 0 0 1px #2196F3;
+      }
+
+      input:checked + .slider:before {
+          -webkit-transform: translateX(26px);
+          -ms-transform: translateX(26px);
+          transform: translateX(26px);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+          border-radius: 34px;
+      }
+
+      .slider.round:before {
+          border-radius: 50%;
+      }
+
+      body.dark-mode .container.light-style {
+        color: #333;
+      }
+
+      body.dark-mode .font-weight-bold {
+          color: #fff; 
+      }
     </style>
   </head>
 
@@ -83,6 +109,15 @@
             <li><a href="/profile">Profile</a></li>
         </ul>
     </nav>
+
+    <!--light mode/dark mode-->
+    <div class="toggle-container">
+      <span class="toggle-label">Light/Dark Mode: </span>
+      <label class="switch">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider round"></span>
+      </label>
+    </div>
 
     <!--start of system settings-->
     <div class="container light-style flex-grow-1 container-p-y">
@@ -221,15 +256,7 @@
                   <!-- Other content goes here -->
 
                   <!-- Light/Dark Mode Toggle in "Other" section -->
-                  <div class="form-group">
-                    <label class="form-label">Toggle Light/Dark Mode:</label>
-                    <div class="toggle-container">
-                      <span class="toggle-label">Light/Dark Mode:</span>
-                      <label class="toggle-input">
-                        <input type="checkbox" id="darkModeToggleOther">
-                      </label>
-                    </div>
-                  </div>
+            
                 </div>
               </div>
 
@@ -243,13 +270,6 @@
     </div>
 
     <script src="" async defer></script>
-
-    <!-- <div class="toggle-container">
-        <span class="toggle-label">Light/Dark Mode:</span>
-        <label class="toggle-input">
-          <input type="checkbox" id="darkModeToggle">
-        </label>
-    </div> -->
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -273,6 +293,15 @@
           });
       });
     </script>  
+
+    <script>
+      $(document).ready(function () {
+          var themeToggle = document.getElementById('themeToggle');
+          themeToggle.addEventListener('change', function () {
+              document.body.classList.toggle('dark-mode', themeToggle.checked);
+          });
+      });
+    </script>
 
 
     <script>
@@ -309,36 +338,6 @@
       });
     </script>
 
-      
-    <!-- <script>
-        // JavaScript to toggle dark mode
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const body = document.body;
-      
-        // Check local storage for user's preferred mode
-        if (localStorage.getItem('darkMode') === 'on') {
-          enableDarkMode();
-          darkModeToggle.checked = true;
-        }
-      
-        // Toggle dark mode when checkbox is clicked
-        darkModeToggle.addEventListener('change', function() {
-          if (this.checked) {
-            enableDarkMode();
-            localStorage.setItem('darkMode', 'on');
-          } else {
-            disableDarkMode();
-            localStorage.setItem('darkMode', 'off');
-          }
-        });
-      
-        function enableDarkMode() {
-          body.classList.add('dark-mode');
-        }
-      
-        function disableDarkMode() {
-          body.classList.remove('dark-mode');
-        }
-    </script> -->
+
   </body>
 </html>
