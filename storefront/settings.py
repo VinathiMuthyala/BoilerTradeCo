@@ -33,7 +33,7 @@ EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = "boilertradeco@gmail.com"
 SERVER_EMAIL = "boilertradeco@gmail.com"
 ANYMAIL = {
-    "MAILGUN_API_KEY": "55c094adbb07ea8aedf919110e4970aa-b7b36bc2-ea38bd95",
+    "MAILGUN_API_KEY": os.environ.get('MAILGUN_API_KEY'),
     "MAILGUN_SENDER_DOMAIN": 'sandbox3e0465db2daf448db82c01f83919f778.mailgun.org',
 }
 
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'app2',
     'anymail',
     'rest_framework',
+    "post_office",
 ]
 
 MIDDLEWARE = [
