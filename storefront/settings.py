@@ -14,6 +14,8 @@ import django_on_heroku
 from pathlib import Path
 import dj_database_url
 from decouple import config 
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +29,13 @@ SECRET_KEY = 'django-insecure-#i92niko3u4kv77$emfp*a8!o90adpzb0%-dzcluu^)&d8tg@s
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = "boilertradeco@gmail.com"
+SERVER_EMAIL = "boilertradeco@gmail.com"
+ANYMAIL = {
+    "MAILGUN_API_KEY": "a3e7025a6d2e64a63b33858ac30a284c-b7b36bc2-aef84970",
+    "MAILGUN_SENDER_DOMAIN": 'sandbox3e0465db2daf448db82c01f83919f778.mailgun.org',
+}
 
 # ALLOWED_HOSTS = ['boiler-trade-co-d5c7c21c59ec.herokuapp.com', 'localhost']
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
