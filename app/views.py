@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
+from django.core.mail import EmailMultiAlternatives, send_mail
+from django.conf import settings
+from django.http import JsonResponse
 
 users = []
 current_number = 0
@@ -111,3 +114,22 @@ def viewprofile(request):
 
 def settings(request):
     return render(request, "authentication/settings.html")
+
+def reportseller(request):
+    return render(request, "authentication/profile.html")
+
+def emailreport(request):
+    if request.method == 'POST':
+        if 'report_user' in request.POST:
+            try:
+                report_text = request.POST.get('reportText', '')
+                report_text = report_text.replace(u'\xa0', u' ')
+                seller_email = request.POST.get('sellerEmail', '')
+                user_email = request.POST.get('userEmail', '')
+                send_mail(subject='User Report', message=report_text, from_email='neharajamani2004@gmail.com', recipient_list=['boilertradeco@gmail.com'], fail_silently=False)
+                return JsonResponse({'message': 'Report submitted successfully.'})
+            except Exception as e:
+                print("error:", e)
+                return JsonResponse({'error': str(e)}, status=500)
+        else:
+            return JsonResponse({'error': 'Method not allowed'}, status=405)
