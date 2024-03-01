@@ -33,7 +33,7 @@ EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
 DEFAULT_FROM_EMAIL = "boilertradeco@gmail.com"
 SERVER_EMAIL = "boilertradeco@gmail.com"
 ANYMAIL = {
-    "MAILGUN_API_KEY": "a3e7025a6d2e64a63b33858ac30a284c-b7b36bc2-aef84970",
+    "MAILGUN_API_KEY": "55c094adbb07ea8aedf919110e4970aa-b7b36bc2-ea38bd95",
     "MAILGUN_SENDER_DOMAIN": 'sandbox3e0465db2daf448db82c01f83919f778.mailgun.org',
 }
 
