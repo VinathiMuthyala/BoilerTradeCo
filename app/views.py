@@ -225,5 +225,6 @@ def emailreport(request):
                 report_success = "Report submitted successfully."
                 return HttpResponseRedirect(f'/profile/?success_message={report_success}')
             except Exception as e:
+                print(e)
                 report_fail = "Report was not submitted successfully."
                 return HttpResponseRedirect(f'/profile/?error_message={report_fail}')
