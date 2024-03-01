@@ -3,6 +3,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 #from .views import UserProfileUpdateView
+from django.contrib.auth.views import LogoutView
 
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     # path('delete_confirmation/', views.delete_confirmation, name='delete_confirmation'),
     path('settings/', views.settings, name="settings"),
     path('emailreport/', views.emailreport, name = 'emailreport'),
+    path('logout', views.signout, name='logout'),
 ]

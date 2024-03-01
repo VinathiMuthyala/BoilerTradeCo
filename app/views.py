@@ -106,20 +106,22 @@ def signin(request):
     return render(request, "authentication/signin.html")
 
 def signout(request):
+    print("i got here!!!!")
     logout(request)
     messages.success(request, "Logged Out Successfully")
     return redirect('index')
 
 def delete_account(request):
-    print(str(request.method))
-    if request.method == 'POST':
-        print("got here")
-        current_user = request.user
-        if hasattr(current_user, 'profile'):
-            current_user.profile.delete()
-        current_user.delete()
-        return redirect('index')
-    return render(request, 'authentication/profile.html')
+    print("im getting here")
+    current_user = request.user
+    # current_user.profile.delete()
+    # current_user.delete()
+    user = User.objects.get(username = current_user.username)
+    print(user.username)
+    user.delete()
+    print(user.username)
+    messages.success(request, "The user is deleted")            
+    return redirect('index')
     
 # def delete_confirmation(request):
 #     return render(request, 'authentication/delete_confirmation.html')

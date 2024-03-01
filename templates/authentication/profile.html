@@ -168,6 +168,44 @@
             <button onclick="submitReport()" type="submit" name="report_user">Submit</button>
             <button onclick="closePopup()">Cancel</button>
         </form>
+    <br>
+    <!-- <form id="deleteAccountForm" method="post" action="">
+      {% csrf_token %}
+      <button type="button" onclick="confirmDelete()">Delete Account</button>
+      <input type="hidden" name="delete_action" value="true">
+  </form> -->
+    <button id="deleteAccountButton" type="submit"> <a href="/">Delete Account</a></button>
+  
+  <!-- <script>
+      function confirmDelete() {
+          var confirmation = confirm("Are you sure you want to delete your account?");
+          if (confirmation) {
+            alert("Account deletion successful.");
+            document.getElementById('deleteAccountForm').method = 'post';
+            document.getElementById('deleteAccountForm').submit();
+          } else {
+              alert("Account deletion canceled.");
+              // Additional code can be added for handling the cancellation.
+          }
+      }
+  </script>  -->
+  <script>
+    // Add this script to handle the confirmation pop-up
+    document.addEventListener("DOMContentLoaded", function() {
+      var deleteAccountButton = document.getElementById("deleteAccountButton");
+
+      if (deleteAccountButton) {
+        deleteAccountButton.addEventListener("click", function() {
+          var isConfirmed = confirm("Are you sure you want to delete your account?");
+          
+          if (!isConfirmed) {
+            event.preventDefault();
+          }
+        });
+      }
+    });
+  </script>
+  </div>
 
     <script>
         function openPopup() {
