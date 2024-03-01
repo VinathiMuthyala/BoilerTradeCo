@@ -28,7 +28,7 @@
     <div>
       <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     </div>
-    <button type="submit"> <a href="/">Sign Out</a></button>
+    <button id="signOutButton" type="submit"> <a href="/">Sign Out</a></button>
     <button type="submit"> <a href="/profile">Profile</a></button>
     {% else %}
     <h4>You're not logged in.</h4>
@@ -36,6 +36,22 @@
     <button type="submit"> <a href="/signin">Sign In</a></button>
     {% endif %}
   
+    <script>
+      // Add this script to handle the confirmation pop-up
+      document.addEventListener("DOMContentLoaded", function() {
+        var signOutButton = document.getElementById("signOutButton");
+
+        if (signOutButton) {
+          signOutButton.addEventListener("click", function() {
+            var isConfirmed = confirm("Are you sure you want to log out?");
+            
+            if (!isConfirmed) {
+              event.preventDefault();
+            }
+          });
+        }
+      });
+    </script>
 
     <script src="" async defer></script>
 
