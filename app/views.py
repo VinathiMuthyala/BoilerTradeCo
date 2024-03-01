@@ -216,7 +216,6 @@ def emailreport(request):
     if request.method == 'POST':
         if 'report_user' in request.POST:
             try:
-                print("i got here")
                 report_text = request.POST.get('reportText')
                 seller_email = request.POST.get('sellerEmail')
                 user_email = request.POST.get('userEmail')
@@ -228,3 +227,4 @@ def emailreport(request):
                 print(e)
                 report_fail = "Report was not submitted successfully."
                 return HttpResponseRedirect(f'/profile/?error_message={report_fail}')
+        
