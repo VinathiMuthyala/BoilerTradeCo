@@ -13,4 +13,6 @@ urlpatterns = [
     path('signin/', views.signin, name = "signin"),
     path('profile/', views.viewprofile, name = "profile"),
     path('settings/', views.settings, name="settings"),
+    path('reportseller/', views.reportseller, name = "report"),
+    path('emailreport/', emailreport, name = 'emailreport'),
 ]
