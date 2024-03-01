@@ -1,13 +1,19 @@
+from urllib.parse import urlencode
 from django import forms
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
+from .models import Profile
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.messages import add_message, INFO
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.conf import settings
-from django.http import JsonResponse
+
 
 users = []
 current_number = 0
@@ -69,8 +75,9 @@ def signup(request):
             messages.error(request, "This username is already taken")
             return redirect('signup')
         """
-
         myuser.save()
+        myprofile = Profile(user=myuser)
+        myprofile.save()
 
         messages.success(request, "Your account has been successfully created.")
 
@@ -86,9 +93,6 @@ def signin(request):
 
         user = authenticate(username=email, password=password)
         users.append(user)
-        #current_number = int(current_number) + 1
-
-        # print("check: " + str(user.is_authenticated))
 
         if user is not None:
             login(request, user)
@@ -108,12 +112,101 @@ def signout(request):
 
 def viewprofile(request):
     current_user = request.user
-    username = current_user.first_name
-    context = { 'username': username}
+    firstname = current_user.first_name
+    lastname = current_user.last_name
+    email = current_user.email
+    profile = request.user.profile
+    img = profile.avatar.url
+    context = { 'firstname': firstname, 'lastname': lastname, 'email': email, 'img': img }
     return render(request, "authentication/profile.html", context)
 
 def settings(request):
-    return render(request, "authentication/settings.html")
+    current_user = request.user
+    firstname = current_user.first_name
+    lastname = current_user.last_name
+    email = current_user.email
+
+    if request.method == 'POST':
+        print(request.FILES)
+        # check if profile img uploaded
+        if 'profile-image-input' in request.FILES:
+            print("made it to first if")
+            new_pfp = request.FILES.get('profile-image-input')
+            if new_pfp and new_pfp != current_user.profile.avatar.url:
+                current_user.profile.avatar = new_pfp
+                current_user.profile.save()
+                messages.success(request, "Your changes have been saved successfully.")
+            return redirect('settings')
+
+        # Check if the form is for changing the password
+        elif 'change_password' in request.POST:
+            print("made it to second if")
+            old_password = request.POST.get('old_password')
+            new_password1 = request.POST.get('new_password1')
+            new_password2 = request.POST.get('new_password2')
+            
+            # Validate old password before proceeding
+            user = authenticate(username=current_user.username, password=old_password)
+            if user is None:
+                messages.error(request, 'Incorrect current password.')
+                #add_message(request, INFO, 'account-change-password')
+                return redirect('settings')
+            
+            # Check if new passwords match
+            if new_password1 != new_password2:
+                messages.error(request, 'New passwords do not match.')
+                #add_message(request, INFO, 'account-change-password')
+                return redirect('settings')
+            
+            # Change password in the database
+            user.set_password(new_password1)
+            user.save()
+
+            # Update session to prevent the user from being logged out
+            update_session_auth_hash(request, user)
+
+            messages.success(request, 'Your password was successfully updated!')
+            #add_message(request, INFO, 'account-change-password')
+            return redirect('settings')
+        
+        # check if the form is changing user profile info
+        else:
+            print("made it to else")
+            new_firstname = request.POST.get('new_firstname')
+            new_lastname = request.POST.get('new_lastname')
+            new_email = request.POST.get('new_email')
+        
+            current_user = request.user
+
+            if new_firstname and new_firstname != current_user.first_name:
+                current_user.first_name = new_firstname
+                print(str(current_user.first_name))
+
+            if new_lastname and new_lastname != current_user.last_name:
+                current_user.last_name = new_lastname
+
+            if new_email and new_email != current_user.email:
+                # FIX HERE - CHECK IF IT IS PURDUE EMAIL AGAIN
+                # Check if the new email is unique
+                if User.objects.filter(email=new_email).exclude(id=current_user.id).exists():
+                    messages.error(request, "The provided email is already in use by another user.")
+                    return redirect('settings')
+                current_user.email = new_email
+
+            current_user.save()
+            messages.success(request, "Your changes have been saved successfully.")
+            return redirect('settings')
+
+    password_change_form = PasswordChangeForm(request.user)
+
+    context = {
+        'email': email,
+        'firstname': firstname,
+        'lastname': lastname,
+        'password_change_form': password_change_form,
+    }
+
+    return render(request, "authentication/settings.html", context)
 
 def reportseller(request):
     return render(request, "authentication/profile.html")

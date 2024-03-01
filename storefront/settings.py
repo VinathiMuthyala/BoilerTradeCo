@@ -13,7 +13,7 @@ import os
 import django_on_heroku
 from pathlib import Path
 import dj_database_url
-from decouple import config
+from decouple import config 
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context 
 
@@ -37,13 +37,6 @@ ANYMAIL = {
     "MAILGUN_SENDER_DOMAIN": 'sandbox3e0465db2daf448db82c01f83919f778.mailgun.org',
 }
 
-#EMAIL_HOST = 'smtp.gmail.com'  # Set your SMTP server address
-#EMAIL_PORT = 587  # Set the SMTP port
-#EMAIL_USE_TLS = True  # Enable TLS encryption for SMTP
-#EMAIL_HOST_USER = 'boilertradeco@gmail.com'  # Your SMTP username
-#EMAIL_HOST_PASSWORD = 'eyqs unym kxog ugee'  # Your SMTP password
-#EMAIL_USE_SSL = False
-
 # ALLOWED_HOSTS = ['boiler-trade-co-d5c7c21c59ec.herokuapp.com', 'localhost']
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
 
@@ -58,7 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'app2',
-    "anymail",
+    'anymail',
 ]
 
 MIDDLEWARE = [
@@ -155,6 +148,9 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
 django_on_heroku.settings(locals())
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

@@ -10,7 +10,7 @@
   </head>
   <body>
     <nav>
-      <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" style="height: 150px; width: 150px;">
+      <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" >
         <ul>
             <li><a href="/home">Home</a></li>
             <li><a href="">Bookmarks</a></li>
@@ -19,16 +19,26 @@
         </ul>
     </nav>
 
-    <div class="profile-container">
-      <!-- <img src="{% static 'placeholder.jpg' %}" alt="Profile Image"> -->
-      <h2> Username: {{ username }} </h2>
-      <button class="profile-button"> <a href="/settings/">Profile Settings</a></button>
-    </div>
+    <div class="whole-profile">
+      <div class="profile-container">
+        <div class="profile-image">
+          <img class="circle account-img"src="{{ img }}" alt="Profile Image">
+        </div>
+        <div class="profiledetails">
+          <h2> {{ firstname }}  {{ lastname }}</h2>
+          <h3> {{ email }}</h3>
+          <button>
+          <img src="{% static 'gearsicon.png' %}"  alt="Edit Icon" class="icon"> <a href="/settings/"> edit! </a>
+          </button>
+          <!-- <button class="system-settings"> <a href="/settings/">edit!</a></button> -->
+        </div>
+      </div>
 
     <br>
-    <h2>Ratings</h2> 
+    <h2 style="text-decoration: underline;">Ratings</h2> 
     <br>
-    <h2>My Listings</h2>
+    <h2 style="text-decoration: underline;">My Listings</h2>
+    </div>
     <script src="" async defer></script>
   </body>
 </html>
