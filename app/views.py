@@ -13,7 +13,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages import add_message, INFO
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.conf import settings
-from post_office import mail
 
 
 users = []
