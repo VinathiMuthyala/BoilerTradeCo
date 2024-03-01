@@ -7,6 +7,112 @@
     <title>Profile</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'view_profile.css' %}">
+    <style>
+      .popup {
+          display: none;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: gold;
+          background-color: #fff;
+          padding: 20px;
+          border: 1px solid #ccc;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          z-index: 1000;
+      }
+      .overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+      }
+    </style>
+
+    <style>
+      body {
+        background-color: #f4f4f4;
+        color: #333;
+      }
+      /* CSS for dark mode */
+      body.dark-mode {
+        background-color: #333;
+        color: #fff;
+      }
+
+      .toggle-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1000;
+      }
+
+      /* Switch styles */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+      }
+
+      input:checked + .slider {
+        background-color: #2196F3;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+    </style>
+
   </head>
   <body>
     <nav>
@@ -18,6 +124,15 @@
             <li><a href="/profile" class="active">Profile</a></li>
         </ul>
     </nav>
+
+    <!--light mode/dark mode-->
+    <div class="toggle-container">
+      <span class="toggle-label">Light/Dark Mode: </span>
+      <label class="switch">
+          <input type="checkbox" id="themeToggle">
+          <span class="slider round"></span>
+      </label>
+    </div>
 
     <div class="whole-profile">
       <div class="profile-container">
@@ -33,7 +148,7 @@
           <!-- <button class="system-settings"> <a href="/settings/">edit!</a></button> -->
         </div>
       </div>
-
+    
     <br>
     <h2 style="text-decoration: underline;">Ratings</h2> 
     <br>
@@ -41,5 +156,76 @@
     </div>
     <button type="submit" method="post"> <a href="/addproduct"> Add Product</button>
     <script src="" async defer></script>
+    <br>
+    <h2 style="text-decoration: underline;">Report a Seller</h2>
+    <button onclick="openPopup()">Report Seller</button>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <h2>Report Seller</h2>
+        <form id="reportForm" method="post" action="{% url 'emailreport' %}">
+            {% csrf_token %}
+            <textarea id="userEmail" name="userEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br>
+            <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller email to report" required></textarea><br>
+            <textarea id="reportText" name="reportText" rows="6" cols="50" placeholder="Enter your report" required></textarea><br>
+            <button onclick="submitReport()" type="submit" name="report_user">Submit</button>
+            <button onclick="closePopup()">Cancel</button>
+        </form>
+      </div>
+    <br>
+
+    <script>
+        function openPopup() {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("popup").style.display = "block";
+        }
+        
+        function closePopup() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("popup").style.display = "none";
+        }
+        
+        function submitReport() {
+            closePopup();
+            alert("Thank you for submitting your report.");
+        }
+    </script>
+
+  <br>
+  <h2 style="text-decoration: underline;">Delete Account</h2>
+
+  <button id="deleteAccountButton" type="submit"> <a href="{% url 'deleteaccount' %}">Delete Account</a></button>
+  
+  <script>
+    // Add this script to handle the confirmation pop-up
+    document.addEventListener("DOMContentLoaded", function() {
+      var deleteAccountButton = document.getElementById("deleteAccountButton");
+
+      if (deleteAccountButton) {
+        deleteAccountButton.addEventListener("click", function() {
+          var isConfirmed = confirm("Are you sure you want to delete your account?");
+          
+          if (!isConfirmed) {
+            event.preventDefault();
+          }
+        });
+      }
+    });
+  </script>
+  </div>
+  
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+        var themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('change', function () {
+            document.body.classList.toggle('dark-mode', themeToggle.checked);
+        });
+    });
+  </script>
+
+  <script src="" async defer></script>
   </body>
 </html>

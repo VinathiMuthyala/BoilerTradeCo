@@ -4,86 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <button type="report"> <a href="/reportusers">Report Seller</a></button>
-
+    <title>Report Seller</title>
     <style>
-        #popup-message {
+        .popup {
             display: none;
-            color: red;
-            text-align: center;
-            margin-bottom: 10px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: gold;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
         }
     </style>
-
   </head>
   <body>
 
+    <button onclick="openPopup()">Report Seller</button>
 
-    <div class="container">
-        <div class = "side-panel">
-            <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo">
-            <div class="header">
-                <h3> BoilerTradeCo Report Seller </h3>
-                <br>
-            </div>
-        </div>
-    </div>
-    <div class="main-panel">
-
-        <!-- Display the error message at the top of the form -->
-        <div id="popup-message">
-            <p id="popup-text"></p>
-            <!-- {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    <strong>Message:</strong> {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                     <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}  -->
-        </div>
-
-        <form action="" method="post">
-           <br>
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <h2>Report Seller</h2>
+        <form id="reportForm" method="post" action="{% url 'emailreport' %}">
             {% csrf_token %}
-
-            <label for="Seller Name">Name</label>
-            <input type="name" id="name" name="name" placeholder="Enter the seller's name you want to report" Required>
-            <br>
-
-            <label for="Seller Email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Enter the seller's email you want to report" Required>
-            <br>
-
-            <button type="submit">Report Seller</button>
-            </form>
-        </div>
+            <textarea id="userEmail" name="userEmail" rows="2" cols="40" placeholder="Enter your email"></textarea><br>
+            <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller email to report"></textarea><br>
+            <textarea id="reportText" name="reportText" rows="6" cols="50" placeholder="Enter your report"></textarea><br>
+            <button onclick="submitReport()" type="submit" name="report_user">Submit</button>
+            <button onclick="closePopup()">Cancel</button>
+        </form>
     </div>
-    <script src="" async defer></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Check if the pop-up message is present in the URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const errorMessage = urlParams.get('error_message');
-
-            // If there's an error message, display the pop-up
-            if (errorMessage) {
-                document.getElementById('popup-text').innerText = errorMessage;
-                document.getElementById('popup-message').style.display = 'block';
-            
-                // Clear the error message after a delay (e.g., 5000 milliseconds or 5 seconds)
-                /*
-                setTimeout(function () {
-                    document.getElementById('popup-text').innerText = '';
-                    document.getElementById('popup-message').style.display = 'none';
-                }, 5000);
-                */
-            }
-
-        });
+        function openPopup() {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("popup").style.display = "block";
+        }
+        
+        function closePopup() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("popup").style.display = "none";
+        }
+        
+        function submitReport() {
+            var reportSeller = document.getElementbyId("sellerEmail").value;
+            var reportText = document.getElementById("reportText").value;
+            alert("Thank you for submitting your report: " + reportText);
+            closePopup();
+        }
     </script>
 
   </body>
-</html>
+  </html>
