@@ -219,9 +219,6 @@ def emailreport(request):
                 report_text = request.POST.get('reportText', '')
                 seller_email = request.POST.get('sellerEmail', '')
                 user_email = request.POST.get('userEmail', '')
-                print(report_text)
-                print(seller_email)
-                print(user_email)
                 send_mail(subject='User Report: ' + seller_email + "by " + user_email, message=report_text, from_email='neharajamani2004@gmail.com', recipient_list=['boilertradeco@gmail.com'], fail_silently=False)
                 report_success = "Report submitted successfully."
                 return HttpResponseRedirect(f'/profile/?success_message={report_success}')
