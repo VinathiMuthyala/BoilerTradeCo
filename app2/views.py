@@ -24,7 +24,6 @@ def add_listing(request):
                     with open(save_path, 'wb') as destination:
                         for chunk in photo.chunks():
                             destination.write(chunk)
-                            messages.success(request, "Your picture has been saved successfully.")
                 else:
                     error_message = "File size exceeds the maximum allowed size (800KB). Please choose a smaller file."
                     messages.MessageFailure(error_message)
@@ -42,6 +41,7 @@ def add_listing(request):
             quality_tag = request.POST.get('qualityTag')
             category_tag = request.POST.get('categoryTag')
             date_posted = date.today().strftime("%Y-%m-%d")
+            img = photo
             print(product_name)
             print(product_price)
             print(seller_email)
@@ -57,7 +57,8 @@ def add_listing(request):
                 description=product_description,
                 quality_tag=quality_tag,
                 category_tag=category_tag,
-                date_posted=date_posted
+                date_posted=date_posted,
+                photo=photo
             )
             # myproduct = ProductInfo.create_product(product_name, product_price, seller_email, product_description, quality_tag, category_tag, date_posted)
             #myproduct = ProductInfo(name=product_name, price=product_price, seller_email = seller_email, description=product_description, quality_tag=quality_tag, category_tag=category_tag, date_posted = date_posted)
@@ -75,6 +76,21 @@ def add_listing(request):
             # myproductlisting.save()
             return redirect('home/')
     return render(request, "authentication/home.html")
+
+# def viewproduct(request):
+#     current_product = request.ProductInfo
+#     selleremail = current_product.seller_email
+#     name = current_product.product_name
+#     price = current_product.product_price
+#     description = current_product.product_description
+#     quality_tag = current_product.quality_tag
+#     category_tag = current_product.category_tag
+#     date_posted = current_product.date_posted
+#     photo = photo
+#     # listing = request.product.listing
+#     # img = profile.avatar.url
+#     context = { 'selleremail': selleremail, 'name': name, 'price': price, 'description': description, 'quality_tag': quality_tag, 'category_tag': category_tag, 'date_posted': date_posted, 'photo': photo }
+#     return render(request, "authentication/home.html", context)
 
 # Backend code
 
