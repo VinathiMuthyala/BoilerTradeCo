@@ -5,6 +5,7 @@ from datetime import date
 from django.contrib import messages
 from .models import ProductInfo, ProductListing
 from django.conf import settings
+import os
 
 # Create your views here.
 def layout(request):
