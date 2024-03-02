@@ -4,6 +4,7 @@ from django.db import models
 from datetime import date
 from django.contrib import messages
 from .models import ProductInfo, ProductListing
+from django.conf import settings
 
 # Create your views here.
 def layout(request):
@@ -15,6 +16,24 @@ def add_product(request):
 def add_listing(request):
     print("hello is this working")
     if request.method == "POST":
+        if request.FILES.get('photo'):
+            photo = request.FILES['photo']
+            if photo.content_type.startswith('image'):
+                if photo.size <= 800 * 1024:  # 800 KB in bytes
+                    save_path = os.path.join(settings.MEDIA_ROOT, 'photos', photo.name)
+                    with open(save_path, 'wb') as destination:
+                        for chunk in photo.chunks():
+                            destination.write(chunk)
+                            messages.success(request, "Your picture has been saved successfully.")
+                else:
+                    error_message = "File size exceeds the maximum allowed size (800KB). Please choose a smaller file."
+                    messages.MessageFailure(error_message)
+            else:
+                error_message = "Invalid file type. Please upload an image (JPG, PNG, GIF)."
+                messages.MessageFailure(error_message)
+        else:
+            error_message = "No file uploaded."
+            messages.MessageFailure(error_message)
         if 'product_info' in request.POST:
             seller_email = request.POST.get('sellerEmail')
             product_name = request.POST.get('productName')
