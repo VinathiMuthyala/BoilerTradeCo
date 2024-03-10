@@ -15,6 +15,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from django.template.loader import render_to_string
+import base64
+
 # Create your views here.
 def index(request):
     return render(request, "authentication/index.html")
@@ -225,10 +228,13 @@ def emailreport(request):
                 report_fail = "Report was not submitted successfully."
                 return HttpResponseRedirect(f'/profile/?error_message={report_fail}')
 def generate_pdf(template_src, context_dict):
+        # with open('static/logo.png', 'rb') as image_file:
+        #     logo_data = base64.b64encode(image_file.read()).decode('utf-8')
         template = get_template(template_src)
+        # html2 = render_to_string('authentication/home.html', {'logo_data': logo_data})
         html = template.render(context_dict)
         response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = 'attachment; filename="generated_pdf.pdf"'
+        response['Content-Disposition'] = 'attachment; filename="product_listing.pdf"'
         pisa_status = pisa.CreatePDF(html, dest=response)
         if pisa_status.err:
             return HttpResponse('We had some errors <pre>' + html + '</pre>')
