@@ -13,7 +13,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.messages import add_message, INFO
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.conf import settings
-
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 users = []
 current_number = 0
@@ -227,4 +228,35 @@ def emailreport(request):
                 print(e)
                 report_fail = "Report was not submitted successfully."
                 return HttpResponseRedirect(f'/profile/?error_message={report_fail}')
-        
+def generate_pdf(template_src, context_dict):
+        template = get_template(template_src)
+        html = template.render(context_dict)
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="generated_pdf.pdf"'
+        pisa_status = pisa.CreatePDF(html, dest=response)
+        if pisa_status.err:
+            return HttpResponse('We had some errors <pre>' + html + '</pre>')
+        return response
+
+def get_pdf(request, *args, **kwargs):
+        context = {
+            'title': 'Generated PDF Page',
+            'content': 'Product Listing',
+            'user': request.user
+        }
+        return generate_pdf('authentication/home.html', context)
+            
+# def generate_pdf(request):
+#     template_src = 'home.html'
+#     context_dict = {
+#         # Pass any context variables needed for rendering the template
+#         'title': 'Generated PDF Page',
+#         'content': 'Product Listing',
+#         'user': request.user
+#     }
+#     template = get_template(template_src)
+#     html = template.render(context_dict)
+#     pdf_file = HTML(string=html).write_pdf()
+#     response = HttpResponse(pdf_file, content_type='application/pdf')
+#     response['Content-Disposition'] = 'attachment; filename="exported_page.pdf"'
+#     return response

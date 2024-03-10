@@ -17,4 +17,5 @@ urlpatterns = [
     path('settings/', views.settings, name="settings"),
     path('emailreport/', views.emailreport, name = 'emailreport'),
     path('logout', views.signout, name='logout'),
+    path('generatepdf/', views.get_pdf, name='generatepdf'),
 ]
