@@ -1,0 +1,11 @@
+{% block content %}
+<h3> Enter new password </h3>
+<p> Please enter your new password twice so we can verify you typed it in correctly. </p>
+
+<form class="form" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" />
+</form>
+{% endblock content %}
+

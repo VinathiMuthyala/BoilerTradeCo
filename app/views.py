@@ -11,12 +11,9 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import add_message, INFO
-from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.mail import send_mail
 from django.conf import settings
 
-
-users = []
-current_number = 0
 # Create your views here.
 def index(request):
     return render(request, "authentication/index.html")
@@ -92,7 +89,6 @@ def signin(request):
         none = "none"
 
         user = authenticate(username=email, password=password)
-        users.append(user)
 
         if user is not None:
             login(request, user)
@@ -219,8 +215,8 @@ def emailreport(request):
                 report_text = request.POST.get('reportText')
                 seller_email = request.POST.get('sellerEmail')
                 user_email = request.POST.get('userEmail')
-                send_mail(subject='User Report: ' + seller_email + ' by ' + user_email, message=report_text, from_email='neharajamani2004@gmail.com', recipient_list=['boilertradeco@gmail.com'], fail_silently=False)
-                #mail.send(recipients=['neharajamani2004@gmail.com'], sender='boilertradeco@gmail.com', subject='User Report: ' + seller_email + "by " + user_email, message=report_text, priority='now')
+                send_mail(subject='User Report: ' + seller_email + ' by ' + user_email, message=report_text, from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com'], fail_silently=False)
+                #send(subject='User Report: ' + seller_email + ' by ' + user_email, message=report_text, recipient_list=['boilertradeco@gmail.com'])
                 report_success = "Report submitted successfully."
                 return HttpResponseRedirect(f'/profile/?success_message={report_success}')
             except Exception as e:

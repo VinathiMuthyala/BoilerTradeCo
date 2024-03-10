@@ -29,13 +29,20 @@ SECRET_KEY = 'django-insecure-#i92niko3u4kv77$emfp*a8!o90adpzb0%-dzcluu^)&d8tg@s
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
-EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
-DEFAULT_FROM_EMAIL = "boilertradeco@gmail.com"
-SERVER_EMAIL = "boilertradeco@gmail.com"
-ANYMAIL = {
-    "MAILGUN_API_KEY": os.environ.get('MAILGUN_API_KEY'),
-    "MAILGUN_SENDER_DOMAIN": 'sandbox3e0465db2daf448db82c01f83919f778.mailgun.org',
-}
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'boilertradeco@gmail.com'
+EMAIL_HOST_PASSWORD = 'hcso isxp odob nzab'
+#EMAIL_USE_SSL = False
+# EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+# DEFAULT_FROM_EMAIL = "boilertradeco@gmail.com"
+# SERVER_EMAIL = "boilertradeco@gmail.com"
+# ANYMAIL = {
+#     "MAILGUN_API_KEY": os.environ.get('MAILGUN_API_KEY'),
+#     "MAILGUN_SENDER_DOMAIN": 'sandbox3e0465db2daf448db82c01f83919f778.mailgun.org',
+# }
 
 # ALLOWED_HOSTS = ['boiler-trade-co-d5c7c21c59ec.herokuapp.com', 'localhost']
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost').split(',')
@@ -52,7 +59,7 @@ INSTALLED_APPS = [
     'app',
     'app2',
     'anymail',
-    'rest_framework'
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
