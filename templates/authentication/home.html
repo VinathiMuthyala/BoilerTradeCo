@@ -127,6 +127,13 @@
     <button type="submit"> <a href="/signin">Sign In</a></button>
     {% endif %}
 
+    <button onclick="generatePDF()" type="submit">Generate PDF</button>
+    <script>
+        function generatePDF() {
+            window.location.href = "{% url 'generatepdf' %}";
+        }
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   
     <script>
@@ -144,7 +151,7 @@
           });
         }
       });
-    </script> 
+    </script>
 
     <script>
       $(document).ready(function () {

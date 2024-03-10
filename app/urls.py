@@ -15,6 +15,7 @@ urlpatterns = [
     path('deleteaccount/', views.delete_account, name='deleteaccount'),
     path('settings/', views.settings, name="settings"),
     path('emailreport/', views.emailreport, name = 'emailreport'),
+    path('generatepdf/', views.get_pdf, name='generatepdf'),
     path('logout', views.signout, name='logout'),
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="authentication/reset_password.html"), name="reset_password"),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="authentication/reset_password_sent.html"), name="password_reset_done"),
