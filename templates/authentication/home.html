@@ -86,6 +86,31 @@
       .slider.round:before {
           border-radius: 50%;
       }
+
+      /*product filters*/
+      .product-filters {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+    .filter-option {
+        width: 60px;
+        height: 30px;
+        border-radius: 15px;
+        background-color: #2196F3;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .filter-option:hover {
+        background-color: #0c7cd5;
+    }
+
     </style>
   </head> 
 
@@ -108,6 +133,15 @@
           <input type="checkbox" id="themeToggle">
           <span class="slider round"></span>
       </label>
+    </div>
+
+    <!-- Product filters -->
+    <div class="product-filters">
+      <div class="filter-option">School Supplies</div>
+      <div class="filter-option">Dorm/Apartment Items</div>
+      <div class="filter-option">Textbooks</div>
+      <div class="filter-option">Clothing</div>
+      <div class="filter-option">Game Tickets</div>
     </div>
 
 
