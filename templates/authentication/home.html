@@ -135,6 +135,20 @@
       </label>
     </div>
 
+    <!-- Price slider -->
+    <label for="priceRange">Select Price Range:</label>
+    <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
+    <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
+
+    <script>
+      const priceRange = document.getElementById('priceRange');
+      const selectedPrice = document.getElementById('selectedPrice');
+
+      priceRange.addEventListener('input', function() {
+          selectedPrice.textContent = priceRange.value;
+      });
+    </script>
+
     <!-- Product filters -->
     <div class="product-filters">
       <div class="filter-option">School Supplies</div>
