@@ -111,6 +111,29 @@
         background-color: #0c7cd5;
     }
 
+    .price-slider {
+      body {
+          font-family: Arial, sans-serif;
+          padding: 20px;
+      }
+
+      label {
+          display: block;
+          margin-bottom: 10px;
+      }
+
+      input[type="range"] {
+          width: 10%;
+          margin-bottom: 10px;
+          display: flex;
+          justify-content: flex-end;
+      }
+
+      p {
+          margin: 0;
+      }
+    }
+
     </style>
   </head> 
 
@@ -136,18 +159,20 @@
     </div>
 
     <!-- Price slider -->
-    <label for="priceRange">Select Price Range:</label>
-    <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
-    <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
+    <div class="price-slider">
+      <label for="priceRange">Select Price Range:</label>
+      <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
+      <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
 
-    <script>
-      const priceRange = document.getElementById('priceRange');
-      const selectedPrice = document.getElementById('selectedPrice');
+      <script>
+        const priceRange = document.getElementById('priceRange');
+        const selectedPrice = document.getElementById('selectedPrice');
 
-      priceRange.addEventListener('input', function() {
-          selectedPrice.textContent = priceRange.value;
-      });
-    </script>
+        priceRange.addEventListener('input', function() {
+            selectedPrice.textContent = priceRange.value;
+        });
+      </script>
+    </div>
 
     <!-- Product filters -->
     <div class="product-filters">
