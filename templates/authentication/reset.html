@@ -1,11 +1,36 @@
-{% block content %}
-<h3> Enter new password </h3>
-<p> Please enter your new password twice so we can verify you typed it in correctly. </p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Reset Password</title>
 
-<form class="form" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" />
-</form>
-{% endblock content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'reset_pass.css'%}">
+  </head>
+
+  <body>
+
+    {% block content %}
+    <div class="container">
+        <div class="logo-container">
+            <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" class="logo">
+        </div>
+        <div class="content-box">
+            <h3> Enter new password </h3>
+            <p> Please enter your new password twice so we can verify you typed it in correctly. </p>
+
+            <form class="form" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" />
+            </form>
+        </div>
+    </div>
+    {% endblock content %}
+
+  </body>
+
+</html>
 
