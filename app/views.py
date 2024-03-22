@@ -276,9 +276,10 @@ def email_auth(request):
         # Generates random string combination for password generation
         user_password = generate_auth_password(7)
         request.session['user_password'] = user_password
-        
+
         try:
-            email_text = f"Thanks for creating an account with BoilerTradeCo! Your password is: {user_password}"
+            user_name = request.user.first_name
+            email_text = f"Hi {user_name},\nThanks for creating an account with BoilerTradeCo! \nYour password is: {user_password}"
             user_email = request.user.email
             send_mail(subject='BoilerTradeCo Authentication Password', message=email_text,
                       from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com', user_email],
