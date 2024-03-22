@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Email Authentication</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'reset_pass.css' %}">
+  </head>
+
+  <body>
+
+    {% block content %}
+    <div class="container">
+        <div class="logo-container">
+            <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" class="logo">
+        </div>
+        <div class="content-box">
+            <h3>Email Authentication</h3>
+            <p>You have recieved a code to to your Purdue email. Please enter the code below to authenticate your email.</p>
+            <br>
+            <input type="text" name="confirmation_code" placeholder="Enter confirmation code">
+            <br>
+            <button type="submit">Sign In</button>
+        </div>
+    </div>
+    {% endblock content %}
+
+  </body>
+
+</html>

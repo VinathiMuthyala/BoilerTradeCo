@@ -247,6 +247,9 @@ def get_pdf(request, *args, **kwargs):
             'user': request.user
         }
         return generate_pdf('authentication/home.html', context)
+
+def email_auth(request):
+    return render(request, "authentication/email_auth.html")
             
 # def generate_pdf(request):
 #     template_src = 'home.html'
