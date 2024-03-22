@@ -17,6 +17,9 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 import base64
+import random
+import string
+from django.urls import reverse
 
 # Create your views here.
 def index(request):
@@ -90,13 +93,17 @@ def signin(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-        none = "none"
 
         user = authenticate(username=email, password=password)
 
         if user is not None:
             login(request, user)
             firstname = user.first_name
+            profile = request.user.profile
+            print(profile.confirm)
+            if (profile.confirm is False):
+                print("im here")
+                return redirect('email_auth')
             return render(request, 'authentication/home.html', {'firstname': firstname})
         # null if user not authenticated
         else:
@@ -227,6 +234,7 @@ def emailreport(request):
                 print(e)
                 report_fail = "Report was not submitted successfully."
                 return HttpResponseRedirect(f'/profile/?error_message={report_fail}')
+
 def generate_pdf(template_src, context_dict):
         # with open('static/logo.png', 'rb') as image_file:
         #     logo_data = base64.b64encode(image_file.read()).decode('utf-8')
@@ -248,8 +256,38 @@ def get_pdf(request, *args, **kwargs):
         }
         return generate_pdf('authentication/home.html', context)
 
+def generate_auth_password(length):
+    password = string.ascii_letters
+    return ''.join(random.choice(password) for _ in range (length))
+
 def email_auth(request):
+    if request.method == 'POST':
+        inputted_password = request.POST.get('password')
+        user_password = request.session.get('user_password')
+        if inputted_password != user_password:
+            purdue_error = "Inputted password is not correct."
+            return HttpResponseRedirect(reverse('email_auth') + f'?error_message={purdue_error}')
+        else:
+            profile = request.user.profile
+            profile.confirm = True
+            profile.save()  # Don't forget to save changes
+            return redirect('home')
+    else:
+        # Generates random string combination for password generation
+        user_password = generate_auth_password(7)
+        request.session['user_password'] = user_password
+        
+        try:
+            email_text = f"Thanks for creating an account with BoilerTradeCo! Your password is: {user_password}"
+            user_email = request.user.email
+            send_mail(subject='BoilerTradeCo Authentication Password', message=email_text,
+                      from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com', user_email],
+                      fail_silently=False)
+        except Exception as e:
+            print(e)
+            # Handle email sending failure here
     return render(request, "authentication/email_auth.html")
+
             
 # def generate_pdf(request):
 #     template_src = 'home.html'

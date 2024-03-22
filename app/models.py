@@ -12,6 +12,7 @@ class Profile(models.Model):
     # will delete the profile when the user is deleted
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     avatar = models.ImageField(default='default.png', upload_to='profile_images/')
+    confirm = models.BooleanField(default=False)
     
     def __str__(self):
         return str(self.user)

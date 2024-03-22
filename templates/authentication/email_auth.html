@@ -21,9 +21,15 @@
             <h3>Email Authentication</h3>
             <p>You have recieved a code to to your Purdue email. Please enter the code below to authenticate your email.</p>
             <br>
-            <input type="text" name="confirmation_code" placeholder="Enter confirmation code">
-            <br>
-            <button type="submit">Sign In</button>
+            <form class="form" method="POST">
+              {% csrf_token %}
+              <input type="text" name="password" placeholder="Enter confirmation code">
+              <br>
+              {% if error_message %}
+              <p style="color: red;">{{ error_message }}</p>
+              {% endif %}
+              <button type="submit">Sign In</button>
+          </form>
         </div>
     </div>
     {% endblock content %}
