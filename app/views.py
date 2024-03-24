@@ -235,6 +235,28 @@ def emailreport(request):
                 report_fail = "Report was not submitted successfully."
                 return HttpResponseRedirect(f'/profile/?error_message={report_fail}')
 
+def emailseller(request):
+    if request.method == 'POST':
+        if 'email_seller' in request.POST:
+            try:
+                seller_email = request.POST.get('sellerEmail')
+                buyer_email = request.POST.get('buyerEmail')
+                user_name = request.user.first_name
+                #user_email = request.user.email
+                email_text = f"Hi {seller_email},\n\n\tA buyer has expressed interest in your product! To contact this buyer, email {buyer_email}."
+                send_mail(subject=f"Product Interest from Buyer: {user_name}", 
+                          message=email_text, 
+                          from_email='boilertradeco@gmail.com', 
+                          recipient_list=['boilertradeco@gmail.com', seller_email],
+                          fail_silently=False)
+                interest_success = "Product interest form submitted successfully."
+                return HttpResponseRedirect(f'/home/?success_message={interest_success}')
+            except Exception as e:
+                print(e)
+                interest_fail = "Product interest form was not submitted successfully."
+                return HttpResponseRedirect(f'/home/?error_message={interest_fail}')
+            return redirect('home')
+
 def generate_pdf(template_src, context_dict):
         # with open('static/logo.png', 'rb') as image_file:
         #     logo_data = base64.b64encode(image_file.read()).decode('utf-8')

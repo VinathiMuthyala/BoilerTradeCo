@@ -24,7 +24,30 @@
             top: 10px;
             right: 10px;
             z-index: 1000;
-        }
+      }
+      .popup {
+          display: none;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: gold;
+          background-color: #fff;
+          padding: 20px;
+          border: 1px solid #ccc;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          z-index: 1000;
+      }
+      .overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+      }
 
       /* Switch styles */
       .switch {
@@ -236,6 +259,38 @@
     </script>
 
     <script src="" async defer></script>
+
+    <button onclick="openPopup()">I'm Interested!</button>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+      <h2>Buyer Interest Form</h2>
+      <form id="emailSeller" method="post" action="{% url 'emailseller' %}">
+          {% csrf_token %}
+          <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br>
+          <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br>
+          <button onclick="submitInterest()" type="submit" name="email_seller">Submit</button>
+          <button onclick="closePopup()" type="button">Cancel</button>
+      </form>
+    </div>
+    <br>
+
+      <script>
+          function openPopup() {
+              document.getElementById("overlay").style.display = "block";
+              document.getElementById("popup").style.display = "block";
+          }
+          
+          function closePopup() {
+              document.getElementById("overlay").style.display = "none";
+              document.getElementById("popup").style.display = "none";
+          }
+          
+          function submitInterest() {
+              closePopup();
+              alert("Thank you for submitting your interest in this product. An email has been sent to the seller.");
+          }
+      </script>
 
   </body>
 </html>
