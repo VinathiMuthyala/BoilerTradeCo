@@ -166,7 +166,7 @@
               <textarea id="userEmail" name="userEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br>
               <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller email to report" required></textarea><br>
               <textarea id="reportText" name="reportText" rows="6" cols="50" placeholder="Enter your report" required></textarea><br>
-              <button onclick="submitReport()" type="submit" name="report_user">Submit</button>
+              <button onclick="validateForm()" type="submit" name="report_user">Submit</button>
               <button onclick="closePopup()" type="button">Cancel</button>
           </form>
         </div>
@@ -186,6 +186,16 @@
           function submitReport() {
               closePopup();
               alert("Thank you for submitting your report.");
+          }
+
+          function validateForm() {
+              var userEmail = document.getElementById("userEmail").value;
+              var sellerEmail = document.getElementById("sellerEmail").value;
+              if (buyerEmail === "" || sellerEmail === "" || reportText === "") {
+                  alert("Please fill out all required fields.");
+                  return false;
+              }
+              return submitReport();
           }
       </script>
 

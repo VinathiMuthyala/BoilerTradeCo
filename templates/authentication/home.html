@@ -10,8 +10,8 @@
 
     <style>
       body {
-    background-color: #f4f4f4;
-    color: #333;
+        background-color: #f4f4f4;
+        color: #333;
       }
       /* CSS for dark mode */
       body.dark-mode {
@@ -134,18 +134,18 @@
         background-color: #0c7cd5;
     }
 
-    .price-slider {
-      body {
+    /* .price-slider { */
+      /* body {
           font-family: Arial, sans-serif;
           padding: 20px;
-      }
+      } */
 
-      label {
+      /* label {
           display: block;
           margin-bottom: 10px;
-      }
+      } */
 
-      input[type="range"] {
+      /* input[type="range"] {
           width: 10%;
           margin-bottom: 10px;
           display: flex;
@@ -155,7 +155,7 @@
       p {
           margin: 0;
       }
-    }
+    } */
 
     </style>
   </head> 
@@ -264,12 +264,13 @@
 
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
-      <h2>Buyer Interest Form</h2>
+      <h2>Product Interest Form</h2>
       <form id="emailSeller" method="post" action="{% url 'emailseller' %}">
           {% csrf_token %}
           <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br>
           <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br>
-          <button onclick="submitInterest()" type="submit" name="email_seller">Submit</button>
+          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact (Phone number, Instagram, GroupMe, etc.)?"></textarea><br>
+          <button onclick="validateForm()" type="submit" name="email_seller">Submit</button>
           <button onclick="closePopup()" type="button">Cancel</button>
       </form>
     </div>
@@ -289,6 +290,16 @@
           function submitInterest() {
               closePopup();
               alert("Thank you for submitting your interest in this product. An email has been sent to the seller.");
+          }
+
+          function validateForm() {
+              var buyerEmail = document.getElementById("buyerEmail").value;
+              var sellerEmail = document.getElementById("sellerEmail").value;
+              if (buyerEmail === "" || sellerEmail === "") {
+                  //alert("Please fill out all required fields.");
+                  return false;
+              }
+              return submitInterest();
           }
       </script>
 
