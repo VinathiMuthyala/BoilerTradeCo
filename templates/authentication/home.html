@@ -208,7 +208,7 @@
 
 
     <!-- can change this later, when project directory is finished (its just an identifier for now) -->
-    {% if user.is_authenticated %}
+    <!-- {% if user.is_authenticated %} -->
     <h1>Product Directory</h1>
     <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
     <div>
@@ -217,11 +217,11 @@
     <button id="signOutButton" type="submit"> <a href="{% url 'logout' %}">Sign Out</a></button>
     <!-- <button type="button" id="signOutButton" onclick="logoutAndRedirect()">Sign Out</button> -->
     <button type="submit"> <a href="/profile">Profile</a></button>
-    {% else %}
+    <!-- {% else %}
     <h4>You're not logged in.</h4>
     <button type="submit"> <a href="/signup">Sign Up</a></button>
     <button type="submit"> <a href="/signin">Sign In</a></button>
-    {% endif %}
+    {% endif %} -->
 
     <button onclick="generatePDF()" type="submit">Generate PDF</button>
     <script>
