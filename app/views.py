@@ -24,6 +24,21 @@ from django.urls import reverse
 # Create your views here.
 def index(request):
     return render(request, "authentication/index.html")
+    # if request.method == 'POST':
+    #     email = request.POST['email']
+    #     password = request.POST['password']
+
+    #     user = authenticate(username=email, password=password)
+
+    #     if user is not None:
+    #         login(request, user)
+    #         firstname = user.first_name
+
+    #         return render(request, 'authentication/home.html', {'firstname': firstname})
+    #     else:
+    #         print(e)
+    #         report_fail = "Report was not submitted successfully."
+    #         return HttpResponseRedirect(f'/profile/?error_message={report_fail}')
 
 def home(request):
     return render(request, "authentication/home.html")

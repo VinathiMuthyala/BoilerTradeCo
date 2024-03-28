@@ -1,6 +1,14 @@
 from django.contrib import admin
-from .models import ProductListing
+from django.contrib.admin.exceptions import AlreadyRegistered
+
+from .models import ProductInfo, CategoryTag, QualityTag # add ProductListing back
 
 # Register your models here.
 
-admin.site.register(ProductListing)
+models = [ProductInfo, CategoryTag, QualityTag] # add ProductListing back
+
+for model in models:
+    try:
+        admin.site.register(model)
+    except AlreadyRegistered:
+        pass

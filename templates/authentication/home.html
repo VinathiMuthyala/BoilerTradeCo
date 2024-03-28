@@ -10,8 +10,8 @@
 
     <style>
       body {
-    background-color: #f4f4f4;
-    color: #333;
+        background-color: #f4f4f4;
+        color: #333;
       }
       /* CSS for dark mode */
       body.dark-mode {
@@ -157,6 +157,45 @@
       }
     }
 
+    .mt-6 {
+      margin-top: 6rem;
+    }
+
+    .px-6 {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .py-12 {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    .bg-gray-100 {
+      /* background-color: #f4f4f4; */
+      background-color: #c9c5c5;
+    }
+
+    .rounded-xl {
+      border-radius: 1rem;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+    }
+
+    .grid-cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .gap-3 > * {
+      margin-bottom: 1rem;
+    }
+
     </style>
   </head> 
 
@@ -211,6 +250,95 @@
     {% if user.is_authenticated %}
     <h1>Product Directory</h1>
     <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
+
+    <!-- load products into product directory -->
+    <!-- {% block content %}
+      <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
+        <h2 class="mb-12 text-2xl text-center">Newest items</h2>
+
+        <div id="productsContainer" class="grid grid-cols-3 gap-3">
+          {% for product in products %}
+            <div>
+              <a href="#">
+                <div class="p-6 bg-white rounded-b-xl">
+                  <h2 class="text-2xl">{{ product.name }}</h2>
+                  <p class="text-gray-500">Price: {{ product.price }}</p>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endblock %} -->
+
+    <script id="products_json" type="application/json">
+      {{ products_json | safe }}
+    </script>
+
+    <script>
+      // Define a JavaScript variable 'products' and initialize it with the data passed from Django view
+      var products = JSON.parse(document.getElementById('products_json').textContent);
+    </script>
+
+    <!-- Loading products into directory -->
+    <div class="px-6 py-12 bg-gray-100 rounded-xl">
+
+      <div id="productsContainer" class="grid grid-cols-3 gap-3">
+        <!-- Products will be dynamically added here -->
+        console.log(products)
+        {% if products %}
+        <div class="product-list">
+          <h2>Products</h2>
+          <ul>
+            {% for product in products %}
+              <li>{{ product.name }} - ${{ product.price }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% else %}
+          <h3>There are currently no products in the product directory!</h3>
+        {% endif %}
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Define a function to display products
+        function displayProducts() {
+          console.log("Entered")
+          const productsContainer = document.getElementById("productsContainer");
+
+          // Check if productsContainer exists and products are available
+          if (productsContainer && products && products.length > 0) {
+            // Clear previous content
+            productsContainer.innerHTML = "";
+
+            // Loop through each product and create HTML elements dynamically
+            products.forEach(product => {
+              const productDiv = document.createElement("div");
+              productDiv.innerHTML = `
+                <a href="#">
+                  <div class="p-6 bg-white rounded-b-xl">
+                    <h2 class="text-2xl">${product.name}</h2>
+                    <p class="text-gray-500">Price: ${product.price}</p>
+                  </div>
+                </a>
+              `;
+
+              // Add the product div to the productsContainer
+              productsContainer.appendChild(productDiv);
+            });
+          } else {
+            // If no products are available, display a message
+            productsContainer.innerHTML = "<h3>There are currently no products in the product directory!</h3>";
+          }
+        }
+
+        // Call the displayProducts function to initially display products
+        displayProducts();
+      });
+    </script>
+
     <div>
       <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     </div>

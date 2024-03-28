@@ -3,9 +3,9 @@ from django.http import HttpResponse
 from django.db import models
 from datetime import date
 from django.contrib import messages
-from .models import ProductInfo, ProductListing
+from .models import ProductInfo, CategoryTag, QualityTag #, ProductListing
 from django.conf import settings
-import os
+import os, json
 
 # Create your views here.
 def layout(request):
@@ -15,68 +15,86 @@ def add_product(request):
     return render(request, 'productdir/add-product.html')
 
 def add_listing(request):
-    print("hello is this working")
-    if request.method == "POST":
-        if request.FILES.get('photo'):
-            photo = request.FILES['photo']
-            if photo.content_type.startswith('image'):
-                if photo.size <= 800 * 1024:  # 800 KB in bytes
-                    save_path = os.path.join(settings.MEDIA_ROOT, 'photos', photo.name)
-                    with open(save_path, 'wb') as destination:
-                        for chunk in photo.chunks():
-                            destination.write(chunk)
-                else:
-                    error_message = "File size exceeds the maximum allowed size (800KB). Please choose a smaller file."
-                    messages.MessageFailure(error_message)
-            else:
-                error_message = "Invalid file type. Please upload an image (JPG, PNG, GIF)."
-                messages.MessageFailure(error_message)
-        else:
-            error_message = "No file uploaded."
-            messages.MessageFailure(error_message)
-        if 'product_info' in request.POST:
-            seller_email = request.POST.get('sellerEmail')
-            product_name = request.POST.get('productName')
-            product_price = request.POST.get('productPrice')
-            product_description = request.POST.get('productDescription')
-            quality_tag = request.POST.get('qualityTag')
-            category_tag = request.POST.get('categoryTag')
-            date_posted = date.today().strftime("%Y-%m-%d")
-            img = photo
-            print(product_name)
-            print(product_price)
-            print(seller_email)
-            print(product_description)
-            print(quality_tag)
-            print(category_tag)
-            print("the date: ", date_posted)
+    print("Inside add_listing")
+    products = ProductInfo.objects.all()
+    print("Number of products:", len(products))
+    categories = CategoryTag.objects.all()
+    qualities = QualityTag.objects.all()
 
-            myproduct = ProductInfo.create_product(
-                seller_email=seller_email,
-                name=product_name,
-                price=product_price,
-                description=product_description,
-                quality_tag=quality_tag,
-                category_tag=category_tag,
-                date_posted=date_posted,
-                photo=photo
-            )
-            # myproduct = ProductInfo.create_product(product_name, product_price, seller_email, product_description, quality_tag, category_tag, date_posted)
-            #myproduct = ProductInfo(name=product_name, price=product_price, seller_email = seller_email, description=product_description, quality_tag=quality_tag, category_tag=category_tag, date_posted = date_posted)
-            # myproduct.save()
+    products_json = json.dumps([{
+        'name': product.name,
+        'price': product.price,
+    } for product in products])
 
-            existing_product = get_object_or_404(ProductInfo, seller_email=seller_email)
+    print("JSON", products_json)
 
-            myproductlisting = ProductListing.objects.filter(product=existing_product).first()
+    return render(request, 'home.html', {
+        'products_json': products_json
+    })
 
-            if not myproductlisting:
-                myproductlisting = ProductListing(product=existing_product)
-                myproductlisting.save()
+# def add_listing(request):
+#     print("printing product info from views.py")
+#     if request.method == "POST":
+#         if request.FILES.get('photo'):
+#             photo = request.FILES['photo']
+#             if photo.content_type.startswith('image'):
+#                 if photo.size <= 800 * 1024:  # 800 KB in bytes
+#                     save_path = os.path.join(settings.MEDIA_ROOT, 'photos', photo.name)
+#                     with open(save_path, 'wb') as destination:
+#                         for chunk in photo.chunks():
+#                             destination.write(chunk)
+#                 else:
+#                     error_message = "File size exceeds the maximum allowed size (800KB). Please choose a smaller file."
+#                     messages.MessageFailure(error_message)
+#             else:
+#                 error_message = "Invalid file type. Please upload an image (JPG, PNG, GIF)."
+#                 messages.MessageFailure(error_message)
+#         else:
+#             error_message = "No file uploaded."
+#             messages.MessageFailure(error_message)
+#         if 'product_info' in request.POST:
+#             seller_email = request.POST.get('sellerEmail')
+#             product_name = request.POST.get('productName')
+#             product_price = request.POST.get('productPrice')
+#             product_description = request.POST.get('productDescription')
+#             quality_tag = request.POST.get('qualityTag')
+#             category_tag = request.POST.get('categoryTag')
+#             date_posted = date.today().strftime("%Y-%m-%d")
+#             # img = photo
+#             print(product_name)
+#             print(product_price)
+#             print(seller_email)
+#             print(product_description)
+#             print(quality_tag)
+#             print(category_tag)
+#             print("the date: ", date_posted)
 
-            # myproductlisting = ProductListing(product=myproduct)
-            # myproductlisting.save()
-            return redirect('home/')
-    return render(request, "authentication/home.html")
+#             myproduct = ProductInfo.create_product(
+#                 seller_email=seller_email,
+#                 name=product_name,
+#                 price=product_price,
+#                 description=product_description,
+#                 quality_tag=quality_tag,
+#                 category_tag=category_tag,
+#                 date_posted=date_posted,
+#                 # photo=photo
+#             )
+#             # myproduct = ProductInfo.create_product(product_name, product_price, seller_email, product_description, quality_tag, category_tag, date_posted)
+#             #myproduct = ProductInfo(name=product_name, price=product_price, seller_email = seller_email, description=product_description, quality_tag=quality_tag, category_tag=category_tag, date_posted = date_posted)
+#             # myproduct.save()
+
+#             existing_product = get_object_or_404(ProductInfo, seller_email=seller_email)
+
+#             myproductlisting = ProductListing.objects.filter(product=existing_product).first()
+
+#             if not myproductlisting:
+#                 myproductlisting = ProductListing(product=existing_product)
+#                 myproductlisting.save()
+
+#             # myproductlisting = ProductListing(product=myproduct)
+#             # myproductlisting.save()
+#             return redirect('home/')
+#     return render(request, "authentication/home.html")
 
 # def viewproduct(request):
 #     current_product = request.ProductInfo
