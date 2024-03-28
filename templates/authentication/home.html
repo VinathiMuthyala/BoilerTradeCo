@@ -48,6 +48,32 @@
           background-color: rgba(0, 0, 0, 0.5);
           z-index: 999;
       }
+      .editpopup {
+          display: none;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: gold;
+          background-color: #fff;
+          padding: 20px;
+          border: 1px solid #ccc;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          z-index: 1000;
+      }
+      .editoverlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 999;
+      }
+      .label {
+        color: black;
+      }
 
       /* Switch styles */
       .switch {
@@ -134,18 +160,18 @@
         background-color: #0c7cd5;
     }
 
-    .price-slider {
-      body {
+    /* .price-slider { */
+      /* body {
           font-family: Arial, sans-serif;
           padding: 20px;
-      }
+      } */
 
-      label {
+      /* label {
           display: block;
           margin-bottom: 10px;
-      }
+      } */
 
-      input[type="range"] {
+      /* input[type="range"] {
           width: 10%;
           margin-bottom: 10px;
           display: flex;
@@ -155,7 +181,7 @@
       p {
           margin: 0;
       }
-    }
+    } */
 
     .mt-6 {
       margin-top: 6rem;
@@ -247,7 +273,7 @@
 
 
     <!-- can change this later, when project directory is finished (its just an identifier for now) -->
-    {% if user.is_authenticated %}
+    <!-- {% if user.is_authenticated %} -->
     <h1>Product Directory</h1>
     <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
 
@@ -345,11 +371,11 @@
     <button id="signOutButton" type="submit"> <a href="{% url 'logout' %}">Sign Out</a></button>
     <!-- <button type="button" id="signOutButton" onclick="logoutAndRedirect()">Sign Out</button> -->
     <button type="submit"> <a href="/profile">Profile</a></button>
-    {% else %}
+    <!-- {% else %}
     <h4>You're not logged in.</h4>
     <button type="submit"> <a href="/signup">Sign Up</a></button>
     <button type="submit"> <a href="/signin">Sign In</a></button>
-    {% endif %}
+    {% endif %} -->
 
     <button onclick="generatePDF()" type="submit">Generate PDF</button>
     <script>
@@ -392,12 +418,13 @@
 
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
-      <h2>Buyer Interest Form</h2>
+      <h2>Product Interest Form</h2>
       <form id="emailSeller" method="post" action="{% url 'emailseller' %}">
           {% csrf_token %}
           <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br>
           <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br>
-          <button onclick="submitInterest()" type="submit" name="email_seller">Submit</button>
+          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact (Phone number, Instagram, GroupMe, etc.)?"></textarea><br><br>
+          <button onclick="validateForm()" type="submit" name="email_seller">Submit</button>
           <button onclick="closePopup()" type="button">Cancel</button>
       </form>
     </div>
@@ -418,7 +445,84 @@
               closePopup();
               alert("Thank you for submitting your interest in this product. An email has been sent to the seller.");
           }
+
+          function validateForm() {
+              var buyerEmail = document.getElementById("buyerEmail").value;
+              var sellerEmail = document.getElementById("sellerEmail").value;
+              if (buyerEmail === "" || sellerEmail === "") {
+                  //alert("Please fill out all required fields.");
+                  return false;
+              }
+              return submitInterest();
+          }
       </script>
+
+<button onclick="openEditPopup()">Edit Product</button>
+<div class="editoverlay" id="editoverlay"></div>
+<div class="editpopup" id="editpopup">
+  <h2>Edit Product Listing</h2>
+  <form id="editproduct" method="post" action="{% url 'editproduct' %}">
+      {% csrf_token %}
+      <!-- <label for="productName">Edit your product name:</label> -->
+      <textarea id="productName" name="productName" rows="2" cols="40" placeholder="Enter the new product name"></textarea><br>
+      <!-- <label for="productPrice">Edit your product price:</label> -->
+      <textarea id="productPrice" name="productPrice" rows="2" cols="40" placeholder="Enter the new product price"></textarea><br>
+      <!-- <label for="productDescription">Edit your product description:</label> -->
+      <textarea id="productDescription" name="productDescription" rows="4" cols="40" placeholder="Enter the new product description"></textarea><br>
+      <!-- <label for="qualityTag">Select a new quality:</label> -->
+      <select id="qualityTag" name="qualityTag">
+        <option value="" disabled selected>Edit Quality</option>
+        <option value="Like New">Like New</option>
+        <option value="Good">Good</option>
+        <option value="Acceptable">Acceptable</option>
+      </select><br><br>
+      <!-- <label for="categoryTag">Select a new category:</label> -->
+      <select id="categoryTag" name="categoryTag">
+        <option value="" disabled selected>Edit Category</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Appliances">Appliances</option>
+        <option value="Textbooks">Textbooks</option>
+        <option value="School supplies">School supplies</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Game tickets">Game tickets</option>
+      </select><br><br><br>
+      <button onclick="validateEditForm()" type="submit" name="edit_product">Submit</button>
+      <button onclick="closeEditPopup()" type="button">Cancel</button>
+  </form>
+</div>
+<br>
+
+  <script>
+      function openEditPopup() {
+          document.getElementById("editoverlay").style.display = "block";
+          document.getElementById("editpopup").style.display = "block";
+      }
+      
+      function closeEditPopup() {
+          document.getElementById("editoverlay").style.display = "none";
+          document.getElementById("editpopup").style.display = "none";
+      }
+      
+      function submitForm() {
+          closeEditPopup();
+          alert("Your product listing has been successfully edited.");
+      }
+
+      function validateEditForm() {
+          var productName = document.getElementById("productName").value;
+          var productPrice = document.getElementById("productPrice").value;
+          var productDescription = document.getElementById("productDescription").value;
+          var qualityTag = document.getElementById("qualityTag").value;
+          var categoryTag = document.getElementById("categoryTag").value;
+          if (productName === "" && productPrice === "" && productDescription === "" && qualityTag === "" && categoryTag === "") {
+              alert("Please fill out at least one field to edit.");
+              return openEditPopup();
+          }
+          else {
+            submitForm();
+          }
+      }
+  </script>
 
   </body>
 </html>

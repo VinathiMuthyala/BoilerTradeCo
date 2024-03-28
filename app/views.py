@@ -257,8 +257,11 @@ def emailseller(request):
                 seller_email = request.POST.get('sellerEmail')
                 buyer_email = request.POST.get('buyerEmail')
                 user_name = request.user.first_name
+                contact = request.POST.get('anotherContact')
                 #user_email = request.user.email
-                email_text = f"Hi {seller_email},\n\n\tA buyer has expressed interest in your product! To contact this buyer, email {buyer_email}."
+                if (contact != '' or contact != 'NA' or contact != 'N/A' or contact != 'n/a' or contact != 'n/a'):
+                    email_text = f"Hi {seller_email},\n\n\tA buyer has expressed interest in your product! To contact this buyer, email {buyer_email}."
+                email_text = f"Hi {seller_email},\n\n\tA buyer has expressed interest in your product! To contact this buyer, email {buyer_email}. They also have listed another method of contact: {contact}."
                 send_mail(subject=f"Product Interest from Buyer: {user_name}", 
                           message=email_text, 
                           from_email='boilertradeco@gmail.com', 
@@ -270,6 +273,17 @@ def emailseller(request):
                 print(e)
                 interest_fail = "Product interest form was not submitted successfully."
                 return HttpResponseRedirect(f'/home/?error_message={interest_fail}')
+            return redirect('home')
+        
+def editproduct(request):
+    if request.method == 'POST':
+        if 'edit_product' in request.POST:
+            product_name = request.POST.get('productName')
+            product_price = request.POST.get('productPrice')
+            product_description = request.POST.get('productDescription')
+            quality_tag = request.POST.get('qualityTag')
+            category_tag = request.POST.get('categoryTag')
+            #user_email = request.user.email
             return redirect('home')
 
 def generate_pdf(template_src, context_dict):

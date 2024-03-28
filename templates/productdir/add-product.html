@@ -108,8 +108,25 @@
             <input type="file" id="photoInput" name="photo" accept="image/jpeg, image/png, image/gif" required>
         <!-- </form> -->
         <br>
+        <div id="previewContainer" style="display: none;">
+            <img id="previewImage" src="#" alt="Selected Image" style="max-width: 100%; max-height: 200px;">
+        </div>
     
         <script>
+        document.getElementById('photoInput').addEventListener('change', function(event) {
+            var fileInput = event.target;
+            if (fileInput.files && fileInput.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var previewImage = document.getElementById('previewImage');
+                    previewImage.src = e.target.result;
+                    document.getElementById('previewContainer').style.display = 'block';
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        });
+
+
             // document.addEventListener('DOMContentLoaded', function() {
             //     print("HI")
                 document.getElementById('uploadForm').addEventListener('submit', function(event) {
