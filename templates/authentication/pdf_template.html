@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Listings</title>
+    <!-- Add any necessary CSS styles for the PDF -->
+    <style>
+        /* Define your CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Product Listings</h1>
+    <ul>
+        {% for product_name in product_names %}
+            <li>Product Name: {{ product_name }}</li>
+            <li>Quality: {{ product_name.quality_tag }}</li>
+            <li>Category: {{ product_name.category_tag }}</li>
+            <li>Seller: {{ product_name.seller_email }}</li>
+            <li>Date Posted: {{ product_name.date_posted }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
