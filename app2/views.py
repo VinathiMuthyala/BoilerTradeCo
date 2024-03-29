@@ -20,7 +20,7 @@ def add_product(request):
 
 def add_listing(request):
     print("Inside add_listing")
-    products = ProductInfo.objects.all()
+    products = ProductInfo.objects.filter(is_sold=False)
     print("Number of products:", len(products))
     categories = CategoryTag.objects.all().values('tag')
     qualities = QualityTag.objects.all().values('tag')
@@ -58,14 +58,14 @@ def add_listing(request):
 @login_required
 def new(request):
     if request.method == 'POST':
-        form = NewProductForm(request.POST)
+        form = NewProductForm(request.POST, request.FILES)
 
         if form.is_valid():
             product = form.save(commit=False)
             product.seller_email = request.user
             product.save()
 
-            return render(request, 'authentication/home.html')
+            return redirect("/addlisting")
         
     else:
         form = NewProductForm()
