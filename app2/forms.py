@@ -24,7 +24,8 @@ class EditProductForm(forms.ModelForm):
                 'class': INPUT_CLASSES
             }),
             'is_sold': forms.CheckboxInput(attrs={
-                'class': INPUT_CLASSES
+                'class': 'input-classes',
+                'onclick': 'showSoldMessage(this.checked);' 
             }),
             'image': forms.FileInput(attrs={
                 'class': INPUT_CLASSES

@@ -23,4 +23,21 @@
     <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Submit</button>
 
 </form>
+
+<!-- JavaScript code -->
+<script>
+    // Function to display the popup message
+    function showSoldMessage(isSold) {
+        if (isSold) {
+            alert('Product has been marked as sold. It will no longer be shown in the Product Directory.');
+        } else {
+            alert('Product has been marked as available.');
+        }
+    }
+
+    // Add event listener to the is_sold checkbox to trigger the showSoldMessage function
+    document.getElementById("id_is_sold").addEventListener("change", function() {
+        showSoldMessage(this.checked);
+    });
+</script>
 {% endblock %}
