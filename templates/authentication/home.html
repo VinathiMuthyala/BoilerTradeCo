@@ -193,48 +193,6 @@
         border-radius: 5px;
     }
 
-    /* Style the popup */
-     .smpopup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #f9f9f9;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        z-index: 1;
-    }
-
-        .icon {
-            height: 20px;
-            width: auto;
-        }
-
-        /* Style the buttons in the popup */
-        .smpopup button {
-            background-color: #ffd700;
-            color: white;
-            padding: 10px 10px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-right: 15px; /* Increased margin */
-            margin-bottom: 10px; /* Added margin between buttons */
-        }
-
-    button {
-        background-color: rgb(189, 179, 179);
-        color: white;
-        padding: 10px 20px;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
     .mt-6 {
       margin-top: 6rem;
     }
@@ -501,48 +459,7 @@
 
     <script src="" async defer></script>
 
-    <button onclick="openPopup()">I'm Interested!</button>
 
-    <div class="overlay" id="overlay"></div>
-    <div class="popup" id="popup">
-      <h2>Product Interest Form</h2>
-      <form id="emailSeller" method="post" action="{% url 'emailseller' %}">
-          {% csrf_token %}
-          <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br>
-          <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br>
-          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact (Phone number, Instagram, GroupMe, etc.)?"></textarea><br> <!-- <br> -->
-          <button onclick="validateForm()" type="submit" name="email_seller">Submit</button>
-          <button onclick="closePopup()" type="button">Cancel</button>
-      </form>
-    </div>
-    <br>
-
-      <script>
-          function openPopup() {
-              document.getElementById("overlay").style.display = "block";
-              document.getElementById("popup").style.display = "block";
-          }
-          
-          function closePopup() {
-              document.getElementById("overlay").style.display = "none";
-              document.getElementById("popup").style.display = "none";
-          }
-          
-          function submitInterest() {
-              closePopup();
-              alert("Thank you for submitting your interest in this product. An email has been sent to the seller.");
-          }
-
-          function validateForm() {
-              var buyerEmail = document.getElementById("buyerEmail").value;
-              var sellerEmail = document.getElementById("sellerEmail").value;
-              if (buyerEmail === "" || sellerEmail === "") {
-                  //alert("Please fill out all required fields.");
-                  return false;
-              }
-              return submitInterest();
-          }
-      </script>
 
       <!-- edit product -->
 <br>
