@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, re_path
 from django.conf import settings
 from django.contrib import admin
 from django.conf.urls.static import static
@@ -12,4 +12,6 @@ urlpatterns = [
     path('<int:pk>/', views.detail, name = 'detail'),
     path('<int:pk>/delete/', views.delete, name = 'delete'),
     path('<int:pk>/edit/', views.edit, name = 'edit'),
+    re_path(r'^(?P<category_tag>[\w-]+)/$', views.filter_products_by_category, name='filter_products_by_category'),
+    re_path(r'^(?P<quality_tag>[\w-]+)/$', views.filter_products_by_quality, name='filter_products_by_quality'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -232,6 +232,11 @@
       margin-bottom: 1rem;
     }
 
+    .selected {
+      background-color: #ffe44b; /* Change to your desired highlighted color */
+      /* Additional styling for the selected state */
+    }
+
     </style>
   </head> 
 
@@ -262,23 +267,24 @@
       <h2>Filter Options</h2>
       <!-- Product filters -->
       <div class="product-filters">
-        <div class="filter-option">School Supplies</div>
-        <div class="filter-option">Dorm/Apartment Items</div>
-        <div class="filter-option">Textbooks</div>
-        <div class="filter-option">Clothing</div>
-        <div class="filter-option">Game Tickets</div>
+        <button class="filter-option" data-category="Appliances">Appliances</button>
+        <button class="filter-option" data-category="Clothing">Clothing</button>
+        <button class="filter-option" data-category="Furniture">Furniture</button>
+        <button class="filter-option" data-category="Game-Tickets">Game Tickets</button>
+        <button class="filter-option" data-category="School-Supplies">School Supplies</button>
+        <button class="filter-option" data-category="Textbooks">Textbooks</button>
       </div>
 
       <!-- Quality filters -->
       <div class="product-filters">
-        <div class="filter-option">Like New</div>
-        <div class="filter-option">Good</div>
-        <div class="filter-option">Acceptable</div>
+        <button class="filter-option" data-quality="Acceptable">Acceptable</button>
+        <button class="filter-option" data-quality="Good">Good</button>
+        <button class="filter-option" data-quality="Like-New">Like New</button>
       </div>
       <br>
 
       <!-- Price slider -->
-    <div class="price-slider">
+    <!-- <div class="price-slider">
       <label for="priceRange">Select Price Range:</label>
       <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
       <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
@@ -291,9 +297,64 @@
             selectedPrice.textContent = priceRange.value;
         });
       </script>
-    </div>
+    </div> -->
+    <form id="priceFilterForm" method="GET" action="{% url 'filter_products_by_price' %}">
+      <label for="priceRange">Select Price Range:</label>
+      <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
+      <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
+  </form>
+
     </div>
 
+    <!-- highlight filter button -->
+    <script>
+      document.querySelectorAll('.filter-option').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Remove the 'selected' class from all filter buttons
+            document.querySelectorAll('.filter-option').forEach(function(btn) {
+                btn.classList.remove('selected');
+            });
+    
+            // Add the 'selected' class to the clicked button
+            this.classList.add('selected');
+    
+            // Your existing code to filter products goes here
+        });
+      });
+    </script>
+
+    <!-- filtering by category/quality -->
+    <script>
+      document.querySelectorAll('.filter-option').forEach(function(button) {
+        button.addEventListener('click', function() {
+          var category = this.getAttribute('data-category');
+          var quality = this.getAttribute('data-quality');
+
+          if (category) {
+            filterProductsByCategory(category);
+          }
+          else if (quality) {
+            filterProductsByQuality(quality);
+          }
+        });
+      });
+    
+      function filterProductsByCategory(category) {
+        fetch(`/${category}/`)
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('productsContainer').innerHTML = html;
+          });
+      }
+
+      function filterProductsByQuality(quality) {
+        fetch(`/${quality}/`)
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('productsContainer').innerHTML = html;
+          });
+      }
+    </script>
 
     <!-- can change this later, when project directory is finished (its just an identifier for now) -->
     {% if user.is_authenticated %}
@@ -494,6 +555,24 @@
             submitForm();
           }
       }
+
+      document.addEventListener("DOMContentLoaded", function() {
+      const priceRange = document.getElementById('priceRange');
+      const selectedPrice = document.getElementById('selectedPrice');
+      const priceFilterForm = document.getElementById('priceFilterForm');
+
+      priceRange.addEventListener('input', function() {
+          selectedPrice.textContent = priceRange.value;
+      });
+
+      priceRange.addEventListener('change', function() {
+          // Update the form action URL with the selected price range
+          priceFilterForm.action = `{% url 'filter_products_by_price' %}?min_price=0&max_price=${priceRange.value}`;
+          
+          // Submit the form
+          priceFilterForm.submit();
+      });
+  });
   </script>
 
   </body>

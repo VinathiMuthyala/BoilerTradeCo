@@ -123,6 +123,8 @@ def detail(request, pk):
 
     current_user = request.user
     email = current_user.email
+    firstname = current_user.first_name
+    productname = product.name
 
     print(current_user)
     print(email)
@@ -135,6 +137,36 @@ def detail(request, pk):
         'email': email,
         'user': current_user,
         'id': id,
+        'firstname': firstname,
+        'productname': productname,
+    })
+
+def filter_products_by_category(request, category_tag):
+    filtered_products = ProductInfo.objects.filter(category_tag__tag=category_tag)
+
+    products = ([{
+        'name': product.name,
+        'price': product.price,
+        'image': product.image.url,
+        'id': product.pk,
+    } for product in filtered_products])
+
+    return render(request, 'productdir/filtered-products.html', {
+        'products': products,
+    })
+
+def filter_products_by_quality(request, quality_tag):
+    filtered_products = ProductInfo.objects.filter(quality_tag__tag=quality_tag)
+
+    products = ([{
+        'name': product.name,
+        'price': product.price,
+        'image': product.image.url,
+        'id': product.pk,
+    } for product in filtered_products])
+
+    return render(request, 'productdir/filtered-products.html', {
+        'products': products,
     })
 
 # def add_listing(request):
