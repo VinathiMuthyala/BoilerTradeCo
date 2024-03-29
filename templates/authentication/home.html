@@ -262,18 +262,19 @@
       <h2>Filter Options</h2>
       <!-- Product filters -->
       <div class="product-filters">
-        <div class="filter-option">School Supplies</div>
-        <div class="filter-option">Dorm/Apartment Items</div>
-        <div class="filter-option">Textbooks</div>
-        <div class="filter-option">Clothing</div>
-        <div class="filter-option">Game Tickets</div>
+        <button class="filter-option" data-category="Appliances">Appliances</button>
+        <button class="filter-option" data-category="Clothing">Clothing</button>
+        <button class="filter-option" data-category="Furniture">Furniture</button>
+        <button class="filter-option" data-category="Game-Tickets">Game Tickets</button>
+        <button class="filter-option" data-category="School-Supplies">School Supplies</button>
+        <button class="filter-option" data-category="Textbooks">Textbooks</button>
       </div>
 
       <!-- Quality filters -->
       <div class="product-filters">
-        <div class="filter-option">Like New</div>
-        <div class="filter-option">Good</div>
-        <div class="filter-option">Acceptable</div>
+        <button class="filter-option" data-quality="Acceptable">Acceptable</button>
+        <button class="filter-option" data-quality="Good">Good</button>
+        <button class="filter-option" data-quality="Like-New">Like New</button>
       </div>
       <br>
 
@@ -300,6 +301,38 @@
 
     </div>
 
+    <!-- filtering by category/quality -->
+    <script>
+      document.querySelectorAll('.filter-option').forEach(function(button) {
+        button.addEventListener('click', function() {
+          var category = this.getAttribute('data-category');
+          var quality = this.getAttribute('data-quality');
+
+          if (category) {
+            filterProductsByCategory(category);
+          }
+          else if (quality) {
+            filterProductsByQuality(quality);
+          }
+        });
+      });
+    
+      function filterProductsByCategory(category) {
+        fetch(`/${category}/`)
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('productsContainer').innerHTML = html;
+          });
+      }
+
+      function filterProductsByQuality(quality) {
+        fetch(`/${quality}/`)
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('productsContainer').innerHTML = html;
+          });
+      }
+    </script>
 
     <!-- can change this later, when project directory is finished (its just an identifier for now) -->
     {% if user.is_authenticated %}

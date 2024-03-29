@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import ProductInfo
+from .models import ProductInfo, QualityTag, CategoryTag
 
 INPUT_CLASSES = 'w-full py-4 px-6 rounded-xl border'
 
@@ -24,7 +24,8 @@ class EditProductForm(forms.ModelForm):
                 'class': INPUT_CLASSES
             }),
             'is_sold': forms.CheckboxInput(attrs={
-                'class': INPUT_CLASSES
+                'class': 'input-classes',
+                'onclick': 'showSoldMessage(this.checked);' 
             }),
             'image': forms.FileInput(attrs={
                 'class': INPUT_CLASSES
