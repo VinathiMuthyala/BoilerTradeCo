@@ -20,6 +20,9 @@ import base64
 import random
 import string
 from django.urls import reverse
+from app2.models import ProductInfo
+from django.http import HttpResponseBadRequest
+
 
 # Create your views here.
 def index(request):
@@ -119,7 +122,7 @@ def signin(request):
             if (profile.confirm is False):
                 print("im here")
                 return redirect('email_auth')
-            return render(request, 'authentication/home.html', {'firstname': firstname})
+            return redirect('add_listing')
         # null if user not authenticated
         else:
             user_invalid = "Email/Password is incorrect!"
@@ -311,7 +314,7 @@ def email_auth(request):
             profile = request.user.profile
             profile.confirm = True
             profile.save()  # Don't forget to save changes
-            return redirect('home')
+            return redirect('add_listing')
     else:
         # Generates random string combination for password generation
         user_password = generate_auth_password(7)
@@ -329,18 +332,17 @@ def email_auth(request):
             # Handle email sending failure here
     return render(request, "authentication/email_auth.html")
 
-            
-# def generate_pdf(request):
-#     template_src = 'home.html'
-#     context_dict = {
-#         # Pass any context variables needed for rendering the template
-#         'title': 'Generated PDF Page',
-#         'content': 'Product Listing',
-#         'user': request.user
-#     }
-#     template = get_template(template_src)
-#     html = template.render(context_dict)
-#     pdf_file = HTML(string=html).write_pdf()
-#     response = HttpResponse(pdf_file, content_type='application/pdf')
-#     response['Content-Disposition'] = 'attachment; filename="exported_page.pdf"'
-#     return response
+
+def filter_products_by_price(request):
+    price_range = request.GET.get('priceRange')  # Get the priceRange parameter from the request
+
+    if price_range is None:
+        return HttpResponseBadRequest("Missing priceRange parameter")
+
+    try:
+        max_price = int(price_range)  # Maximum price from the slider
+        products = ProductInfo.objects.filter(price__lte=max_price)
+    except (ValueError, TypeError):
+        return HttpResponseBadRequest("Invalid priceRange parameter")
+
+    return render(request, 'authentication/filtered_products.html', {'products': products, 'max_price': max_price})

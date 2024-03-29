@@ -123,6 +123,8 @@ def detail(request, pk):
 
     current_user = request.user
     email = current_user.email
+    firstname = current_user.first_name
+    productname = product.name
 
     print(current_user)
     print(email)
@@ -135,6 +137,8 @@ def detail(request, pk):
         'email': email,
         'user': current_user,
         'id': id,
+        'firstname': firstname,
+        'productname': productname,
     })
 
 def filter_products_by_category(request, category_tag):

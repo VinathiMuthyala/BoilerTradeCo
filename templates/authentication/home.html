@@ -284,7 +284,7 @@
       <br>
 
       <!-- Price slider -->
-    <div class="price-slider">
+    <!-- <div class="price-slider">
       <label for="priceRange">Select Price Range:</label>
       <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
       <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
@@ -297,7 +297,13 @@
             selectedPrice.textContent = priceRange.value;
         });
       </script>
-    </div>
+    </div> -->
+    <form id="priceFilterForm" method="GET" action="{% url 'filter_products_by_price' %}">
+      <label for="priceRange">Select Price Range:</label>
+      <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
+      <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
+  </form>
+
     </div>
 
     <!-- highlight filter button -->
@@ -549,6 +555,24 @@
             submitForm();
           }
       }
+
+      document.addEventListener("DOMContentLoaded", function() {
+      const priceRange = document.getElementById('priceRange');
+      const selectedPrice = document.getElementById('selectedPrice');
+      const priceFilterForm = document.getElementById('priceFilterForm');
+
+      priceRange.addEventListener('input', function() {
+          selectedPrice.textContent = priceRange.value;
+      });
+
+      priceRange.addEventListener('change', function() {
+          // Update the form action URL with the selected price range
+          priceFilterForm.action = `{% url 'filter_products_by_price' %}?min_price=0&max_price=${priceRange.value}`;
+          
+          // Submit the form
+          priceFilterForm.submit();
+      });
+  });
   </script>
 
   </body>
