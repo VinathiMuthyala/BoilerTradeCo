@@ -193,103 +193,6 @@
         border-radius: 5px;
     }
 
-    /* Style the popup */
-     .smpopup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #f9f9f9;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        z-index: 1;
-    }
-
-        .icon {
-            height: 20px;
-            width: auto;
-        }
-
-        /* Style the buttons in the popup */
-        .smpopup button {
-            background-color: #ffd700;
-            color: white;
-            padding: 10px 10px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-right: 15px; /* Increased margin */
-            margin-bottom: 10px; /* Added margin between buttons */
-        }
-
-    button {
-        background-color: rgb(189, 179, 179);
-        color: white;
-        padding: 10px 20px;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-    }
-
-    /* Style the popup */
-     .smpopup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #f9f9f9;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        z-index: 1;
-    }
-
-        .icon {
-            height: 20px;
-            width: auto;
-        }
-
-        /* Style the buttons in the popup */
-        .smpopup button {
-            background-color: #ffd700;
-            color: white;
-            padding: 10px 10px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-right: 15px; /* Increased margin */
-            margin-bottom: 10px; /* Added margin between buttons */
-        }
-
-    /* .price-slider { */
-      /* body {
-          font-family: Arial, sans-serif;
-          padding: 20px;
-      } */
-
-      /* label {
-          display: block;
-          margin-bottom: 10px;
-      } */
-
-      /* input[type="range"] {
-          width: 10%;
-          margin-bottom: 10px;
-          display: flex;
-          justify-content: flex-end;
-      }
-
-      p {
-          margin: 0;
-      }
-    } */
-
     .mt-6 {
       margin-top: 6rem;
     }
@@ -544,83 +447,13 @@
     </div>
     <button id="signOutButton" type="submit"> <a href="{% url 'logout' %}">Sign Out</a></button>
     <!-- <button type="button" id="signOutButton" onclick="logoutAndRedirect()">Sign Out</button> -->
-    <!-- Button to open the popup -->
-    <button onclick="openPopupForSocial()"> Share on Social Media </button>
-    <button onclick="openPopupForMessages()"> Share via Messages</button>
-
-  <div id="smpopup" class="smpopup">
-    <p>Copy/paste and share:</p>
-    <textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this couch selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
-    <br>
-    <button onclick="copyText()">Copy Text</button>
-    <button onclick="redirectToInstagram()"> <img src="{% static 'instagram.png' %}"  alt="Edit Icon" class="icon"> </button>
-    <button onclick="redirectToFacebook()"><img src="{% static 'facebook.png' %}"  alt="Edit Icon" class="icon"></button>
-    <button onclick="redirectToSnapchat()"> <img src="{% static 'snapchat.png' %}"  alt="Edit Icon" class="icon"></button>
-    <button onclick="closePopupForSocial()">Cancel</button>
-</div>
-
-<div id="mpopup" class="smpopup">
-    <p>Copy/paste and share:</p>
-    <textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this couch selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/</textarea>
-    <br>
-    <button onclick="copyText()">Copy Text</button>
-    <button onclick="redirectToWhatsapp()"> <img src="{% static 'whatsapp.png' %}"  alt="Edit Icon" class="icon"> </button>
-    <button onclick="closePopupForMessages()">Cancel</button>
-</div>
+ 
     <!-- {% else %}
     <h4>You're not logged in.</h4>
     <button type="submit"> <a href="/signup">Sign Up</a></button>
     <button type="submit"> <a href="/signin">Sign In</a></button>
     {% endif %} -->
 
-    <script>
-      // Function to open the popup
-      function openPopupForSocial() {
-          document.getElementById('smpopup').style.display = 'block';
-      }
-  
-      function openPopupForMessages() {
-          document.getElementById('mpopup').style.display = 'block';
-      }
-  
-      // Function to copy the text to clipboard
-      function copyText() {
-          var copyText = document.getElementById("sample-text");
-          copyText.select();
-          copyText.setSelectionRange(0, 99999); /* For mobile devices */
-          document.execCommand("copy");
-          alert("Text copied to clipboard!");
-      }
-  
-      // Function to close the popup
-      function closePopupForSocial() {
-          document.getElementById('smpopup').style.display = 'none';
-      }
-  
-      function closePopupForMessages() {
-          document.getElementById('mpopup').style.display = 'none';
-      }
-  
-      // Function to redirect to Instagram
-      function redirectToInstagram() {
-          window.open('https://instagram.com', '_blank');
-      }
-  
-      // Function to redirect to Facebook
-      function redirectToFacebook() {
-          window.open('https://facebook.com', '_blank');
-      }
-  
-      // Function to redirect to Snapchat
-      function redirectToSnapchat() {
-          window.open('https://snapchat.com', '_blank');
-      }
-  
-      // Function to redirect to Whatsapp
-      function redirectToWhatsapp() {
-          window.open('https://whatsapp.com', '_blank');
-      }
-  </script>
 
     <button onclick="generatePDF()" type="submit">Generate PDF</button>
     <script>
@@ -659,48 +492,7 @@
 
     <script src="" async defer></script>
 
-    <button onclick="openPopup()">I'm Interested!</button>
 
-    <div class="overlay" id="overlay"></div>
-    <div class="popup" id="popup">
-      <h2>Product Interest Form</h2>
-      <form id="emailSeller" method="post" action="{% url 'emailseller' %}">
-          {% csrf_token %}
-          <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br>
-          <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br>
-          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact (Phone number, Instagram, GroupMe, etc.)?"></textarea><br> <!-- <br> -->
-          <button onclick="validateForm()" type="submit" name="email_seller">Submit</button>
-          <button onclick="closePopup()" type="button">Cancel</button>
-      </form>
-    </div>
-    <br>
-
-      <script>
-          function openPopup() {
-              document.getElementById("overlay").style.display = "block";
-              document.getElementById("popup").style.display = "block";
-          }
-          
-          function closePopup() {
-              document.getElementById("overlay").style.display = "none";
-              document.getElementById("popup").style.display = "none";
-          }
-          
-          function submitInterest() {
-              closePopup();
-              alert("Thank you for submitting your interest in this product. An email has been sent to the seller.");
-          }
-
-          function validateForm() {
-              var buyerEmail = document.getElementById("buyerEmail").value;
-              var sellerEmail = document.getElementById("sellerEmail").value;
-              if (buyerEmail === "" || sellerEmail === "") {
-                  //alert("Please fill out all required fields.");
-                  return false;
-              }
-              return submitInterest();
-          }
-      </script>
 
       <!-- edit product -->
 <br>
