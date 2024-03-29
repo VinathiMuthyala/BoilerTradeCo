@@ -78,21 +78,12 @@ def new(request):
         'title': 'New product',
     })
 
-def detail(request, pk):
-    if request.method == 'POST':
-        form = NewProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse('detail', args=[pk]))
-    else:
-        form = NewProductForm()
-    return render(request, 'detail.html', {'form': form})
+@login_required
+def delete(request, pk):
+    product = get_object_or_404(ProductInfo, pk=pk)
+    product.delete()
 
-    # product = get_object_or_404(ProductInfo, pk=pk)
-
-    # return render(request, 'productdir/detail.html', {
-    #     'product': product
-    # })
+    return redirect('/addlisting/')
 
 def editproduct(request):
     if request.method == 'POST':
@@ -108,9 +99,22 @@ def editproduct(request):
 def detail(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
 
+    current_user = request.user
+    email = current_user.email
+
+    print(current_user)
+    print(email)
+    print("Seller email", product.seller_email)
+
+    id = product.pk
+
     return render(request, 'authentication/detail.html', {
-        'product': product
+        'product': product,
+        'email': email,
+        'user': current_user,
+        'id': id,
     })
+
 # def add_listing(request):
 #     print("printing product info from views.py")
 #     if request.method == "POST":
