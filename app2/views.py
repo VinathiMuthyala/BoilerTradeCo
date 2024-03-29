@@ -32,6 +32,8 @@ def add_listing(request):
         'name': product.name,
         'price': product.price,
         'image': product.image.url,
+        'quality_tag': product.quality_tag,
+        'category_tag': product.category_tag,
         'id': product.pk,
     } for product in products])
 
