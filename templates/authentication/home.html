@@ -160,6 +160,16 @@
         background-color: #0c7cd5;
     }
 
+    a {
+        color: gold;
+        text-decoration: none;
+    }
+
+    a:hover {
+        /* text-decoration: underline; */
+        text-decoration: gold;
+    }
+
     /* .price-slider { */
       /* body {
           font-family: Arial, sans-serif;
@@ -273,7 +283,7 @@
 
 
     <!-- can change this later, when project directory is finished (its just an identifier for now) -->
-    <!-- {% if user.is_authenticated %} -->
+    {% if user.is_authenticated %}
     <h1>Product Directory</h1>
     <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
 
@@ -423,7 +433,7 @@
           {% csrf_token %}
           <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br>
           <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br>
-          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact (Phone number, Instagram, GroupMe, etc.)?"></textarea><br><br>
+          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact (Phone number, Instagram, GroupMe, etc.)?"></textarea><br> <!-- <br> -->
           <button onclick="validateForm()" type="submit" name="email_seller">Submit</button>
           <button onclick="closePopup()" type="button">Cancel</button>
       </form>
@@ -462,7 +472,7 @@
 <div class="editpopup" id="editpopup">
   <h2>Edit Product Listing</h2>
   <form id="editproduct" method="post" action="{% url 'editproduct' %}">
-      {% csrf_token %}
+      {% csrf_token %} -->
       <!-- <label for="productName">Edit your product name:</label> -->
       <textarea id="productName" name="productName" rows="2" cols="40" placeholder="Enter the new product name"></textarea><br>
       <!-- <label for="productPrice">Edit your product price:</label> -->
@@ -477,7 +487,7 @@
         <option value="Acceptable">Acceptable</option>
       </select><br><br>
       <!-- <label for="categoryTag">Select a new category:</label> -->
-      <select id="categoryTag" name="categoryTag">
+      <select id="categoryTag" name="categoryTag"> -->
         <option value="" disabled selected>Edit Category</option>
         <option value="Furniture">Furniture</option>
         <option value="Appliances">Appliances</option>

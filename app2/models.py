@@ -156,13 +156,13 @@ class ProductInfo(models.Model):
 #    def set_is_favorited(self, is_favorited):
 #        self.is_favorited = is_favorited
 
-# class ProductListing(models.Model):
-#     # will delete the listing when the product is deleted
-#     product = models.OneToOneField(ProductInfo, null=True, on_delete=models.CASCADE)
+class ProductListing(models.Model):
+    # will delete the listing when the product is deleted
+    product = models.OneToOneField(ProductInfo, null=True, on_delete=models.CASCADE)
 
-#     def __str__(self):
-#         return "Listing for Product: {self.product.name} - Seller: {self.product.seller_email}"
-#         # return str(self.product)
+    def __str__(self):
+        return "Listing for Product: {self.product.name} - Seller: {self.product.seller_email}"
+        # return str(self.product)
     
-#     class Meta:
-#        verbose_name_plural = 'ProductListing'
+    class Meta:
+       verbose_name_plural = 'ProductListing'

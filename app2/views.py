@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.db import models
 from datetime import date
 from django.contrib import messages
-from .models import ProductInfo, CategoryTag, QualityTag #, ProductListing
+from .models import ProductInfo, CategoryTag, QualityTag, ProductListing
 from django.conf import settings
 import os, json
 
@@ -31,6 +31,17 @@ def add_listing(request):
     return render(request, 'home.html', {
         'products_json': products_json
     })
+
+def editproduct(request):
+    if request.method == 'POST':
+        if 'edit_product' in request.POST:
+            product_name = request.POST.get('productName')
+            product_price = request.POST.get('productPrice')
+            product_description = request.POST.get('productDescription')
+            quality_tag = request.POST.get('qualityTag')
+            category_tag = request.POST.get('categoryTag')
+            #user_email = request.user.email
+            return redirect('home')
 
 # def add_listing(request):
 #     print("printing product info from views.py")
