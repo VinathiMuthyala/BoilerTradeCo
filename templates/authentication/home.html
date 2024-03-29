@@ -170,6 +170,48 @@
         text-decoration: gold;
     }
 
+    button {
+        background-color: rgb(189, 179, 179);
+        color: white;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    /* Style the popup */
+     .smpopup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f9f9f9;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        z-index: 1;
+    }
+
+        .icon {
+            height: 20px;
+            width: auto;
+        }
+
+        /* Style the buttons in the popup */
+        .smpopup button {
+            background-color: #ffd700;
+            color: white;
+            padding: 10px 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 15px; /* Increased margin */
+            margin-bottom: 10px; /* Added margin between buttons */
+        }
+
     /* .price-slider { */
       /* body {
           font-family: Arial, sans-serif;
@@ -285,7 +327,6 @@
     <!-- can change this later, when project directory is finished (its just an identifier for now) -->
     {% if user.is_authenticated %}
     <h1>Product Directory</h1>
-    <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
 
     <!-- load products into product directory -->
     <!-- {% block content %}
@@ -380,12 +421,83 @@
     </div>
     <button id="signOutButton" type="submit"> <a href="{% url 'logout' %}">Sign Out</a></button>
     <!-- <button type="button" id="signOutButton" onclick="logoutAndRedirect()">Sign Out</button> -->
-    <button type="submit"> <a href="/profile">Profile</a></button>
+    <!-- Button to open the popup -->
+    <button onclick="openPopupForSocial()"> Share on Social Media </button>
+    <button onclick="openPopupForMessages()"> Share via Messages</button>
+
+  <div id="smpopup" class="smpopup">
+    <p>Copy/paste and share:</p>
+    <textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this couch selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
+    <br>
+    <button onclick="copyText()">Copy Text</button>
+    <button onclick="redirectToInstagram()"> <img src="{% static 'instagram.png' %}"  alt="Edit Icon" class="icon"> </button>
+    <button onclick="redirectToFacebook()"><img src="{% static 'facebook.png' %}"  alt="Edit Icon" class="icon"></button>
+    <button onclick="redirectToSnapchat()"> <img src="{% static 'snapchat.png' %}"  alt="Edit Icon" class="icon"></button>
+    <button onclick="closePopupForSocial()">Cancel</button>
+</div>
+
+<div id="mpopup" class="smpopup">
+    <p>Copy/paste and share:</p>
+    <textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this couch selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/</textarea>
+    <br>
+    <button onclick="copyText()">Copy Text</button>
+    <button onclick="redirectToWhatsapp()"> <img src="{% static 'whatsapp.png' %}"  alt="Edit Icon" class="icon"> </button>
+    <button onclick="closePopupForMessages()">Cancel</button>
+</div>
     <!-- {% else %}
     <h4>You're not logged in.</h4>
     <button type="submit"> <a href="/signup">Sign Up</a></button>
     <button type="submit"> <a href="/signin">Sign In</a></button>
     {% endif %} -->
+
+    <script>
+      // Function to open the popup
+      function openPopupForSocial() {
+          document.getElementById('smpopup').style.display = 'block';
+      }
+  
+      function openPopupForMessages() {
+          document.getElementById('mpopup').style.display = 'block';
+      }
+  
+      // Function to copy the text to clipboard
+      function copyText() {
+          var copyText = document.getElementById("sample-text");
+          copyText.select();
+          copyText.setSelectionRange(0, 99999); /* For mobile devices */
+          document.execCommand("copy");
+          alert("Text copied to clipboard!");
+      }
+  
+      // Function to close the popup
+      function closePopupForSocial() {
+          document.getElementById('smpopup').style.display = 'none';
+      }
+  
+      function closePopupForMessages() {
+          document.getElementById('mpopup').style.display = 'none';
+      }
+  
+      // Function to redirect to Instagram
+      function redirectToInstagram() {
+          window.open('https://instagram.com', '_blank');
+      }
+  
+      // Function to redirect to Facebook
+      function redirectToFacebook() {
+          window.open('https://facebook.com', '_blank');
+      }
+  
+      // Function to redirect to Snapchat
+      function redirectToSnapchat() {
+          window.open('https://snapchat.com', '_blank');
+      }
+  
+      // Function to redirect to Whatsapp
+      function redirectToWhatsapp() {
+          window.open('https://whatsapp.com', '_blank');
+      }
+  </script>
 
     <button onclick="generatePDF()" type="submit">Generate PDF</button>
     <script>
