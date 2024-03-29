@@ -1,10 +1,12 @@
 from django import forms
 
-from .models import ProductInfo
+from .models import ProductInfo, QualityTag, CategoryTag
 
 INPUT_CLASSES = 'w-full py-4 px-6 rounded-xl border'
 
 class NewProductForm(forms.ModelForm):
+    category_tag = forms.ChoiceField(choices=CategoryTag.objects.values_list('tag', 'tag'))
+    quality_tag = forms.ChoiceField(choices=QualityTag.objects.values_list('tag', 'tag'))
     class Meta:
         model = ProductInfo
         fields = ('seller_email', 'name', 'price', 'description', 'quality_tag', 'category_tag', 'is_sold', 'date_posted', 'image',)
