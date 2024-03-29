@@ -1,17 +1,66 @@
-{% block title %}{{ product.name }}{% endblock %}
+<!-- {% block title %}{{ product.name }}{% endblock %} -->
 
 {% block content %}
 <style>
-    img {
-        height: 50%;
-        width: auto;
+    .container {
+        display: flex;
+        justify-content: center;
+        margin-top: 25vh;
     }
+    .grid {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff9c4; 
+        padding: 5%; 
+        border-radius: 5%; 
+    }
+
+    .col-span-3 {
+        margin-right: 20px; 
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .product-info {
+        width: 100%; 
+    }
+
+    @media (max-width: 768px) {
+        .grid {
+            flex-direction: column; /* Stack items vertically on small screens */
+        }
+
+        .col-span-3 {
+            margin-right: 0; /* Reset margin for smaller screens */
+            margin-bottom: 20px; /* Add margin at bottom for better spacing */
+        }
+    }
+
 </style>
-<div class="grid grid-cols-5 gap-6">
-    <div class="col-span-3">
-        <img src="{{ product.image.url }}" alt="product_image" class="rounded-xl">
+
+<div class="container">
+    <div class="grid grid-cols-5 gap-6">
+        <div class="col-span-3">
+            <h2>{{ product.name }}</h2>
+            <img src="{{ product.image.url }}" alt="product_image" class="rounded-xl">
+        </div>
+    
+        <div class="col-span-2">
+            <p>Price: ${{ product.price }}</p>
+            <p>Quality: {{ product.quality_tag }}</p>
+            <p>Category: {{ product.category_tag }}</p>
+            <p>Seller: {{ product.seller_email }}</p>
+            <p>Date Posted: {{ product.date_posted }}</p>
+        </div>
     </div>
 </div>
+
+
 
 {% endblock %}
 
