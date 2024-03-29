@@ -31,6 +31,7 @@ def add_listing(request):
         'name': product.name,
         'price': product.price,
         'image': product.image.url,
+        'id': product.pk,
     } for product in products])
 
     print("Products", products)
@@ -87,6 +88,12 @@ def editproduct(request):
             #user_email = request.user.email
             return redirect('home')
 
+def detail(request, pk):
+    product = get_object_or_404(ProductInfo, pk=pk)
+
+    return render(request, 'authentication/detail.html', {
+        'product': product
+    })
 # def add_listing(request):
 #     print("printing product info from views.py")
 #     if request.method == "POST":

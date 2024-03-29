@@ -38,7 +38,8 @@ class CategoryTag(models.Model):
 
 class ProductInfo(models.Model):
    # product_key = models.AutoField(primary_key=True, default='DEFAULT', unique=True, db_index=True)
-   product_id = models.IntegerField(primary_key=True, default=0, unique=True)
+   # product_id = models.IntegerField(primary_key=True, default=0, unique=True)
+   product_id = models.AutoField(primary_key=True)
    seller_email = models.ForeignKey(User, null=False, related_name='products', on_delete=models.CASCADE)
    name = models.CharField(max_length=100)
    price = models.DecimalField(max_digits=10, decimal_places=2)
