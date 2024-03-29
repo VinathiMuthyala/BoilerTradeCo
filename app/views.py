@@ -271,11 +271,11 @@ def emailseller(request):
                           recipient_list=['boilertradeco@gmail.com', seller_email],
                           fail_silently=False)
                 interest_success = "Product interest form submitted successfully."
-                return HttpResponseRedirect(f'/home/?success_message={interest_success}')
+                return HttpResponseRedirect(f'/addlisting/?success_message={interest_success}')
             except Exception as e:
                 print(e)
                 interest_fail = "Product interest form was not submitted successfully."
-                return HttpResponseRedirect(f'/home/?error_message={interest_fail}')
+                return HttpResponseRedirect(f'/addlisting/?error_message={interest_fail}')
             return redirect('home')
 
 def generate_pdf(template_src, context_dict):
