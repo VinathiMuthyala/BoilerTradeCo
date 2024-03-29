@@ -9,7 +9,7 @@ from django.conf import settings
 import os, json
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
-from .forms import NewProductForm
+from .forms import NewProductForm, EditProductForm
 from django.urls import reverse
 
 # Create your views here.
@@ -81,22 +81,42 @@ def new(request):
     })
 
 @login_required
+def edit(request, pk):
+    product = get_object_or_404(ProductInfo, pk=pk)
+
+    if request.method == 'POST':
+        form = EditProductForm(request.POST, request.FILES, instance=product)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect("/addlisting")
+        
+    else:
+        form = EditProductForm(instance=product)
+
+    return render(request, 'productdir/form.html', {
+        'form': form,
+        'title': 'Edit product',
+    })
+
+@login_required
 def delete(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
     product.delete()
 
     return redirect('/addlisting/')
 
-def editproduct(request):
-    if request.method == 'POST':
-        if 'edit_product' in request.POST:
-            product_name = request.POST.get('productName')
-            product_price = request.POST.get('productPrice')
-            product_description = request.POST.get('productDescription')
-            quality_tag = request.POST.get('qualityTag')
-            category_tag = request.POST.get('categoryTag')
-            #user_email = request.user.email
-            return redirect('home')
+# def editproduct(request):
+#     if request.method == 'POST':
+#         if 'edit_product' in request.POST:
+#             product_name = request.POST.get('productName')
+#             product_price = request.POST.get('productPrice')
+#             product_description = request.POST.get('productDescription')
+#             quality_tag = request.POST.get('qualityTag')
+#             category_tag = request.POST.get('categoryTag')
+#             #user_email = request.user.email
+#             return redirect('home')
 
 def detail(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)

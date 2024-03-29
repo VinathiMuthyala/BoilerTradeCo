@@ -148,14 +148,18 @@
         padding: 0 15px;
         height: 30px;
         border-radius: 15px;
-        background-color: rgb(224, 188, 250);
-        color: rgb(122, 74, 143);
+        /* background-color: rgb(224, 188, 250); */
+        background-color: #ffee90;
+        /* rgb(255, 255, 121); */
+        color: rgb(0, 0, 0);
+        /* color: rgb(122, 74, 143); */
         display: flex;
         align-items: center;
         justify-content: center;
         margin-right: 10px;
         cursor: pointer;
-        border: 2px solid rgb(122, 74, 143);
+        border: #ffe030;
+        /* border: 2px solid rgb(122, 74, 143); */
     }
 
     .filter-container {
@@ -165,7 +169,8 @@
     }
 
     .filter-option:hover {
-        background-color: rgb(177, 142, 222);
+        background-color: #ffe44b;
+        /* background-color: rgb(177, 142, 222); */
     }
 
     a {
@@ -664,39 +669,7 @@
           }
       </script>
 
-<button onclick="openEditPopup()">Edit Product</button>
-<div class="editoverlay" id="editoverlay"></div>
-<div class="editpopup" id="editpopup">
-  <h2>Edit Product Listing</h2>
-  <form id="editproduct" method="post" action="{% url 'editproduct' %}">
-      {% csrf_token %}
-      <!-- <label for="productName">Edit your product name:</label> -->
-      <textarea id="productName" name="productName" rows="2" cols="40" placeholder="Enter the new product name"></textarea><br>
-      <!-- <label for="productPrice">Edit your product price:</label> -->
-      <textarea id="productPrice" name="productPrice" rows="2" cols="40" placeholder="Enter the new product price"></textarea><br>
-      <!-- <label for="productDescription">Edit your product description:</label> -->
-      <textarea id="productDescription" name="productDescription" rows="4" cols="40" placeholder="Enter the new product description"></textarea><br>
-      <!-- <label for="qualityTag">Select a new quality:</label> -->
-      <select id="qualityTag" name="qualityTag">
-        <option value="" disabled selected>Edit Quality</option>
-        <option value="Like New">Like New</option>
-        <option value="Good">Good</option>
-        <option value="Acceptable">Acceptable</option>
-      </select><br><br>
-      <!-- <label for="categoryTag">Select a new category:</label> -->
-      <select id="categoryTag" name="categoryTag">
-        <option value="" disabled selected>Edit Category</option>
-        <option value="Furniture">Furniture</option>
-        <option value="Appliances">Appliances</option>
-        <option value="Textbooks">Textbooks</option>
-        <option value="School supplies">School supplies</option>
-        <option value="Clothing">Clothing</option>
-        <option value="Game tickets">Game tickets</option>
-      </select><br><br><br>
-      <button onclick="validateEditForm()" type="submit" name="edit_product">Submit</button>
-      <button onclick="closeEditPopup()" type="button">Cancel</button>
-  </form>
-</div>
+      <!-- edit product -->
 <br>
 
   <script>
