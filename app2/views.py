@@ -10,6 +10,7 @@ import os, json
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
 from .forms import NewProductForm
+from django.urls import reverse
 
 # Create your views here.
 def layout(request):
@@ -74,6 +75,22 @@ def new(request):
         'form': form,
         'title': 'New product',
     })
+
+def detail(request, pk):
+    if request.method == 'POST':
+        form = NewProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('detail', args=[pk]))
+    else:
+        form = NewProductForm()
+    return render(request, 'detail.html', {'form': form})
+
+    # product = get_object_or_404(ProductInfo, pk=pk)
+
+    # return render(request, 'productdir/detail.html', {
+    #     'product': product
+    # })
 
 def editproduct(request):
     if request.method == 'POST':

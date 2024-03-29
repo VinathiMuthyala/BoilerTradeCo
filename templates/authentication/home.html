@@ -434,7 +434,7 @@
         <!-- {% if products %} -->
         {% for product in products %}
           <div>
-            <a href="#">
+            <a href="{% url 'addlisting/detail' product.product_id %}">
               <div>
                 <img src="{{ product.image.url }}" class="rounded-t-xl">
               </div>
