@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.db import models
 from datetime import date
 from django.contrib import messages
+from django.core.serializers import serialize
 from .models import ProductInfo, CategoryTag, QualityTag, ProductListing
 from django.conf import settings
 import os, json
+from decimal import Decimal
+from django.contrib.auth.decorators import login_required
+from .forms import NewProductForm
 
 # Create your views here.
 def layout(request):
@@ -18,18 +22,57 @@ def add_listing(request):
     print("Inside add_listing")
     products = ProductInfo.objects.all()
     print("Number of products:", len(products))
-    categories = CategoryTag.objects.all()
-    qualities = QualityTag.objects.all()
+    categories = CategoryTag.objects.all().values('tag')
+    qualities = QualityTag.objects.all().values('tag')
 
-    products_json = json.dumps([{
+    # product_list_json = serialize('json', products)
+
+    products = ([{
         'name': product.name,
         'price': product.price,
     } for product in products])
 
-    print("JSON", products_json)
+    print("Products", products)
 
-    return render(request, 'home.html', {
-        'products_json': products_json
+    # product_list = ([{
+    #     'price': products.price,
+    #     'product': products.name,
+    # }])
+
+    # print("JSON", product_list)
+
+    # product_list_json = json.dumps(product_list)
+
+    # category_list = list(categories)
+    # quality_list = list(qualities)
+
+    # return JsonResponse({'products': product_list, 'categories': category_list, 'qualities': quality_list})
+
+    return render(request, 'productdir/sample-directory.html', {
+        # 'products_json': products_json
+        'products' : products,
+        'categories' : categories,
+        'qualities' : qualities,
+    })
+
+@login_required
+def new(request):
+    if request.method == 'POST':
+        form = NewProductForm(request.POST)
+
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.seller_email = request.user
+            product.save()
+
+            return render(request, 'authentication/home.html')
+        
+    else:
+        form = NewProductForm()
+
+    return render(request, 'productdir/form.html', {
+        'form': form,
+        'title': 'New product',
     })
 
 def editproduct(request):

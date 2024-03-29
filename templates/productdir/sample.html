@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Listings</title>
+</head>
+<body>
+    <h1>Listings</h1>
+    <div id="product-list"></div>
+    <div id="categories"></div>
+    <div id="qualities"></div>
+
+    <script>
+        // Parse JSON data received from backend
+        var productList = JSON.parse("{{ product_list_json|escapejs }}");
+        var categories = JSON.parse("{{ categories|escapejs }}");
+        var qualities = JSON.parse("{{ qualities|escapejs }}");
+
+        // Display product list
+        var productListDiv = document.getElementById('product-list');
+        productList.forEach(product => {
+            productListDiv.innerHTML += `
+                <p>Name: ${product.name}</p>
+                <p>Price: ${product.price}</p>
+            `;
+        });
+
+        // Display categories
+        var categoriesDiv = document.getElementById('categories');
+        categories.forEach(category => {
+            categoriesDiv.innerHTML += `<p>Category: ${category.tag}</p>`;
+        });
+
+        // Display qualities
+        var qualitiesDiv = document.getElementById('qualities');
+        qualities.forEach(quality => {
+            qualitiesDiv.innerHTML += `<p>Quality: ${quality.tag}</p>`;
+        });
+    </script>
+</body>
+</html>

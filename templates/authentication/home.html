@@ -285,7 +285,6 @@
     <!-- can change this later, when project directory is finished (its just an identifier for now) -->
     {% if user.is_authenticated %}
     <h1>Product Directory</h1>
-    <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
 
     <!-- load products into product directory -->
     <!-- {% block content %}
@@ -307,42 +306,60 @@
       </div>
     {% endblock %} -->
 
-    <script id="products_json" type="application/json">
-      {{ products_json | safe }}
-    </script>
+    <!-- <script id="product_list">
+      {{ products | safe }}
+      console.log("Products!!!", products)
+    </script> -->
 
-    <script>
+    <!-- <script>
+      console.log("HELLO")
       // Define a JavaScript variable 'products' and initialize it with the data passed from Django view
-      var products = JSON.parse(document.getElementById('products_json').textContent);
-    </script>
+      var products = JSON.parse(document.getElementById('product_list').textContent);
+      console.log("Prods")
+    </script> -->
 
     <!-- Loading products into directory -->
     <div class="px-6 py-12 bg-gray-100 rounded-xl">
 
       <div id="productsContainer" class="grid grid-cols-3 gap-3">
         <!-- Products will be dynamically added here -->
-        console.log(products)
-        {% if products %}
-        <div class="product-list">
-          <h2>Products</h2>
-          <ul>
-            {% for product in products %}
-              <li>{{ product.name }} - ${{ product.price }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-        {% else %}
+        <!-- <script>
+          console.log("PRODUCTS", products)
+        </script> -->
+        <!-- {% if products %} -->
+        {% for product in products %}
+          <div>
+            <a href="#">
+              <div class="p-6 bg-white rounded-b-xl">
+                <h2 class="text-2xl">{{ product.name }}</h2>
+                <p class="text-gray-500">{{ product.price }}</p>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+        <!-- <a href="#">
+          <div class="product-list">
+            <ul>
+              {% for product in products %}
+                <li>{{ product.name }} - ${{ product.price }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </a> -->
+        <!-- {% else %}
           <h3>There are currently no products in the product directory!</h3>
-        {% endif %}
+        {% endif %} -->
       </div>
     </div>
 
-    <script>
+    <!-- <script>
       document.addEventListener("DOMContentLoaded", function() {
         // Define a function to display products
         function displayProducts() {
           console.log("Entered")
-          const productsContainer = document.getElementById("productsContainer");
+          const productsContainer = document.getElementById(products);
+
+          console.log(products);
 
           // Check if productsContainer exists and products are available
           if (productsContainer && products && products.length > 0) {
@@ -373,7 +390,7 @@
         // Call the displayProducts function to initially display products
         displayProducts();
       });
-    </script>
+    </script> -->
 
     <div>
       <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -472,7 +489,7 @@
 <div class="editpopup" id="editpopup">
   <h2>Edit Product Listing</h2>
   <form id="editproduct" method="post" action="{% url 'editproduct' %}">
-      {% csrf_token %} -->
+      {% csrf_token %}
       <!-- <label for="productName">Edit your product name:</label> -->
       <textarea id="productName" name="productName" rows="2" cols="40" placeholder="Enter the new product name"></textarea><br>
       <!-- <label for="productPrice">Edit your product price:</label> -->
@@ -487,7 +504,7 @@
         <option value="Acceptable">Acceptable</option>
       </select><br><br>
       <!-- <label for="categoryTag">Select a new category:</label> -->
-      <select id="categoryTag" name="categoryTag"> -->
+      <select id="categoryTag" name="categoryTag">
         <option value="" disabled selected>Edit Category</option>
         <option value="Furniture">Furniture</option>
         <option value="Appliances">Appliances</option>
