@@ -31,6 +31,7 @@ def add_listing(request):
     products = ([{
         'name': product.name,
         'price': product.price,
+        'image': product.image.url,
     } for product in products])
 
     print("Products", products)
