@@ -144,20 +144,28 @@
       }
 
     .filter-option {
-        width: 60px;
+        width: auto;
+        padding: 0 15px;
         height: 30px;
         border-radius: 15px;
-        background-color: #2196F3;
-        color: white;
+        background-color: rgb(224, 188, 250);
+        color: rgb(122, 74, 143);
         display: flex;
         align-items: center;
         justify-content: center;
         margin-right: 10px;
         cursor: pointer;
+        border: 2px solid rgb(122, 74, 143);
+    }
+
+    .filter-container {
+      background-color: #b5b0b0;
+      padding: 10px;
+      border-radius: 15px;
     }
 
     .filter-option:hover {
-        background-color: #0c7cd5;
+        background-color: rgb(177, 142, 222);
     }
 
     a {
@@ -209,7 +217,7 @@
 
     .bg-gray-100 {
       /* background-color: #f4f4f4; */
-      background-color: #c9c5c5;
+      background-color: #b5b0b0;
     }
 
     .rounded-xl {
@@ -256,7 +264,28 @@
       </label>
     </div>
 
-    <!-- Price slider -->
+    <br>
+  <!--All filter options-->
+    <div class="filter-container">
+      <h2>Filter Options</h2>
+      <!-- Product filters -->
+      <div class="product-filters">
+        <div class="filter-option">School Supplies</div>
+        <div class="filter-option">Dorm/Apartment Items</div>
+        <div class="filter-option">Textbooks</div>
+        <div class="filter-option">Clothing</div>
+        <div class="filter-option">Game Tickets</div>
+      </div>
+
+      <!-- Quality filters -->
+      <div class="product-filters">
+        <div class="filter-option">Like New</div>
+        <div class="filter-option">Good</div>
+        <div class="filter-option">Acceptable</div>
+      </div>
+      <br>
+
+      <!-- Price slider -->
     <div class="price-slider">
       <label for="priceRange">Select Price Range:</label>
       <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
@@ -271,14 +300,6 @@
         });
       </script>
     </div>
-
-    <!-- Product filters -->
-    <div class="product-filters">
-      <div class="filter-option">School Supplies</div>
-      <div class="filter-option">Dorm/Apartment Items</div>
-      <div class="filter-option">Textbooks</div>
-      <div class="filter-option">Clothing</div>
-      <div class="filter-option">Game Tickets</div>
     </div>
 
 
@@ -380,7 +401,6 @@
     </div>
     <button id="signOutButton" type="submit"> <a href="{% url 'logout' %}">Sign Out</a></button>
     <!-- <button type="button" id="signOutButton" onclick="logoutAndRedirect()">Sign Out</button> -->
-    <button type="submit"> <a href="/profile">Profile</a></button>
     <!-- {% else %}
     <h4>You're not logged in.</h4>
     <button type="submit"> <a href="/signup">Sign Up</a></button>
