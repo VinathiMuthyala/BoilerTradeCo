@@ -164,7 +164,7 @@
     {% if request.user == product.seller_email %}
     <div class="mt-6 p-6 bg-white rounded-xl">
         <a href="{% url 'edit' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Edit</a>
-        <a href="{% url 'delete' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a>
+        <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a>
     </div>
     {% else %}
         <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Contact seller</a>
@@ -178,7 +178,7 @@
 
 <div id="smpopup" class="smpopup">
 <p>Copy/paste and share:</p>
-<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this couch selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
+<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
 <br>
 <button onclick="copyText()">Copy Text</button>
 <button onclick="redirectToInstagram()"> <img src="{% static 'instagram.png' %}"  alt="Edit Icon" class="icon"> </button>
@@ -189,7 +189,7 @@
 
 <div id="mpopup" class="smpopup">
 <p>Copy/paste and share:</p>
-<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this couch selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/</textarea>
+<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/</textarea>
 <br>
 <button onclick="copyText()">Copy Text</button>
 <button onclick="redirectToWhatsapp()"> <img src="{% static 'whatsapp.png' %}"  alt="Edit Icon" class="icon"> </button>
@@ -277,6 +277,25 @@
 
 
 <script>
+document.getElementById('deleteButton').addEventListener('click', function(event) {
+    // Prevent the default behavior of the link
+    event.preventDefault();
+
+    // Retrieve the URL from the data-url attribute
+    var url = this.getAttribute('data-url');
+
+    // Display a confirmation dialog
+    var confirmation = confirm("Are you sure you want to delete?");
+
+    // If user confirms, proceed with the deletion
+    if (confirmation) {
+        // Redirect to the delete URL
+        window.location.href = url;
+    } else {
+        // If user cancels, do nothing
+        return;
+    }
+});
     // Function to open the popup
     function openPopupForSocial() {
         document.getElementById('smpopup').style.display = 'block';

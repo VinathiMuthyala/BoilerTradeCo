@@ -119,7 +119,7 @@ def signin(request):
             if (profile.confirm is False):
                 print("im here")
                 return redirect('email_auth')
-            return render(request, 'authentication/home.html', {'firstname': firstname})
+            return redirect('add_listing')
         # null if user not authenticated
         else:
             user_invalid = "Email/Password is incorrect!"
@@ -311,7 +311,7 @@ def email_auth(request):
             profile = request.user.profile
             profile.confirm = True
             profile.save()  # Don't forget to save changes
-            return redirect('home')
+            return redirect('add_listing')
     else:
         # Generates random string combination for password generation
         user_password = generate_auth_password(7)
