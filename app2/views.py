@@ -64,17 +64,13 @@ def add_listing(request):
 def new(request):
     if request.method == 'POST':
         form = NewProductForm(request.POST, request.FILES)
-
         if form.is_valid():
             product = form.save(commit=False)
             product.seller_email = request.user
             product.save()
-
             return redirect("/addlisting")
-        
     else:
         form = NewProductForm()
-
     return render(request, 'productdir/form.html', {
         'form': form,
         'title': 'New product',
@@ -83,18 +79,13 @@ def new(request):
 @login_required
 def edit(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
-
     if request.method == 'POST':
         form = EditProductForm(request.POST, request.FILES, instance=product)
-
         if form.is_valid():
             form.save()
-
             return redirect("/addlisting")
-        
     else:
         form = EditProductForm(instance=product)
-
     return render(request, 'productdir/form.html', {
         'form': form,
         'title': 'Edit product',
@@ -120,12 +111,10 @@ def delete(request, pk):
 
 def detail(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
-
     current_user = request.user
     email = current_user.email
     firstname = current_user.first_name
     productname = product.name
-
     print(current_user)
     print(email)
     print("Seller email", product.seller_email)
