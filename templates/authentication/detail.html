@@ -13,7 +13,8 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        background-color: #fff9c4; 
+        background-color: #c2ceff;
+        /* background-color: #fff9c4; */
         padding: 5%; 
         border-radius: 5%; 
     }
@@ -144,26 +145,45 @@
       #buyerEmail {
         color: black;
       }
+      .filter-option {
+        width: auto;
+        padding: 0 15px;
+        height: 30px;
+        border-radius: 15px;
+        /* background-color: rgb(224, 188, 250); */
+        background-color: #ffee90;
+        /* rgb(255, 255, 121); */
+        color: rgb(0, 0, 0);
+        /* color: rgb(122, 74, 143); */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        cursor: pointer;
+        border: #ffe030;
+        /* border: 2px solid rgb(122, 74, 143); */
+    }
 </style>
 
-<div class="container">
-    <div class="grid grid-cols-5 gap-6">
+<div class="container" style="margin-right: 100px; margin-left: -200px; margin-bottom: 50px; margin-top: 110px">
+    <div class="grid grid-cols-5 gap-6" style="width: 500px;
+    margin-right: 80px; margin-top: -50px; margin-bottom: -20px;">
         <div class="col-span-3">
-            <h2>{{ product.name }}</h2>
-            <img src="{{ product.image.url }}" alt="product_image" class="rounded-xl">
-        </div>
-    
-        <div class="col-span-2">
-            <p>Price: ${{ product.price }}</p>
-            <p>Quality: {{ product.quality_tag }}</p>
-            <p>Category: {{ product.category_tag }}</p>
-            <p>Seller: {{ product.seller_email }}</p>
-            <p>Date Posted: {{ product.date_posted }}</p>
+            <img src="{{ product.image.url }}" alt="product_image" class="rounded-xl" style="height: 400px; display: block; margin-right: 150px;">
         </div>
     </div>
-</div>  
+    <div class="col-span-1" style="margin-left: 30px;">
+        <h1>{{ product.name }}</h1>
+        <p>Price: ${{ product.price }}</p>
+        <p class="filter-option">Quality: {{ product.quality_tag }}</p>
+        <p class="filter-option">Category: {{ product.category_tag }}</p>
+        <p>Seller Email: {{ product.seller_email }}</p>
+        <p>Date Posted: {{ product.date_posted }}</p>
+    </div>
+</div>
+    
 
-<div class="button-container">
+<div class="button-container" style="margin-bottom: 30px">
     {% if request.user == product.seller_email %}
     <div class="mt-6 p-6 bg-white rounded-xl">
         <a href="{% url 'edit' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Edit</a>
@@ -174,10 +194,9 @@
     {% endif %}
 </div>
 
-
 <!-- Button to open the popup -->
-<button onclick="openPopupForSocial()"> Share on Social Media </button>
-<button onclick="openPopupForMessages()"> Share via Messages</button>
+<button onclick="openPopupForSocial()">Share on Social Media</button>
+<button onclick="openPopupForMessages()">Share via Messages</button>
 
 <div id="smpopup" class="smpopup">
 <p>Copy/paste and share:</p>
@@ -323,4 +342,4 @@ document.getElementById('deleteButton').addEventListener('click', function(event
 
 
 {% endblock %}
-
+<br>

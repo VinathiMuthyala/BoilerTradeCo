@@ -405,9 +405,9 @@
           console.log("PRODUCTS", products)
         </script> -->
         <!-- {% if products %} -->
-        {% if products %}
+        {% if not products %}
           <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
-        {% endif %}
+        {% else %}
         <div id="productsContainer" class="grid grid-cols-3 gap-3">
         {% for product in products %}
           <div class="px-6 py-12 bg-gray-100 rounded-xl" style="margin: 5px;">
@@ -426,6 +426,7 @@
         </div>
         {% endfor %}
         </div>
+        {% endif %}
         <!-- <a href="#">
           <div class="product-list">
             <ul>
