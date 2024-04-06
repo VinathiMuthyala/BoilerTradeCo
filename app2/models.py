@@ -28,6 +28,7 @@ class CategoryTag(models.Model):
        ('School supplies', 'School supplies'),
        ('Clothing', 'Clothing'),
        ('Game tickets', 'Game tickets'),
+       ('Other', 'Other'),
    ])
    # get_category()
    def __str__(self):
