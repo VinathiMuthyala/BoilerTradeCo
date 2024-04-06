@@ -3,19 +3,46 @@
 
 {% block content %}
 <style>
+    .button-container {
+        display: flex;
+        justify-content: space-around; /* Adjust as needed */
+    }
+
+    .edit-button,
+    .delete-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+    }
+
+    .edit-button {
+        background-color: #fff9c4; /* Blue color for Edit button */
+    }
+
+    .delete-button {
+        background-color: #fff9c4; /* Red color for Delete button */
+    }
+
+    .edit-button:hover,
+    .delete-button:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+        color: #ccc; /* Text color change on hover */
+    }
     .container {
         display: flex;
         justify-content: center;
-        margin-top: 25vh;
+        margin-top: 20vh;
     }
     .grid {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        background-color: #fff9c4; 
-        padding: 5%; 
-        border-radius: 5%; 
+        background-color: #fff9c4;
+        padding: 5%;
+        border-radius: 5%;
     }
 
     .col-span-3 {
@@ -35,6 +62,7 @@
         display: flex;
         justify-content: center;
         margin-top: 20px;
+        margin-bottom: 10vh;
     }
 
     @media (max-width: 768px) {
@@ -166,8 +194,10 @@
 <div class="button-container">
     {% if request.user == product.seller_email %}
     <div class="mt-6 p-6 bg-white rounded-xl">
-        <a href="{% url 'edit' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Edit</a>
-        <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a>
+        <!-- <a href="{% url 'edit' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Edit</a>
+        <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a> -->
+        <a href="{% url 'edit' id %}" class="edit-button">Edit</a>
+        <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="delete-button">Delete</a>
     </div>
     {% else %}
         <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Contact seller</a>
