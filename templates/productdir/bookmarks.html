@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bookmarks</title>
+    {% load static %}
+    <style>
+        img {
+            height: 100px;
+        }
+
+        ul {
+            background-color: #ffd700;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        li a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        li a:hover {
+            color: gray;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" style="height: 150px; width: 150px">
+    <ul>
+        <li><a href="/addlisting">Home</a></li>
+        <li><a href="">Bookmarks</a></li>
+        <li><a href="">Sales</a></li>
+        <li><a href="/profile" class="active">Profile</a></li>
+    </ul>
+</nav>
+
+<div>
+    <h2>Bookmarks</h2>
+    <!-- <ul>
+        {% for bookmark in bookmarks %}
+            <li><a href="{{ bookmark.url }}">{{ bookmark.title }}</a></li>
+        {% endfor %}
+    </ul> -->
+</div>
+
+<script src="" async defer></script>
+</body>
+</html>

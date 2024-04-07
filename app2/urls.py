@@ -14,4 +14,5 @@ urlpatterns = [
     path('<int:pk>/edit/', views.edit, name = 'edit'),
     re_path(r'^(?P<category_tag>[\w-]+)/$', views.filter_products_by_category, name='filter_products_by_category'),
     re_path(r'^(?P<quality_tag>[\w-]+)/$', views.filter_products_by_quality, name='filter_products_by_quality'),
+    path('bookmarks/', views.generate_bookmarks, name = 'bookmarks'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

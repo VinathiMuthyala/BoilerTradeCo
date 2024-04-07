@@ -158,6 +158,9 @@ def filter_products_by_quality(request, quality_tag):
         'products': products,
     })
 
+def generate_bookmarks(request):
+    return render(request, 'productdir/bookmarks.html')
+
 # def add_listing(request):
 #     print("printing product info from views.py")
 #     if request.method == "POST":
