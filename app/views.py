@@ -341,8 +341,33 @@ def filter_products_by_price(request):
 
     try:
         max_price = int(price_range)  # Maximum price from the slider
-        products = ProductInfo.objects.filter(price__lte=max_price)
+        filtered_products = ProductInfo.objects.filter(price__lte=max_price)
+
+        products = ([{
+        'name': product.name,
+        'price': product.price,
+        'image': product.image.url,
+        'id': product.pk,
+        } for product in filtered_products])
+        
     except (ValueError, TypeError):
         return HttpResponseBadRequest("Invalid priceRange parameter")
 
-    return render(request, 'authentication/filtered_products.html', {'products': products, 'max_price': max_price})
+    return render(request, 'productdir/filtered-products.html', {'products': products,})
+
+
+
+
+# def filter_products_by_category(request, category_tag):
+#     filtered_products = ProductInfo.objects.filter(category_tag__tag=category_tag)
+
+#     products = ([{
+#         'name': product.name,
+#         'price': product.price,
+#         'image': product.image.url,
+#         'id': product.pk,
+#     } for product in filtered_products])
+
+#     return render(request, 'productdir/filtered-products.html', {
+#         'products': products,
+#     })
