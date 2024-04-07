@@ -1,6 +1,6 @@
 # BoilerTradeCo
 
-url: https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/
+Url: https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/
 
 **Problem Statement**
 
