@@ -28,6 +28,7 @@ class CategoryTag(models.Model):
        ('School supplies', 'School supplies'),
        ('Clothing', 'Clothing'),
        ('Game tickets', 'Game tickets'),
+       ('Other', 'Other'),
    ])
    # get_category()
    def __str__(self):
@@ -47,7 +48,7 @@ class ProductInfo(models.Model):
    quality_tag = models.ForeignKey(QualityTag, null=False, related_name='products', on_delete=models.CASCADE)
    category_tag = models.ForeignKey(CategoryTag, null=False, related_name='products', on_delete=models.CASCADE)
    is_sold = models.BooleanField(default=False)
-   date_posted = models.DateTimeField(default=0000-00-00)
+   date_posted = models.DateTimeField() #default=0000-00-00
    image = models.ImageField(upload_to='product_images', blank=True, null=True)
    #seller_name = models.CharField(max_length=100)
    #seller_phone_number = models.IntegerField(validators=[MaxValueValidator(9999999999)])

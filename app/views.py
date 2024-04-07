@@ -122,7 +122,7 @@ def signin(request):
             if (profile.confirm is False):
                 print("im here")
                 return redirect('email_auth')
-            return render(request, 'authentication/home.html', {'firstname': firstname})
+            return redirect('add_listing')
         # null if user not authenticated
         else:
             user_invalid = "Email/Password is incorrect!"
@@ -243,8 +243,10 @@ def emailreport(request):
             try:
                 report_text = request.POST.get('reportText')
                 seller_email = request.POST.get('sellerEmail')
-                user_email = request.POST.get('userEmail')
-                send_mail(subject='User Report: ' + seller_email + ' by ' + user_email, message=report_text, from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com'], fail_silently=False)
+                #user_email = request.POST.get('userEmail')
+                user_email = request.user.email
+                email_text = f"{user_email} submitted a report against seller: {seller_email}.\n\nTheir report is as follows:\n{report_text}"
+                send_mail(subject='User Report: ' + seller_email + ' by ' + user_email, message=email_text, from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com'], fail_silently=False)
                 #send(subject='User Report: ' + seller_email + ' by ' + user_email, message=report_text, recipient_list=['boilertradeco@gmail.com'])
                 report_success = "Report submitted successfully."
                 return HttpResponseRedirect(f'/profile/?success_message={report_success}')
@@ -258,24 +260,29 @@ def emailseller(request):
         if 'email_seller' in request.POST:
             try:
                 seller_email = request.POST.get('sellerEmail')
-                buyer_email = request.POST.get('buyerEmail')
-                user_name = request.user.first_name
+                print("seller email: ", seller_email)
+                buyer_email = request.user.email
+                #buyer_email = request.POST.get('buyerEmail')
+                firstname = request.user.first_name
+                lastname = request.user.last_name
+                buyer_name = f"{firstname} {lastname}"
                 contact = request.POST.get('anotherContact')
-                #user_email = request.user.email
-                if (contact != '' or contact != 'NA' or contact != 'N/A' or contact != 'n/a' or contact != 'n/a'):
+                print("contact: ", contact)
+                if (contact == '' or contact == 'NA' or contact == 'N/A' or contact == 'n/a' or contact == 'na'):
                     email_text = f"Hi {seller_email},\n\n\tA buyer has expressed interest in your product! To contact this buyer, email {buyer_email}."
-                email_text = f"Hi {seller_email},\n\n\tA buyer has expressed interest in your product! To contact this buyer, email {buyer_email}. They also have listed another method of contact: {contact}."
-                send_mail(subject=f"Product Interest from Buyer: {user_name}", 
+                else:
+                    email_text = f"Hi {seller_email},\n\n\tA buyer has expressed interest in your product! To contact this buyer, email {buyer_email}. They also have listed another method of contact: {contact}."
+                send_mail(subject=f"Product Interest from Buyer: {buyer_name}", 
                           message=email_text, 
                           from_email='boilertradeco@gmail.com', 
                           recipient_list=['boilertradeco@gmail.com', seller_email],
                           fail_silently=False)
                 interest_success = "Product interest form submitted successfully."
-                return HttpResponseRedirect(f'/home/?success_message={interest_success}')
+                return HttpResponseRedirect(f'/addlisting/?success_message={interest_success}')
             except Exception as e:
                 print(e)
                 interest_fail = "Product interest form was not submitted successfully."
-                return HttpResponseRedirect(f'/home/?error_message={interest_fail}')
+                return HttpResponseRedirect(f'/addlisting/?error_message={interest_fail}')
             return redirect('home')
 
 def generate_pdf(template_src, context_dict):
@@ -314,7 +321,7 @@ def email_auth(request):
             profile = request.user.profile
             profile.confirm = True
             profile.save()  # Don't forget to save changes
-            return redirect('home')
+            return redirect('add_listing')
     else:
         # Generates random string combination for password generation
         user_password = generate_auth_password(7)

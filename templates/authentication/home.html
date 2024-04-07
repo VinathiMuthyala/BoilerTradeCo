@@ -232,16 +232,24 @@
       margin-bottom: 1rem;
     }
 
+    .selected {
+      background-color: #ffe44b; /* Change to your desired highlighted color */
+      /* Additional styling for the selected state */
+    }
+    #productName {
+      color: rgb(52, 47, 47);
+    }
+
     </style>
   </head> 
 
   <body>
     <nav>
       <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" style="height: 150px; width: 150px">
-      <h1 style="text-align: center; margin-top: -50px;"> Welcome to the BoilerTradeCo Homepage!</h1> 
+      <h1 style="text-align: center; margin-top: -50px;">Welcome to the BoilerTradeCo Homepage!</h1> 
         <ul>
             <li><a href="">Home</a></li>
-            <li><a href="">Bookmarks</a></li>
+            <li><a href="/bookmarks">Bookmarks</a></li>
             <li><a href="">Sales</a></li>
             <li><a href="/profile">Profile</a></li>
         </ul>
@@ -268,6 +276,7 @@
         <button class="filter-option" data-category="Game-Tickets">Game Tickets</button>
         <button class="filter-option" data-category="School-Supplies">School Supplies</button>
         <button class="filter-option" data-category="Textbooks">Textbooks</button>
+        <button class="filter-option" data-category="Other">Other</button>
       </div>
 
       <!-- Quality filters -->
@@ -300,6 +309,23 @@
   </form>
 
     </div>
+
+    <!-- highlight filter button -->
+    <script>
+      document.querySelectorAll('.filter-option').forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Remove the 'selected' class from all filter buttons
+            document.querySelectorAll('.filter-option').forEach(function(btn) {
+                btn.classList.remove('selected');
+            });
+    
+            // Add the 'selected' class to the clicked button
+            this.classList.add('selected');
+    
+            // Your existing code to filter products goes here
+        });
+      });
+    </script>
 
     <!-- filtering by category/quality -->
     <script>
@@ -371,28 +397,36 @@
     </script> -->
 
     <!-- Loading products into directory -->
-    <div class="px-6 py-12 bg-gray-100 rounded-xl">
+    <!-- <div class="px-6 py-12 bg-gray-100 rounded-xl">
 
-      <div id="productsContainer" class="grid grid-cols-3 gap-3">
+      <div id="productsContainer" class="grid grid-cols-3 gap-3"> -->
         <!-- Products will be dynamically added here -->
         <!-- <script>
           console.log("PRODUCTS", products)
         </script> -->
         <!-- {% if products %} -->
+        {% if not products %}
+          <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
+        {% else %}
+        <div id="productsContainer" class="grid grid-cols-3 gap-3">
         {% for product in products %}
+          <div class="px-6 py-12 bg-gray-100 rounded-xl" style="margin: 5px;">
           <div>
             <a href="{% url 'detail' product.id %}">
               <div>
-                <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl">
+                <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl" style="width: 280px; height: 200px; display: block; margin: auto;">
               </div>
 
-              <div class="p-6 bg-white rounded-b-xl">
-                <h2 class="text-2xl">{{ product.name }}</h2>
-                <p class="text-gray-500">{{ product.price }}</p>
+              <div class="p-6 bg-white rounded-b-xl" style="text-align: center;">
+                <h2 id="productName" class="text-2xl">{{ product.name }}</h2>
+                <h3 id="productPrice" class="text-gray-500">${{ product.price }}</h3>
               </div>
             </a>
           </div>
+        </div>
         {% endfor %}
+        </div>
+        {% endif %}
         <!-- <a href="#">
           <div class="product-list">
             <ul>
@@ -405,8 +439,8 @@
         <!-- {% else %}
           <h3>There are currently no products in the product directory!</h3>
         {% endif %} -->
-      </div>
-    </div>
+      <!-- </div>
+    </div> -->
 
     <!-- <script>
       document.addEventListener("DOMContentLoaded", function() {

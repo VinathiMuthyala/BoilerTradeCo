@@ -3,19 +3,49 @@
 
 {% block content %}
 <style>
+    .button-container {
+        display: flex;
+        justify-content: space-around; /* Adjust as needed */
+    }
+
+    .edit-button,
+    .delete-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease; /* Smooth transition on hover */
+    }
+
+    .edit-button {
+        background-color: #fff9c4; /* Blue color for Edit button */
+    }
+
+    .delete-button {
+        background-color: #fff9c4; /* Red color for Delete button */
+    }
+
+    .edit-button:hover,
+    .delete-button:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+        color: #ccc; /* Text color change on hover */
+    }
     .container {
         display: flex;
         justify-content: center;
-        margin-top: 25vh;
+        margin-top: 20vh;
     }
     .grid {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        background-color: #fff9c4; 
+        background-color: #c2ceff;
+        /* background-color: #fff9c4; */
         padding: 5%; 
         border-radius: 5%; 
+        padding: 5%;
+        border-radius: 5%;
     }
 
     .col-span-3 {
@@ -35,6 +65,7 @@
         display: flex;
         justify-content: center;
         margin-top: 20px;
+        margin-bottom: 10vh;
     }
 
     @media (max-width: 768px) {
@@ -141,44 +172,67 @@
       .label {
         color: black;
       }
+      #buyerEmail {
+        color: black;
+      }
+      .filter-option {
+        width: auto;
+        padding: 0 15px;
+        height: 30px;
+        border-radius: 15px;
+        /* background-color: rgb(224, 188, 250); */
+        background-color: #ffee90;
+        /* rgb(255, 255, 121); */
+        color: rgb(0, 0, 0);
+        /* color: rgb(122, 74, 143); */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        cursor: pointer;
+        border: #ffe030;
+        /* border: 2px solid rgb(122, 74, 143); */
+    }
 </style>
 
-<div class="container">
-    <div class="grid grid-cols-5 gap-6">
+<div class="container" style="margin-right: 100px; margin-left: -200px; margin-bottom: 50px; margin-top: 110px">
+    <div class="grid grid-cols-5 gap-6" style="width: 500px;
+    margin-right: 80px; margin-top: -50px; margin-bottom: -20px;">
         <div class="col-span-3">
-            <h2>{{ product.name }}</h2>
-            <img src="{{ product.image.url }}" alt="product_image" class="rounded-xl">
-        </div>
-    
-        <div class="col-span-2">
-            <p>Price: ${{ product.price }}</p>
-            <p>Quality: {{ product.quality_tag }}</p>
-            <p>Category: {{ product.category_tag }}</p>
-            <p>Seller: {{ product.seller_email }}</p>
-            <p>Date Posted: {{ product.date_posted }}</p>
+            <img src="{{ product.image.url }}" alt="product_image" class="rounded-xl" style="height: 400px; display: block; margin-right: 150px;">
         </div>
     </div>
-</div>  
+    <div class="col-span-1" style="margin-left: 30px;">
+        <h1>{{ product.name }}</h1>
+        <p>Price: ${{ product.price }}</p>
+        <p class="filter-option">Quality: {{ product.quality_tag }}</p>
+        <p class="filter-option">Category: {{ product.category_tag }}</p>
+        <p>Seller Email: {{ product.seller_email }}</p>
+        <p>Date Posted: {{ product.date_posted }}</p>
+    </div>
+</div>
+    
 
-<div class="button-container">
+<div class="button-container" style="margin-bottom: 30px">
     {% if request.user == product.seller_email %}
     <div class="mt-6 p-6 bg-white rounded-xl">
-        <a href="{% url 'edit' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Edit</a>
-        <a href="{% url 'delete' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a>
+        <!-- <a href="{% url 'edit' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Edit</a>
+        <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a> -->
+        <a href="{% url 'edit' id %}" class="edit-button">Edit</a>
+        <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="delete-button">Delete</a>
     </div>
     {% else %}
         <a href="#" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Contact seller</a>
     {% endif %}
 </div>
 
-
 <!-- Button to open the popup -->
-<button onclick="openPopupForSocial()"> Share on Social Media </button>
-<button onclick="openPopupForMessages()"> Share via Messages</button>
+<button onclick="openPopupForSocial()">Share on Social Media</button>
+<button onclick="openPopupForMessages()">Share via Messages</button>
 
 <div id="smpopup" class="smpopup">
 <p>Copy/paste and share:</p>
-<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this couch selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
+<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
 <br>
 <button onclick="copyText()">Copy Text</button>
 <button onclick="redirectToInstagram()"> <img src="{% static 'instagram.png' %}"  alt="Edit Icon" class="icon"> </button>
@@ -189,7 +243,7 @@
 
 <div id="mpopup" class="smpopup">
 <p>Copy/paste and share:</p>
-<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this couch selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/</textarea>
+<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/</textarea>
 <br>
 <button onclick="copyText()">Copy Text</button>
 <button onclick="redirectToWhatsapp()"> <img src="{% static 'whatsapp.png' %}"  alt="Edit Icon" class="icon"> </button>
@@ -211,72 +265,65 @@
       <h2>Product Interest Form</h2>
       <form id="emailSeller" method="post" action="{% url 'emailseller' %}">
           {% csrf_token %}
-          <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br>
-          <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br>
-          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact (Phone number, Instagram, GroupMe, etc.)?"></textarea><br> <!-- <br> -->
-          <button onclick="validateForm()" type="submit" name="email_seller">Submit</button>
+          <!-- <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br> -->
+          <!-- <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br> -->
+          <fieldset id="buyerEmail" name="buyerEmail" contenteditable=False style="display: block;">Buyer email: {{ request.user }}</fieldset><br>
+          <input type="hidden" id="sellerEmail" name="sellerEmail" value="{{ product.seller_email }}">
+          <!-- <fieldset id="sellerEmail" name="sellerEmail" contenteditable=False style="display: none;">{{ product.seller_email }}</fieldset> -->
+          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact other than account email above (Phone number, Instagram, GroupMe, etc.)?"></textarea><br><br>
+          <button onclick="submitInterest()" type="submit" name="email_seller">Submit</button>
           <button onclick="closePopup()" type="button">Cancel</button>
       </form>
     </div>
     <br>
 
-      <script>
-          function openPopup() {
-              document.getElementById("overlay").style.display = "block";
-              document.getElementById("popup").style.display = "block";
-          }
-          
-          function closePopup() {
-              document.getElementById("overlay").style.display = "none";
-              document.getElementById("popup").style.display = "none";
-          }
-          
-          function submitInterest() {
-              closePopup();
-              alert("Thank you for submitting your interest in this product. An email has been sent to the seller.");
-          }
-
-          function validateForm() {
-              var buyerEmail = document.getElementById("buyerEmail").value;
-              var sellerEmail = document.getElementById("sellerEmail").value;
-              if (buyerEmail === "" || sellerEmail === "") {
-                  //alert("Please fill out all required fields.");
-                  return false;
-              }
-              return submitInterest();
-          }
-      </script>
-
-<script>
-    function openPopup() {
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("popup").style.display = "block";
-    }
-    
-    function closePopup() {
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("popup").style.display = "none";
-    }
-    
-    function submitInterest() {
-        closePopup();
-        alert("Thank you for submitting your interest in this product. An email has been sent to the seller.");
-    }
-
-    function validateForm() {
-        var buyerEmail = document.getElementById("buyerEmail").value;
-        var sellerEmail = document.getElementById("sellerEmail").value;
-        if (buyerEmail === "" || sellerEmail === "") {
-            //alert("Please fill out all required fields.");
-            return false;
+    <script>
+        function openPopup() {
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("popup").style.display = "block";
         }
-        return submitInterest();
-    }
-</script>
+        
+        function closePopup() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("popup").style.display = "none";
+        }
+        
+        function submitInterest() {
+            closePopup();
+            alert("Thank you for submitting the interest form for this product. An email has been sent to the seller to notify them of your interest.");
+        }
 
-
+        function validateForm() {
+            var buyerEmail = document.getElementById("buyerEmail").value;
+            var sellerEmail = document.getElementById("sellerEmail").value;
+            if (buyerEmail === "" || sellerEmail === "") {
+                //alert("Please fill out all required fields.");
+                return false;
+            }
+            return submitInterest();
+        }
+    </script>
 
 <script>
+document.getElementById('deleteButton').addEventListener('click', function(event) {
+    // Prevent the default behavior of the link
+    event.preventDefault();
+
+    // Retrieve the URL from the data-url attribute
+    var url = this.getAttribute('data-url');
+
+    // Display a confirmation dialog
+    var confirmation = confirm("Are you sure you want to delete?");
+
+    // If user confirms, proceed with the deletion
+    if (confirmation) {
+        // Redirect to the delete URL
+        window.location.href = url;
+    } else {
+        // If user cancels, do nothing
+        return;
+    }
+});
     // Function to open the popup
     function openPopupForSocial() {
         document.getElementById('smpopup').style.display = 'block';
@@ -327,4 +374,4 @@
 
 
 {% endblock %}
-
+<br>
