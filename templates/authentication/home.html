@@ -210,6 +210,7 @@
     .bg-gray-100 {
       /* background-color: #f4f4f4; */
       background-color: #b5b0b0;
+      width: 75%;
     }
 
     .rounded-xl {
@@ -347,7 +348,11 @@
         fetch(`/${category}/`)
           .then(response => response.text())
           .then(html => {
-            document.getElementById('productsContainer').innerHTML = html;
+            const productsContainer = document.getElementById('productsContainer');
+            productsContainer.innerHTML = `<div class="grid grid-cols-3 gap-3">${html}</div>`;
+          })
+          .then(() => {
+            applyGridStyles();
           });
       }
 
@@ -355,8 +360,19 @@
         fetch(`/${quality}/`)
           .then(response => response.text())
           .then(html => {
-            document.getElementById('productsContainer').innerHTML = html;
+            const productsContainer = document.getElementById('productsContainer')
+            productsContainer.innerHTML = `<div class="grid grid-cols-3 gap-3">${html}</div>`;
+          })
+          .then(() => {
+            applyGridStyles();
           });
+      }
+
+      function applyGridStyles() {
+        const filteredProducts = document.querySelectorAll('.px-6.py-12.bg-gray-100.rounded-xl');
+        filteredProducts.forEach(product => {
+            product.classList.add('grid-cols-3', 'gap-3');
+        });
       }
     </script>
 
@@ -414,7 +430,7 @@
           <div>
             <a href="{% url 'detail' product.id %}">
               <div>
-                <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl" style="width: 280px; height: 200px; display: block; margin: auto;">
+                <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl" style="max-width: 280px; height: 200px; display: block; margin: auto;">
               </div>
 
               <div class="p-6 bg-white rounded-b-xl" style="text-align: center;">
