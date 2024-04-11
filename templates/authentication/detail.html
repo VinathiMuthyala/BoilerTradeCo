@@ -18,11 +18,11 @@
     }
 
     .edit-button {
-        background-color: #fff9c4; /* Blue color for Edit button */
+        background-color: #fff9c4;
     }
 
     .delete-button {
-        background-color: #fff9c4; /* Red color for Delete button */
+        background-color: #fff9c4;
     }
 
     .edit-button:hover,
@@ -40,7 +40,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        background-color: #c2ceff;
+        background-color: #d4d1d1;
         /* background-color: #fff9c4; */
         padding: 5%; 
         border-radius: 5%; 
@@ -121,6 +121,19 @@
         border: none;
         cursor: pointer;
         border-radius: 5px;
+    }
+
+    .linkpopup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #f9f9f9;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        z-index: 1;
     }
 
     .popup {
@@ -232,9 +245,9 @@
 
 <div id="smpopup" class="smpopup">
 <p>Copy/paste and share:</p>
-<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
+<textarea id="socialMediaText" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
 <br>
-<button onclick="copyText()">Copy Text</button>
+<button onclick="copyText('socialMediaText')">Copy Text</button>
 <button onclick="redirectToInstagram()"> <img src="{% static 'instagram.png' %}"  alt="Edit Icon" class="icon"> </button>
 <button onclick="redirectToFacebook()"><img src="{% static 'facebook.png' %}"  alt="Edit Icon" class="icon"></button>
 <button onclick="redirectToSnapchat()"> <img src="{% static 'snapchat.png' %}"  alt="Edit Icon" class="icon"></button>
@@ -243,9 +256,9 @@
 
 <div id="mpopup" class="smpopup">
 <p>Copy/paste and share:</p>
-<textarea id="sample-text" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/</textarea>
+<textarea id="messagesText" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/</textarea>
 <br>
-<button onclick="copyText()">Copy Text</button>
+<button onclick="copyText('messagesText')">Copy Text</button>
 <button onclick="redirectToWhatsapp()"> <img src="{% static 'whatsapp.png' %}"  alt="Edit Icon" class="icon"> </button>
 <button onclick="closePopupForMessages()">Cancel</button>
 </div>
@@ -275,6 +288,16 @@
           <button onclick="closePopup()" type="button">Cancel</button>
       </form>
     </div>
+
+    <button onclick="openPopupForLink()">Generate Link</button>
+
+    <div id="linkpopup" class="linkpopup">
+        <p>Copy/paste and share:</p>
+        <textarea id="linkText" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Check out the posting with this link! :3 **insert link once generated**</textarea>
+        <br>
+        <button onclick="copyText('linkText')">Copy Text</button>
+        <button onclick="closePopupForLink()">Cancel</button>
+        </div>
     <br>
 
     <script>
@@ -333,9 +356,13 @@ document.getElementById('deleteButton').addEventListener('click', function(event
         document.getElementById('mpopup').style.display = 'block';
     }
 
+    function openPopupForLink() {
+        document.getElementById('linkpopup').style.display = 'block';
+    }
+
     // Function to copy the text to clipboard
-    function copyText() {
-        var copyText = document.getElementById("sample-text");
+    function copyText(textareaId) {
+        var copyText = document.getElementById(textareaId);
         copyText.select();
         copyText.setSelectionRange(0, 99999); /* For mobile devices */
         document.execCommand("copy");
@@ -349,6 +376,10 @@ document.getElementById('deleteButton').addEventListener('click', function(event
 
     function closePopupForMessages() {
         document.getElementById('mpopup').style.display = 'none';
+    }
+
+    function closePopupForLink() {
+        document.getElementById('linkpopup').style.display = 'none';
     }
 
     // Function to redirect to Instagram
