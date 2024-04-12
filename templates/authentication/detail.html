@@ -1,4 +1,13 @@
 <!-- {% block title %}{{ product.name }}{% endblock %} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <!-- Add jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
 {% load static %}
 
 {% block content %}
@@ -208,6 +217,7 @@
     }
 </style>
 
+<body>
 <div class="container" style="margin-right: 100px; margin-left: -200px; margin-bottom: 50px; margin-top: 110px">
     <div class="grid grid-cols-5 gap-6" style="width: 500px;
     margin-right: 80px; margin-top: -50px; margin-bottom: -20px;">
@@ -218,6 +228,7 @@
     <div class="col-span-1" style="margin-left: 30px;">
         <h1>{{ product.name }}</h1>
         <p>Price: ${{ product.price }}</p>
+        <p>ID: {{ product.product_id }}</p>
         <p class="filter-option">Quality: {{ product.quality_tag }}</p>
         <p class="filter-option">Category: {{ product.category_tag }}</p>
         <p>Seller Email: {{ product.seller_email }}</p>
@@ -240,6 +251,7 @@
 </div>
 
 <!-- Button to open the popup -->
+<button id="bookmarkBtn">Bookmark Product</button>
 <button onclick="openPopupForSocial()">Share on Social Media</button>
 <button onclick="openPopupForMessages()">Share via Messages</button>
 
@@ -403,6 +415,33 @@ document.getElementById('deleteButton').addEventListener('click', function(event
     }
 </script>
 
+<script>
+    $(document).ready(function() {
+        // Event listener for bookmark button click
+        $('#bookmarkBtn').click(function() {
+            console.log('Product ID:', '{{ product.id }}');
+            // Send a POST request to bookmark the product
+            $.ajax({
+                type: 'POST',
+                url: '{% url "bookmark_product" %}',  // Adjust the URL to your Django view for bookmarking
+                data: {
+                    'product_id': '{{ product.product_id }}',  // Pass the product ID to the view
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'  // Include CSRF token for security
+                },
+                success: function(response) {
+                    // Alert the user on successful bookmarking
+                    alert('Product bookmarked successfully!');
+                },
+                error: function(xhr, errmsg, err) {
+                    // Alert the user on error
+                    alert('Failed to bookmark product. Please try again later.');
+                }
+            });
+        });
+    });
+</script>
 
 {% endblock %}
 <br>
+</body>
+</html>

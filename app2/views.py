@@ -11,6 +11,8 @@ from decimal import Decimal
 from django.contrib.auth.decorators import login_required
 from .forms import NewProductForm, EditProductForm
 from django.urls import reverse
+from .models import Bookmark
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 def layout(request):
@@ -120,7 +122,8 @@ def detail(request, pk):
     print(email)
     print("Seller email", product.seller_email)
 
-    id = product.pk
+    id = product.product_id
+    print(id)
 
     return render(request, 'authentication/detail.html', {
         'product': product,
@@ -160,7 +163,34 @@ def filter_products_by_quality(request, quality_tag):
     })
 
 def generate_bookmarks(request):
-    return render(request, 'productdir/bookmarks.html')
+    return render(request, "productdir/bookmarks.html")
+
+@require_POST
+def bookmark_product(request):
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'User not authenticated'}, status=401)
+
+    # Get the product ID from the AJAX request
+    product_id = request.POST.get('product_id')
+
+
+    # Check if the product exists
+    try:
+        product = ProductInfo.objects.get(pk=product_id)
+    except ProductInfo.DoesNotExist:
+        return JsonResponse({'error': 'Product not found'}, status=404)
+
+    # Check if the product is already bookmarked by the user
+    if Bookmark.objects.filter(user=request.user, product=product).exists():
+        return JsonResponse({'error': 'Product already bookmarked'}, status=400)
+
+    # Create a new bookmark entry
+    bookmark = Bookmark(user=request.user, product=product)
+    bookmark.save()
+
+    # Return success response
+    return JsonResponse({'success': 'Product bookmarked successfully'})
 
 # def add_listing(request):
 #     print("printing product info from views.py")
