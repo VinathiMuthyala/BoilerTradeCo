@@ -5,11 +5,15 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class QualityTag(models.Model):
-    tag = models.CharField(max_length=100, choices = [
-       ('Like New', 'Like New'),
-       ('Good', 'Good'),
-       ('Acceptable', 'Acceptable'),
-    ])
+    LIKE_NEW = 'Like New'
+    GOOD = 'Good'
+    ACCEPTABLE = 'Acceptable'
+    TAG_CHOICES = [
+        (LIKE_NEW, 'Like New'),
+        (GOOD, 'Good'),
+        (ACCEPTABLE, 'Acceptable'),
+    ]
+    tag = models.CharField(max_length=100, choices=TAG_CHOICES)
     # get_quality()
     def __str__(self):
         return self.tag
@@ -21,19 +25,27 @@ class QualityTag(models.Model):
 
 
 class CategoryTag(models.Model):
-   tag= models.CharField(max_length=100, choices = [
-       ('Furniture', 'Furniture'),
-       ('Appliances', 'Appliances'),
-       ('Textbooks', 'Textbooks'),
-       ('School supplies', 'School supplies'),
-       ('Clothing', 'Clothing'),
-       ('Game tickets', 'Game tickets'),
-       ('Other', 'Other'),
-   ])
+    FURNITURE = 'Furniture'
+    APPLIANCES = 'Appliances'
+    TEXTBOOKS = 'Textbooks'
+    SCHOOL_SUPPLIES = 'School supplies'
+    CLOTHING = 'Clothing'
+    GAME_TICKETS = 'Game tickets'
+    OTHER = 'Other'
+    TAG_CHOICES = [
+        (FURNITURE, 'Furniture'),
+        (APPLIANCES, 'Appliances'),
+        (TEXTBOOKS, 'Textbooks'),
+        (SCHOOL_SUPPLIES, 'School supplies'),
+        (CLOTHING, 'Clothing'),
+        (GAME_TICKETS, 'Game tickets'),
+        (OTHER, 'Other'),
+    ]
+    tag = models.CharField(max_length=100, choices=TAG_CHOICES)
    # get_category()
-   def __str__(self):
+    def __str__(self):
        return self.tag
-   class Meta:
+    class Meta:
        ordering = ('tag',)
        verbose_name_plural = 'CategoryTag'
 
