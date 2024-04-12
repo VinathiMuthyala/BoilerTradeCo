@@ -1,7 +1,5 @@
-{% block title %} {{ title }}{% endblock %}
-
 {% block content %}
-<h1 class="mb-6 text-3xl">{{ title }}</h1>
+<h2 class="mb-6 text-3xl">{{ title }}</h2>
 
 <form method="post" action="." enctype="multipart/form-data">
     {% csrf_token %}

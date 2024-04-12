@@ -221,7 +221,7 @@
         <p class="filter-option">Quality: {{ product.quality_tag }}</p>
         <p class="filter-option">Category: {{ product.category_tag }}</p>
         <p>Seller Email: {{ product.seller_email }}</p>
-        <p>Date Posted: {{ product.date_posted }}</p>
+        <p>Date Posted: {{ product.date_posted|date:"F j, Y" }}</p>
     </div>
 </div>
     

@@ -421,27 +421,27 @@
           console.log("PRODUCTS", products)
         </script> -->
         <!-- {% if products %} -->
-        {% if not products %}
-          <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
-        {% else %}
-        <div id="productsContainer" class="grid grid-cols-3 gap-3">
-        {% for product in products %}
-          <div class="px-6 py-12 bg-gray-100 rounded-xl" style="margin: 5px;">
-          <div>
-            <a href="{% url 'detail' product.id %}">
-              <div>
-                <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl" style="max-width: 280px; height: 200px; display: block; margin: auto;">
-              </div>
+        {% if products|length > 0 %}
+          <div id="productsContainer" class="grid grid-cols-3 gap-3">
+            {% for product in products %}
+              <div class="px-6 py-12 bg-gray-100 rounded-xl" style="margin: 5px;">
+                <div>
+                  <a href="{% url 'detail' product.id %}">
+                    <div>
+                      <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl" style="max-width: 280px; height: 200px; display: block; margin: auto;">
+                    </div>
 
-              <div class="p-6 bg-white rounded-b-xl" style="text-align: center;">
-                <h2 id="productName" class="text-2xl">{{ product.name }}</h2>
-                <h3 id="productPrice" class="text-gray-500">${{ product.price }}</h3>
+                    <div class="p-6 bg-white rounded-b-xl" style="text-align: center;">
+                      <h2 id="productName" class="text-2xl">{{ product.name }}</h2>
+                      <h3 id="productPrice" class="text-gray-500">${{ product.price }}</h3>
+                    </div>
+                  </a>
+                </div>
               </div>
-            </a>
+            {% endfor %}
           </div>
-        </div>
-        {% endfor %}
-        </div>
+        {% else %}
+          <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
         {% endif %}
         <!-- <a href="#">
           <div class="product-list">

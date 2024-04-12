@@ -9,21 +9,25 @@
 </head>
 <body>
     <h1>Product Directory</h1>
-    <ul>
-        {% for product in products %}
-            <div>
-                <a href="#">
+    {% if products|length == 0 %}
+        <p>There are no products currently in your product directory.</p>
+    {% else %}
+        <ul>
+            {% for product in products %}
                 <div>
-                    <img src="{{ product.image.url }}" class="rounded-t-xl">
-                </div>
+                    <a href="#">
+                    <div>
+                        <img src="{{ product.image.url }}" class="rounded-t-xl">
+                    </div>
 
-                <div class="p-6 bg-white rounded-b-xl">
-                    <h2 class="text-2xl">{{ product.name }}</h2>
-                    <p class="text-gray-500">{{ product.price }}</p>
+                    <div class="p-6 bg-white rounded-b-xl">
+                        <h2 class="text-2xl">{{ product.name }}</h2>
+                        <p class="text-gray-500">{{ product.price }}</p>
+                    </div>
+                    </a>
                 </div>
-                </a>
-            </div>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </body>
 </html>

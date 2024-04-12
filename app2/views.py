@@ -24,6 +24,7 @@ def add_listing(request):
     products = ProductInfo.objects.filter(is_sold=False)
     print("Number of products:", len(products))
     categories = CategoryTag.objects.all().values('tag')
+    # print(categories)
     qualities = QualityTag.objects.all().values('tag')
 
     # product_list_json = serialize('json', products)
@@ -73,7 +74,7 @@ def new(request):
         form = NewProductForm()
     return render(request, 'productdir/form.html', {
         'form': form,
-        'title': 'New product',
+        'title': 'Add a Product!',
     })
 
 @login_required

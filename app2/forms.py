@@ -1,10 +1,16 @@
 from django import forms
+from django.utils import timezone
 
 from .models import ProductInfo, QualityTag, CategoryTag
 
 INPUT_CLASSES = 'w-full py-4 px-6 rounded-xl border'
 
 class NewProductForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(NewProductForm, self).__init__(*args, **kwargs)
+        self.fields['date_posted'].initial = timezone.now().date().strftime('%Y-%m-%d')
+        self.fields['date_posted'].widget.attrs['readonly'] = True
+
     class Meta:
         model = ProductInfo
         fields = ('seller_email', 'name', 'price', 'description', 'quality_tag', 'category_tag', 'is_sold', 'date_posted', 'image',)
