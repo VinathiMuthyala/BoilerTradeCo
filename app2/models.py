@@ -182,3 +182,7 @@ class ProductListing(models.Model):
     
     class Meta:
        verbose_name_plural = 'ProductListing'
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(User, related_name='bookmarks', on_delete=models.CASCADE)
+    post = models.ForeignKey(ProductInfo, related_name='bookmarked_by', on_delete=models.CASCADE)
