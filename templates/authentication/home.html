@@ -380,6 +380,10 @@
     {% if user.is_authenticated %}
     <h1>Product Directory</h1>
 
+      {% if products|length == 0 %}
+        <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
+      {% endif %}
+
     <!-- load products into product directory -->
     <!-- {% block content %}
       <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
@@ -440,9 +444,9 @@
               </div>
             {% endfor %}
           </div>
-        {% else %}
+        <!-- {% else %}
           <h3 style="text-align: center;">There are currently no products in the product directory!</h3>
-        {% endif %}
+        {% endif %} -->
         <!-- <a href="#">
           <div class="product-list">
             <ul>
