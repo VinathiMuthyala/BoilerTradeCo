@@ -77,6 +77,7 @@ def new(request):
     return render(request, 'productdir/form.html', {
         'form': form,
         'title': 'Add a Product!',
+        'is_sold_option': False,
     })
 
 @login_required
@@ -91,7 +92,8 @@ def edit(request, pk):
         form = EditProductForm(instance=product)
     return render(request, 'productdir/form.html', {
         'form': form,
-        'title': 'Edit product',
+        'title': 'Edit Your Product Posting',
+        'is_sold_option': True,
     })
 
 @login_required

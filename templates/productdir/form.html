@@ -6,38 +6,42 @@
         {% csrf_token %}
 
         {% for field in form %}
-        <div class="mb-4">
-            <label for="{{ field.id_for_label }}">
-                {% if field.label == 'Seller email' %}
-                <div style="margin-bottom: -10px;">Seller Email:</div>
-                {% elif field.label == 'Name' %}
-                <div style="margin-top: 15px; margin-bottom: -10px;">Product Name:</div>
-                {% elif field.label == 'Price' %}
-                <div style="margin-top: 15px; margin-bottom: -10px;">Product Price:</div>
-                {% elif field.label == 'Description' %}
-                <div style="margin-top: 15px; margin-bottom: -10px;">Product Description:</div>
-                {% elif field.label == 'Quality tag' %}
-                <div style="margin-top: 15px; margin-bottom: -10px;">Quality:</div>
-                {% elif field.label == 'Category tag' %}
-                <div style="margin-top: 15px; margin-bottom: -10px;">Category:</div>
-                {% elif field.label == 'Date posted' %}
-                <div style="margin-top: 15px; margin-bottom: -10px;">Date Posted:</div>
-                {% elif field.label == 'Image' %}
-                <div style="margin-top: 15px; margin-bottom: -10px;">Upload a Photo of your Product:</div>
-                <small style="display: block; margin-top: 15px; margin-bottom: -10px;">Allowed file types: JPG, PNG, GIF. Max size: 800KB</small>
-                {% else %}
-                {{ field.label }}
-                {% endif %}
-            </label><br>
-            {{ field }}
-            {% if field.errors %}
-            <div class="text-red-500">
-                {% for error in field.errors %}
-                <span>{{ error }}</span><br>
-                {% endfor %}
-            </div>
+            {% if field.label != 'Is sold' or is_sold_option %}
+                <div class="mb-4">
+                    <label for="{{ field.id_for_label }}">
+                        {% if field.label == 'Seller email' %}
+                        <div style="margin-bottom: -10px;">Seller Email:</div>
+                        {% elif field.label == 'Name' %}
+                        <div style="margin-top: 15px; margin-bottom: -10px;">Product Name:</div>
+                        {% elif field.label == 'Price' %}
+                        <div style="margin-top: 15px; margin-bottom: -10px;">Product Price:</div>
+                        {% elif field.label == 'Description' %}
+                        <div style="margin-top: 15px; margin-bottom: -10px;">Product Description:</div>
+                        {% elif field.label == 'Quality tag' %}
+                        <div style="margin-top: 15px; margin-bottom: -10px;">Quality:</div>
+                        {% elif field.label == 'Category tag' %}
+                        <div style="margin-top: 15px; margin-bottom: -10px;">Category:</div>
+                        {% elif field.label == 'Is sold' and is_sold_option %}
+                        <div style="margin-top: 15px; margin-bottom: -10px;">Is Sold:</div>
+                        {% elif field.label == 'Date posted' %}
+                        <div style="margin-top: 15px; margin-bottom: -10px;">Date Posted:</div>
+                        {% elif field.label == 'Image' %}
+                        <div style="margin-top: 15px; margin-bottom: -10px;">Upload a Photo of your Product:</div>
+                        <small style="display: block; margin-top: 15px; margin-bottom: -10px;">Allowed file types: JPG, PNG, GIF. Max size: 800KB</small>
+                        {% else %}
+                        {{ field.label }}
+                        {% endif %}
+                    </label><br>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="text-red-500">
+                        {% for error in field.errors %}
+                        <span>{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
             {% endif %}
-        </div>
         {% endfor %}
 
         {% if form.non_field_errors %}
@@ -48,7 +52,7 @@
         </div>
         {% endif %}
 
-        <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white" style="margin-top: 20px;">Add Product</button>
+        <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white" style="margin-top: 20px;">Save</button>
 
     </form>
 </div>
