@@ -246,23 +246,37 @@
 
     /* styling for dual price slider */
     /* .range_container {
-      display: flex;
+      position: relative; */
+      /* margin-top: 35%; */
+      /* display: flex;
       flex-direction: column;
       width: 80%;
-      margin: 35% auto;
-    } */
+      margin: 35% auto; */
+    /* } */
 
     .sliders_control {
       position: relative;
       min-height: 50px;
     }
 
-    /* .form_control {
-      position: relative;
-      display: flex;
+    /* .form_control { */
+      /* position: relative; */
+      /* display: flex;
       justify-content: space-between;
-      font-size: 24px;
-      color: #635a5a;
+      align-items: center; */
+      /* font-size: 24px; */
+      /* color: #635a5a;
+    } */
+
+    /* .form_control_container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .form_control_container__time__input {
+      margin-left: -2px;
+      margin-bottom: 5px;
     } */
 
     input[type=range]::-webkit-slider-thumb {
@@ -322,6 +336,10 @@
     #fromSlider {
       height: 0;
       z-index: 1;
+    }
+
+    #minLabel, #maxLabel {
+      width: 50px;
     }
 
     </style>
@@ -398,12 +416,12 @@
         </div>
         <div class="form_control">
             <div class="form_control_container">
-                <div class="form_control_container__time" id="minLabel" style="margin-top: -20px;">Min: 0</div>
-                <!-- <input class="form_control_container__time__input" type="number" id="fromInput" value="100" min="0" max="100"/> -->
+                <div class="form_control_container__time" id="minLabel" style="margin-top: -30px;">Min:</div>
+                <input class="form_control_container__time__input" type="number" id="fromInput" value="100" min="0" max="100"/>
             </div>
             <div class="form_control_container">
-                <div class="form_control_container__time" id="maxLabel">Max: 400</div>
-                <!-- <input class="form_control_container__time__input" type="number" id="toInput" value="900" min="0" max="100"/> -->
+                <div class="form_control_container__time" id="maxLabel">Max:</div>
+                <input class="form_control_container__time__input" type="number" id="toInput" value="900" min="0" max="100"/>
             </div>
         </div>
       </div>
@@ -482,21 +500,49 @@
     <script>
       const fromSlider = document.getElementById("fromSlider");
       const toSlider = document.getElementById("toSlider");
+      const fromInput = document.getElementById("fromInput");
+      const toInput = document.getElementById("toInput");
       const minLabel = document.getElementById("minLabel");
       const maxLabel = document.getElementById("maxLabel");
   
       // Update labels with slider values
-      function updateLabels() {
-          minLabel.textContent = "Min: " + fromSlider.value;
-          maxLabel.textContent = "Max: " + toSlider.value;
+      // function updateLabels() {
+      //     minLabel.textContent = "Min: $" + fromSlider.value;
+      //     maxLabel.textContent = "Max: $" + toSlider.value;
+      // }
+
+      // Update inputs with slider values
+      function updateInputs() {
+          fromInput.value = fromSlider.value;
+          toInput.value = toSlider.value;
       }
   
-      // Add event listeners to update labels and inputs when sliders change
-      fromSlider.addEventListener("input", updateLabels);
-      toSlider.addEventListener("input", updateLabels);
+      // Event listeners to update labels and inputs when sliders change
+      fromSlider.addEventListener("input", () => {
+        updateInputs();
+      });
+
+      fromInput.addEventListener('input', function() {
+        // Update the 'from' slider value when value is manually inputted by user
+        fromSlider.value = this.value;
+        updateLabels();
+      });
+
+      toInput.addEventListener('input', function() {
+          // Update the 'to' slider value when value is manually inputted by user
+          toSlider.value = this.value;
+          updateLabels();
+      });
+
+      toSlider.addEventListener("input", () => {
+        // updateLabels();
+        updateInputs();
+      });
   
-      // Initial update
-      updateLabels();
+      // Initial updates
+      // updateLabels();
+      updateInputs();
+
     </script>
     <!-- <script>
       function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
