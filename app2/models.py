@@ -28,20 +28,21 @@ class CategoryTag(models.Model):
     FURNITURE = 'Furniture'
     APPLIANCES = 'Appliances'
     TEXTBOOKS = 'Textbooks'
-    SCHOOL_SUPPLIES = 'School supplies'
+    SCHOOL_SUPPLIES = 'School Supplies'
     CLOTHING = 'Clothing'
-    GAME_TICKETS = 'Game tickets'
+    GAME_TICKETS = 'Game Tickets'
     OTHER = 'Other'
     TAG_CHOICES = [
         (FURNITURE, 'Furniture'),
         (APPLIANCES, 'Appliances'),
         (TEXTBOOKS, 'Textbooks'),
-        (SCHOOL_SUPPLIES, 'School supplies'),
+        (SCHOOL_SUPPLIES, 'School Supplies'),
         (CLOTHING, 'Clothing'),
-        (GAME_TICKETS, 'Game tickets'),
+        (GAME_TICKETS, 'Game Tickets'),
         (OTHER, 'Other'),
     ]
     tag = models.CharField(max_length=100, choices=TAG_CHOICES)
+    print(tag)
    # get_category()
     def __str__(self):
        return self.tag
