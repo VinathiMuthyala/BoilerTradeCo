@@ -1,60 +1,67 @@
+{% load static %}
+
 {% block content %}
 <div style="text-align: center; font-family: Arial, sans-serif;">
     <h2 class="mb-6 text-3xl" style="margin-top: 20px;">{{ title }}</h2>
 
-    <form method="post" action="." enctype="multipart/form-data">
-        {% csrf_token %}
+    <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" style="float: left; margin-top: -40px; margin-left: 10px; width: 150px; height: 150px;">
+    
+    <div style="display: inline-block; text-align: left; margin-left: -150px;">
 
-        {% for field in form %}
-            {% if field.label != 'Is sold' or is_sold_option %}
-                <div class="mb-4">
-                    <label for="{{ field.id_for_label }}">
-                        {% if field.label == 'Seller email' %}
-                        <div style="margin-bottom: -10px;">Seller Email:</div>
-                        {% elif field.label == 'Name' %}
-                        <div style="margin-top: 15px; margin-bottom: -10px;">Product Name:</div>
-                        {% elif field.label == 'Price' %}
-                        <div style="margin-top: 15px; margin-bottom: -10px;">Product Price:</div>
-                        {% elif field.label == 'Description' %}
-                        <div style="margin-top: 15px; margin-bottom: -10px;">Product Description:</div>
-                        {% elif field.label == 'Quality tag' %}
-                        <div style="margin-top: 15px; margin-bottom: -10px;">Quality:</div>
-                        {% elif field.label == 'Category tag' %}
-                        <div style="margin-top: 15px; margin-bottom: -10px;">Category:</div>
-                        {% elif field.label == 'Is sold' and is_sold_option %}
-                        <div style="margin-top: 15px; margin-bottom: -10px;">Is Sold:</div>
-                        {% elif field.label == 'Date posted' %}
-                        <div style="margin-top: 15px; margin-bottom: -10px;">Date Posted:</div>
-                        {% elif field.label == 'Image' %}
-                        <div style="margin-top: 15px; margin-bottom: -10px;">Upload a Photo of your Product:</div>
-                        <small style="display: block; margin-top: 15px; margin-bottom: -10px;">Allowed file types: JPG, PNG, GIF. Max size: 800KB</small>
-                        {% else %}
-                        {{ field.label }}
+        <form method="post" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for field in form %}
+                {% if field.label != 'Is sold' or is_sold_option %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}">
+                            {% if field.label == 'Seller email' %}
+                            <div style="margin-bottom: -10px;">Seller Email:</div>
+                            {% elif field.label == 'Name' %}
+                            <div style="margin-top: 15px; margin-bottom: -10px;">Product Name:</div>
+                            {% elif field.label == 'Price' %}
+                            <div style="margin-top: 15px; margin-bottom: -10px;">Product Price:</div>
+                            {% elif field.label == 'Description' %}
+                            <div style="margin-top: 15px; margin-bottom: -10px;">Product Description:</div>
+                            {% elif field.label == 'Quality tag' %}
+                            <div style="margin-top: 15px; margin-bottom: -10px;">Quality:</div>
+                            {% elif field.label == 'Category tag' %}
+                            <div style="margin-top: 15px; margin-bottom: -10px;">Category:</div>
+                            {% elif field.label == 'Is sold' and is_sold_option %}
+                            <div style="margin-top: 15px; margin-bottom: -10px;">Is Sold:</div>
+                            {% elif field.label == 'Date posted' %}
+                            <div style="margin-top: 15px; margin-bottom: -10px;">Date Posted:</div>
+                            {% elif field.label == 'Image' %}
+                            <div style="margin-top: 15px; margin-bottom: -10px;">Upload a Photo of your Product:</div>
+                            <small style="display: block; margin-top: 15px; margin-bottom: -10px;">Allowed file types: JPG, PNG, GIF. Max size: 800KB</small>
+                            {% else %}
+                            {{ field.label }}
+                            {% endif %}
+                        </label><br>
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="text-red-500">
+                            {% for error in field.errors %}
+                            <span>{{ error }}</span><br>
+                            {% endfor %}
+                        </div>
                         {% endif %}
-                    </label><br>
-                    {{ field }}
-                    {% if field.errors %}
-                    <div class="text-red-500">
-                        {% for error in field.errors %}
-                        <span>{{ error }}</span><br>
-                        {% endfor %}
                     </div>
-                    {% endif %}
-                </div>
-            {% endif %}
-        {% endfor %}
-
-        {% if form.non_field_errors %}
-        <div class="mb-3 p-6 bg-red-100 rounded-xl">
-            {% for error in form.non_field_errors %}
-            <span>{{ error }}</span><br>
+                {% endif %}
             {% endfor %}
-        </div>
-        {% endif %}
 
-        <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white" style="margin-top: 20px;">Save</button>
+            {% if form.non_field_errors %}
+            <div class="mb-3 p-6 bg-red-100 rounded-xl">
+                {% for error in form.non_field_errors %}
+                <span>{{ error }}</span><br>
+                {% endfor %}
+            </div>
+            {% endif %}
 
-    </form>
+            <button class="py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white" style="margin-top: 20px;">Save</button>
+
+        </form>
+    </div>
 </div>
 
 <style>
@@ -62,9 +69,13 @@
     form input[type="text"],
     form select,
     form textarea {
-        width: 25vw; /* Set width to 1/4 of the viewport width */
-        max-width: 350px; /* Set a maximum width if needed */
+        width: 50vw; /* Set width to 1/4 of the viewport width */
+        max-width: 410px; /* Set a maximum width if needed */
         height: 2vw;
+    }
+
+    textarea[name="description"] {
+        height: 90px; /* Set the desired height */
     }
 </style>
 

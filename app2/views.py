@@ -78,6 +78,7 @@ def new(request):
         'form': form,
         'title': 'Add a Product!',
         'is_sold_option': False,
+        'current_seller_email': request.user,
     })
 
 @login_required
