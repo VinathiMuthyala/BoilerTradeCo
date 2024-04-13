@@ -139,6 +139,7 @@ def detail(request, pk):
 
 def filter_products_by_category(request, category_tag):
     filtered_products = ProductInfo.objects.filter(category_tag__tag=category_tag)
+    print("CATEGORY TAG IS:", category_tag)
 
     products = ([{
         'name': product.name,
@@ -152,7 +153,11 @@ def filter_products_by_category(request, category_tag):
     })
 
 def filter_products_by_quality(request, quality_tag):
+    # quality_tag = quality_tag.replace('-', ' ')
+
     filtered_products = ProductInfo.objects.filter(quality_tag__tag=quality_tag)
+
+    print("QUALITY TAG IS:", quality_tag)
 
     products = ([{
         'name': product.name,

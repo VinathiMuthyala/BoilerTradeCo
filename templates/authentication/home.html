@@ -274,8 +274,8 @@
         <button class="filter-option" data-category="Appliances">Appliances</button>
         <button class="filter-option" data-category="Clothing">Clothing</button>
         <button class="filter-option" data-category="Furniture">Furniture</button>
-        <button class="filter-option" data-category="Game Tickets">Game Tickets</button>
-        <button class="filter-option" data-category="School Supplies">School Supplies</button>
+        <button class="filter-option" data-category="Game tickets">Game Tickets</button>
+        <button class="filter-option" data-category="School supplies">School Supplies</button>
         <button class="filter-option" data-category="Textbooks">Textbooks</button>
         <button class="filter-option" data-category="Other">Other</button>
       </div>
@@ -284,7 +284,7 @@
       <div class="product-filters">
         <button class="filter-option" data-quality="Acceptable">Acceptable</button>
         <button class="filter-option" data-quality="Good">Good</button>
-        <button class="filter-option" data-quality="Like-New">Like New</button>
+        <button class="filter-option" data-quality="Like New">Like New</button>
       </div>
       <br>
 
@@ -303,11 +303,11 @@
         });
       </script>
     </div> -->
-    <form id="priceFilterForm" method="GET" action="{% url 'filter_products_by_price' %}">
-      <label for="priceRange">Select Price Range:</label>
-      <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
-      <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
-  </form>
+      <form id="priceFilterForm" method="GET" action="{% url 'filter_products_by_price' %}">
+        <label for="priceRange">Select Price Range:</label>
+        <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
+        <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
+      </form>
 
     </div>
 
@@ -336,16 +336,19 @@
           var quality = this.getAttribute('data-quality');
 
           if (category) {
+            console.log("CALLING HERE");
             filterProductsByCategory(category);
           }
           else if (quality) {
+            console.log("ENTERED INTO HERE");
+            console.log(quality)
             filterProductsByQuality(quality);
           }
         });
       });
     
       function filterProductsByCategory(category) {
-        fetch(`/${category}/`)
+        fetch(`/category/${category}/`)
           .then(response => response.text())
           .then(html => {
             const productsContainer = document.getElementById('productsContainer');
@@ -357,7 +360,7 @@
       }
 
       function filterProductsByQuality(quality) {
-        fetch(`/${quality}/`)
+        fetch(`/quality/${quality}/`)
           .then(response => response.text())
           .then(html => {
             const productsContainer = document.getElementById('productsContainer')
