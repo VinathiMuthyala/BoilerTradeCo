@@ -268,13 +268,17 @@
       /* color: #635a5a;
     } */
 
-    /* .form_control_container {
+    .form_control_container {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
     }
 
-    .form_control_container__time__input {
+    .form_control_container__time {
+      margin-right: 10px;
+    }
+
+    /* .form_control_container__time__input {
       margin-left: -2px;
       margin-bottom: 5px;
     } */
@@ -339,7 +343,7 @@
     }
 
     #minLabel, #maxLabel {
-      width: 50px;
+      width: auto;
     }
 
     </style>
@@ -414,15 +418,23 @@
             <input id="fromSlider" type="range" value="0" min="0" max="1000"/>
             <input id="toSlider" type="range" value="400" min="0" max="1000"/>
         </div>
-        <div class="form_control">
-            <div class="form_control_container">
-                <div class="form_control_container__time" id="minLabel" style="margin-top: -30px;">Min:</div>
-                <input class="form_control_container__time__input" type="number" id="fromInput" value="100" min="0" max="100"/>
+        <div class="form_control" style="margin-top: -25px; display: flex;"> <!-- Add display: flex to create a flex container -->
+          <div class="form_control_container">
+            <div class="form_control_container__time">
+              <span id="minLabel">Min:</span>
+              <br>
+              <input class="form_control_container__time__input" type="number" id="fromInput" value="100" min="0" max="100"/>
             </div>
+          </div>
+          <div style="margin-left: 110px;"> 
             <div class="form_control_container">
-                <div class="form_control_container__time" id="maxLabel">Max:</div>
+              <div class="form_control_container__time">
+                <span id="maxLabel">Max:</span>
+                <br>
                 <input class="form_control_container__time__input" type="number" id="toInput" value="900" min="0" max="100"/>
+              </div>
             </div>
+          </div>
         </div>
       </div>
 
