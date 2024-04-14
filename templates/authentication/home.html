@@ -707,8 +707,8 @@
       toInput.oninput = () => controlToInput(toSlider, fromInput, toInput, toSlider);
     </script> -->
 
-    <!-- can change this later, when project directory is finished (its just an identifier for now) -->
-    {% if user.is_authenticated %}
+    <!-- redundant condition (keep for now for funtionality sake) -->
+    {% if user.is_authenticated or user.is_authenticated == False %}
     <h1>Product Directory</h1>
 
       {% if products|length == 0 %}
@@ -836,7 +836,13 @@
     <div>
       <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     </div>
-    <button id="signOutButton" type="submit"> <a href="{% url 'logout' %}">Sign Out</a></button>
+    {% if user.is_authenticated %}
+      <button id="signOutButton" type="submit"> <a href="{% url 'logout' %}">Sign Out</a></button>
+    {% else %}
+      <button id="signin" type="submit"> <a href="{% url 'signin' %}">Sign In</a></button>
+      <button id="signup" type="submit"> <a href="{% url 'signup' %}">Sign Up</a></button>
+    {% endif %}
+
     <!-- <button type="button" id="signOutButton" onclick="logoutAndRedirect()">Sign Out</button> -->
  
     <!-- {% else %}
