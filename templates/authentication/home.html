@@ -230,10 +230,19 @@
 
     .grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 35px;
     }
 
     .gap-3 > * {
       margin-bottom: 1rem;
+    }
+
+    .mb-30 > * {
+      margin-bottom: 30px;
+    }
+
+    .ml-35 > * {
+      margin-left: 35px;
     }
 
     .selected {
@@ -313,6 +322,20 @@
       box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
       -webkit-box-shadow: inset 0 0 3px #387bbe, 0 0 9px #387bbe;
     }
+
+    .px-6.py-12.bg-gray-100.rounded-xl {
+      height: 300px;
+    }
+
+    #productsContainer img {
+      max-width: 280px;
+      height: 200px;
+    }
+
+    #productsContainer .text-2xl {
+      color: black;
+    }
+
 
     /* input[type="number"] {
       color: #8a8383;
@@ -481,10 +504,16 @@
           .then(response => response.text())
           .then(html => {
             const productsContainer = document.getElementById('productsContainer');
-            productsContainer.innerHTML = `<div class="grid grid-cols-3 gap-3">${html}</div>`;
-          })
-          .then(() => {
-            applyGridStyles();
+            productsContainer.innerHTML = html;
+            productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+            // productsContainer.innerHTML = `<div class="grid grid-cols-3 gap-3">${html}</div>`;
+            // return html;
+            console.log("FORMATTING CATEGORY");
+            formatProductPrices();
+            applyProductStyles();
+          // })
+          // .then(() => {
+          //   applyGridStyles();
           });
       }
 
@@ -493,10 +522,16 @@
           .then(response => response.text())
           .then(html => {
             const productsContainer = document.getElementById('productsContainer')
-            productsContainer.innerHTML = `<div class="grid grid-cols-3 gap-3">${html}</div>`;
-          })
-          .then(() => {
-            applyGridStyles();
+            productsContainer.innerHTML = html;
+            productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+            // productsContainer.innerHTML = `<div class="grid grid-cols-3 gap-3">${html}</div>`;
+            // return html;
+            console.log("FORMATTING QUALITY");
+            formatProductPrices();
+            applyProductStyles();
+          // })
+          // .then(() => {
+          //   applyGridStyles();
           });
       }
 
@@ -504,6 +539,31 @@
         const filteredProducts = document.querySelectorAll('.px-6.py-12.bg-gray-100.rounded-xl');
         filteredProducts.forEach(product => {
             product.classList.add('grid-cols-3', 'gap-3');
+        });
+      }
+
+      function applyProductStyles() {
+        const filteredProducts = document.querySelectorAll('#productsContainer > div');
+        filteredProducts.forEach(product => {
+          product.classList.add('px-6', 'py-12', 'bg-gray-100', 'rounded-xl', 'text-center');
+          // product.classList.add('px-6', 'py-12', 'bg-gray-100', 'rounded-xl', 'grid-cols-3', 'gap-3', 'text-center', 'flex', 'justify-center');
+        });
+      }
+
+      function formatProductPrices() {
+        const productPrices = document.querySelectorAll('#productsContainer .text-gray-500');
+        productPrices.forEach(price => {
+            const priceValue = parseFloat(price.textContent);
+            price.textContent = `$${priceValue.toFixed(2)}`;
+            price.style.fontWeight = 'bold';
+            price.style.textAlign = 'center';
+            price.style.fontSize = '19px';
+            price.style.lineHeight = '15px';
+        });
+
+        const productNames = document.querySelectorAll('#productsContainer .text-2xl');
+        productNames.forEach(name => {
+            name.style.lineHeight = '24px';
         });
       }
     </script>
@@ -698,7 +758,7 @@
         {% if products|length > 0 %}
           <div id="productsContainer" class="grid grid-cols-3 gap-3">
             {% for product in products %}
-              <div class="px-6 py-12 bg-gray-100 rounded-xl" style="margin: 5px;">
+              <div class="px-6 py-12 bg-gray-100 rounded-xl" style="margin-left: 35px; margin-bottom: 30px;">
                 <div>
                   <a href="{% url 'detail' product.id %}">
                     <div>
