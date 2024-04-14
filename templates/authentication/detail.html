@@ -243,13 +243,13 @@
     <!-- <a href="javascript:history.go(-1)" class="back-button">Back</a> -->
     {% if request.user == product.seller_email %}
     <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
-        <a href="javascript:history.go(-1)" class="back-button">Back</a>
+        <a href="/addlisting" class="back-button">Back</a>
         <a href="{% url 'edit' id %}" class="edit-button">Edit</a>
         <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="delete-button">Delete</a>
     </div>
     {% else %}
         <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
-            <a href="javascript:history.go(-1)" class="back-button">Back</a>
+            <a href="/addlisting" class="back-button">Back</a>
             <a href="#" class="contact-seller-button">Contact Seller</a>
         </div>
     {% endif %}
