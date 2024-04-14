@@ -17,6 +17,7 @@
         justify-content: space-around; /* Adjust as needed */
     }
 
+    .back-button,
     .edit-button,
     .delete-button {
         padding: 10px 20px;
@@ -26,14 +27,13 @@
         transition: background-color 0.3s ease; /* Smooth transition on hover */
     }
 
-    .edit-button {
-        background-color: #fff9c4;
-    }
-
+    .back-button,
+    .edit-button,
     .delete-button {
         background-color: #fff9c4;
     }
 
+    .back-button:hover,
     .edit-button:hover,
     .delete-button:hover {
         background-color: #b5b0b0; /* Darker shade on hover */
@@ -237,10 +237,10 @@
     
 
 <div class="button-container" style="margin-bottom: 30px">
+    <!-- <a href="javascript:history.go(-1)" class="back-button">Back</a> -->
     {% if request.user == product.seller_email %}
-    <div class="mt-6 p-6 bg-white rounded-xl">
-        <!-- <a href="{% url 'edit' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Edit</a>
-        <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl">Delete</a> -->
+    <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
+        <a href="javascript:history.go(-1)" class="back-button">Back</a>
         <a href="{% url 'edit' id %}" class="edit-button">Edit</a>
         <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="delete-button">Delete</a>
     </div>
