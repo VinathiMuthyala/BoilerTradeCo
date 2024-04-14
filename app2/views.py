@@ -93,7 +93,7 @@ def edit(request, pk):
         form = EditProductForm(instance=product)
     return render(request, 'productdir/form.html', {
         'form': form,
-        'title': 'Edit Your Product Posting',
+        'title': 'Edit Product Posting!',
         'is_sold_option': True,
     })
 
