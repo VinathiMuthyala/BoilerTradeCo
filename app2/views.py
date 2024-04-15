@@ -13,6 +13,7 @@ from .forms import NewProductForm, EditProductForm
 from django.urls import reverse
 from .models import Bookmark
 from django.views.decorators.http import require_POST
+from django.core.mail import send_mail
 
 # Create your views here.
 def layout(request):
@@ -71,6 +72,13 @@ def new(request):
             product = form.save(commit=False)
             product.seller_email = request.user
             product.save()
+            category = product.category_tag
+            user_email = request.user.email
+            firstname = request.user.first_name
+            lastname = request.user.last_name
+            user_name = f"{firstname} {lastname}"
+            email_text = f"Hi {user_name},\n\n\tThere is a new product posting in this category: {category}. Go to your account on BoilerTradeCo now to see the new posting!\n\n"
+            send_mail(subject='BoilerTradeCo New Product Notification', message=email_text, from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com', user_email], fail_silently=False)
             return redirect("/addlisting")
     else:
         form = NewProductForm()
