@@ -98,6 +98,12 @@
         #productsContainer .text-2xl {
             color: black;
         }
+
+        .bg-white {
+            color: black;
+            text-decoration-color: black;
+        }
+
     </style>
 </head>
 <body>
@@ -105,13 +111,14 @@
     <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" style="height: 150px; width: 150px">
     <ul>
         <li><a href="/addlisting">Home</a></li>
-        <li><a href="">Bookmarks</a></li>
+        <li><a href="/bookmarks">Bookmarks</a></li>
         <li><a href="">Sales</a></li>
         <li><a href="/profile" class="active">Profile</a></li>
     </ul>
 </nav>
 <div>
-    <h2> Bookmarked Products </h2>
+    <br>
+    <h2 style="text-align: center;">My Bookmarked Products</h2><br>
     {% if user.is_authenticated %}
         {% if bookmarked_products|length > 0 %}
             <div id="productsContainer" class="grid grid-cols-3 gap-3">

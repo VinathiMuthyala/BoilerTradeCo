@@ -140,8 +140,9 @@
       text-align: center;
     }
 
-    .grid-cols-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .grid-cols-2 {
+      /* display: grid; */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 35px;
     }
 
@@ -208,14 +209,14 @@
     
       <br>
       <br>
-      <button type="submit"> <img src="{% static 'plussign.png' %}"  alt="Add" class="icon"> 
+      <button type="submit"> <img src="{% static 'plussign.png' %}" alt="Add" class="icon"> 
       <a href="/newproduct">Add Product</a></button>
       <br>
       <h2 style="text-decoration: underline;">Ratings</h2> 
       <br>
       <h2 style="text-decoration: underline;">My Listings</h2>
         {% if user_products|length > 0 %}
-            <div id="productsContainer" class="grid grid-cols-3 gap-3">
+            <div id="productsContainer" class="grid grid-cols-2 gap-3">
                 {% for product in user_products %}
                 <div class="px-6 py-12 bg-gray-100 rounded-xl" style="margin-left: 35px; margin-bottom: 30px;">
                     <div>
@@ -234,7 +235,7 @@
                 {% endfor %}
             </div>
             {% endif %}
-      <br>
+      <!-- <br> -->
       <h2 style="text-decoration: underline;">Report a Seller</h2>
       <button onclick="openPopup()">Report Seller</button>
 
@@ -282,7 +283,7 @@
       <br>
       <h2 style="text-decoration: underline;">Delete Account</h2>
 
-      <button id="deleteAccountButton" type="submit"> <a href="{% url 'deleteaccount' %}">Delete Account</a></button>
+      <button id="deleteAccountButton" type="submit"> <a href="{% url 'deleteaccount' %}">Delete Account</a></button><br><br>
       
       <script>
         // Add this script to handle the confirmation pop-up
