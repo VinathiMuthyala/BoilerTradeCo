@@ -230,7 +230,7 @@ def bookmark_product(request):
     if bookmark:
         # Product is already bookmarked, so delete the bookmark
         bookmark.delete()
-        return JsonResponse({'success': 'Product unbookmarked successfully'})
+        return JsonResponse({'error': 'Product unbookmarked successfully'}, status=404)
     else:
         # Product is not bookmarked, so create a new bookmark entry
         bookmark = Bookmark(user=request.user, post_id=product_id)
