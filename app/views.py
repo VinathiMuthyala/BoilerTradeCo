@@ -196,6 +196,26 @@ def settings(request):
             messages.success(request, 'Your password was successfully updated!')
             #add_message(request, INFO, 'account-change-password')
             return redirect('settings')
+       
+        # check if form is enabling email notifications
+        elif 'email_notifications' in request.POST:
+            if request.POST['email_notifications'] == 'on':
+                try:
+                    user_email = request.user.email
+                    firstname = request.user.first_name
+                    lastname = request.user.last_name
+                    user_name = f"{firstname} {lastname}"
+                    email_text = f"Hi {user_name},\n\n\tThere is a new product posting in this category: . Go to your account on BoilerTradeCo now to see the new posting!\n\n"
+                    send_mail(subject='BoilerTradeCo New Product Notification', message=email_text, from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com', user_email], fail_silently=False)
+                    messages.success(request, 'Email notifications enabled!')
+                    return redirect('settings')
+                except Exception as e:
+                    print(e)
+                    messages.error(request, 'Email notifications were not enabled!')
+                    return redirect('settings')
+            else:
+                messages.success(request, 'Email notifications disabled!')
+                return redirect('settings')
         
         # check if the form is changing user profile info
         else:
