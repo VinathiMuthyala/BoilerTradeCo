@@ -62,25 +62,28 @@
     </ul>
 </nav>
 <div>
-    {% if bookmarked_products|length > 0 %}
-          <div id="productsContainer" class="grid grid-cols-3 gap-3">
-            {% for product in bookmarked_products %}
-              <div class="px-6 py-12 bg-gray-100 rounded-xl" style="margin-left: 35px; margin-bottom: 30px;">
-                <div>
-                  <a href="{% url 'detail' product.product_id %}">
+    <h2> Bookmarked Products </h2>
+    {% if user.is_authenticated %}
+        {% if bookmarked_products|length > 0 %}
+            <div id="productsContainer" class="grid grid-cols-3 gap-3">
+                {% for product in bookmarked_products %}
+                <div class="px-6 py-12 bg-gray-100 rounded-xl" style="margin-left: 35px; margin-bottom: 30px;">
                     <div>
-                      <img src="{{ product.image.url }}" alt="product-image" class="rounded-t-xl" style="max-width: 280px; height: 200px; display: block; margin: auto;">
-                    </div>
+                    <a href="{% url 'detail' product.product_id %}">
+                        <div>
+                        <img src="{{ product.image.url }}" alt="product-image" class="rounded-t-xl" style="max-width: 280px; height: 200px; display: block; margin: auto;">
+                        </div>
 
-                    <div class="p-6 bg-white rounded-b-xl" style="text-align: center;">
-                      <h2 id="productName" class="text-2xl">{{ product.name }}</h2>
-                      <h3 id="productPrice" class="text-gray-500">${{ product.price }}</h3>
+                        <div class="p-6 bg-white rounded-b-xl" style="text-align: center;">
+                        <h2 id="productName" class="text-2xl">{{ product.name }}</h2>
+                        <h3 id="productPrice" class="text-gray-500">${{ product.price }}</h3>
+                        </div>
+                    </a>
                     </div>
-                  </a>
                 </div>
-              </div>
-            {% endfor %}
-          </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         {% endif %}
     </div>
 <script src="" async defer></script>

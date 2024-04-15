@@ -184,7 +184,7 @@ def filter_products_by_quality(request, quality_tag):
 def generate_bookmarks(request):
     # Check if the user is authenticated
     if not request.user.is_authenticated:
-        return render(request, 'error.html', {'error_message': 'User not authenticated'}, status=401)
+        return redirect('add_listing')
 
     # Retrieve the bookmarked products for the current user
     bookmarked_products = Bookmark.objects.filter(user=request.user)
