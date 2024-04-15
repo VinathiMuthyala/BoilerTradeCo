@@ -311,6 +311,8 @@
 
 
               <!--Notifications-->
+      <form method="post" action="{% url 'settings' %}" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="tab-pane fade" id="account-notifications">
           <hr class="border-light m-0">
           <div class="card-body">
@@ -318,7 +320,7 @@
             <div class="form-group">
               <div class="toggle-switch">
                 <label class="switch">
-                  <input type="checkbox" class="form-check-input notification-option" id="emailNotifications" checked>
+                  <input type="checkbox" class="form-check-input notification-option" id="emailNotifications" name="email_notifications" checked>
                   <span class="slider round"></span>
                 </label>
                 <label for="emailNotifications" class="form-check-label">Enable Email Notifications</label>
@@ -342,8 +344,10 @@
             <script>
               // CONNECT NOTIFICATION SLIDER TO BACKEND WITH THIS
               $(document).ready(function () {
+                var notifToggle = document.getElementById('emailNotifications');
                 $('.notification-option').change(function () {
                   // Logic to handle notification option changes
+                  document.body.classList.toggle('enable-category', notifToggle.checked);
                   var optionId = $(this).attr('id'); 
                   var isChecked = $(this).prop('checked'); 
                   

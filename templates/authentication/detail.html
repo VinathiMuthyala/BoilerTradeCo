@@ -26,6 +26,7 @@
         text-decoration: none;
         border-radius: 5px;
         transition: background-color 0.3s ease; /* Smooth transition on hover */
+        color: black;
     }
 
     .back-button,
@@ -235,6 +236,11 @@
         <p class="filter-option">Category: {{ product.category_tag }}</p>
         <p>Seller Email: {{ product.seller_email }}</p>
         <p>Date Posted: {{ product.date_posted|date:"F j, Y" }}</p>
+        
+        <br>
+        {% if request.user != product.seller %}
+            <a href="{% url 'rate_seller' %}" class="back-button">Rate Seller</a>
+        {% endif %}
     </div>
 </div>
     
@@ -256,12 +262,13 @@
     {% else %} <!-- when user is not signed in -->
         <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
             <a href="/addlisting" class="back-button">Back</a>
+            <a href="#" class="contact-seller-button">Contact Seller</a>
+            <button id="bookmarkBtn" class="contact-seller-button">Bookmark Product</button>
         </div>
     {% endif %}
 </div>
 
 <!-- Button to open the popup -->
-<button id="bookmarkBtn">Bookmark Product</button>
 <button onclick="openPopupForSocial()">Share on Social Media</button>
 <button onclick="openPopupForMessages()">Share via Messages</button>
 
@@ -440,7 +447,7 @@ document.getElementById('deleteButton').addEventListener('click', function(event
                 },
                 success: function(response) {
                     // Alert the user on successful bookmarking
-                    alert('Product bookmarked successfully!');
+                    alert('Product bookmarked/unbookmarked successfully!');
                 },
                 error: function(xhr, errmsg, err) {
                     // Alert the user on error

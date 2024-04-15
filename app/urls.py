@@ -26,4 +26,8 @@ urlpatterns = [
     path('emailseller/', views.emailseller, name = 'emailseller'),
     # path('editproduct/', views.editproduct, name = 'editproduct'),
     path('filter-products-by-price/', views.filter_products_by_price, name='filter_products_by_price'),
+    #path('rate-seller/<int:seller_id>/', views.rate_seller, name='rate_seller'),
+    path('rate-seller/', views.rate_seller, name='rate_seller'),
+    #path('rate-seller/<int:seller_email>/', views.rate_seller, name='rate_seller'),
+
 ]

@@ -4,15 +4,15 @@ from django.db import models
 from datetime import date
 from django.contrib import messages
 from django.core.serializers import serialize
-from .models import ProductInfo, CategoryTag, QualityTag, ProductListing
+from .models import ProductInfo, CategoryTag, QualityTag, ProductListing, Bookmark
 from django.conf import settings
 import os, json
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
 from .forms import NewProductForm, EditProductForm
 from django.urls import reverse
-from .models import Bookmark
 from django.views.decorators.http import require_POST
+from django.core.mail import send_mail
 
 # Create your views here.
 def layout(request):
@@ -71,6 +71,17 @@ def new(request):
             product = form.save(commit=False)
             product.seller_email = request.user
             product.save()
+            category = product.category_tag
+            seller_email = product.seller_email
+            product_name = product.name
+            product_price = product.price
+            quality = product.quality_tag
+            user_email = request.user.email
+            firstname = request.user.first_name
+            lastname = request.user.last_name
+            user_name = f"{firstname} {lastname}"
+            email_text = f"Hi {user_name},\n\n\tThere is a new product posting in this category: {category}.\n\nProduct details:\n\tSeller email: {seller_email}\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tQuality: {quality}\n\nGo to your account on BoilerTradeCo now to see the new posting!"
+            send_mail(subject='BoilerTradeCo New Product Notification', message=email_text, from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com', user_email], fail_silently=False)
             return redirect("/addlisting")
     else:
         form = NewProductForm()
@@ -171,7 +182,20 @@ def filter_products_by_quality(request, quality_tag):
     })
 
 def generate_bookmarks(request):
-    return render(request, "productdir/bookmarks.html")
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        return render(request, 'error.html', {'error_message': 'User not authenticated'}, status=401)
+
+    # Retrieve the bookmarked products for the current user
+    bookmarked_products = Bookmark.objects.filter(user=request.user)
+
+    # Extract the product IDs from the bookmarked products
+    product_ids = [bookmark.post.product_id for bookmark in bookmarked_products]
+
+    # Retrieve the actual product objects using the IDs
+    products = ProductInfo.objects.filter(pk__in=product_ids)
+
+    return render(request, 'productdir/bookmarks.html', {'bookmarked_products': products})
 
 @require_POST
 def bookmark_product(request):
@@ -179,9 +203,16 @@ def bookmark_product(request):
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'User not authenticated'}, status=401)
 
-    # Get the product ID from the AJAX request
     product_id = request.POST.get('product_id')
 
+    # Check if the product ID is valid
+    if not product_id:
+        return JsonResponse({'error': 'Invalid product ID'}, status=400)
+
+    try:
+        product_id = int(product_id)  # Convert to integer
+    except ValueError:
+        return JsonResponse({'error': 'Invalid product ID'}, status=400)
 
     # Check if the product exists
     try:
@@ -189,16 +220,40 @@ def bookmark_product(request):
     except ProductInfo.DoesNotExist:
         return JsonResponse({'error': 'Product not found'}, status=404)
 
-    # Check if the product is already bookmarked by the user
-    if Bookmark.objects.filter(user=request.user, product=product).exists():
-        return JsonResponse({'error': 'Product already bookmarked'}, status=400)
+    bookmark = Bookmark.objects.filter(user=request.user, post_id=product_id).first()
+    if bookmark:
+        # Product is already bookmarked, so delete the bookmark
+        bookmark.delete()
+        return JsonResponse({'success': 'Product unbookmarked successfully'})
+    else:
+        # Product is not bookmarked, so create a new bookmark entry
+        bookmark = Bookmark(user=request.user, post_id=product_id)
+        bookmark.save()
+        return JsonResponse({'success': 'Product bookmarked successfully'})
 
-    # Create a new bookmark entry
-    bookmark = Bookmark(user=request.user, product=product)
-    bookmark.save()
 
-    # Return success response
-    return JsonResponse({'success': 'Product bookmarked successfully'})
+# def rate_seller(request, seller_id):
+#     if request.method == 'POST':
+#         rating = int(request.POST.get('rating'))
+#         comment = request.POST.get('comment')
+#         seller = User.objects.get(pk=seller_id)
+#         user = request.user
+#         SellerRating.objects.create(seller=seller, user=user, rating=rating, comment=comment)
+#         update_average_rating(seller)
+#         return redirect('seller_profile', seller_id=seller_id)
+#     return render(request, 'rate_seller.html')
+
+# def update_average_rating(seller):
+#     all_ratings = SellerRating.objects.filter(seller=seller)
+#     total_ratings = sum([rating.rating for rating in all_ratings])
+#     num_ratings = len(all_ratings)
+#     if num_ratings > 0:
+#         average_rating = total_ratings / num_ratings
+#         profile = seller.profile
+#         profile.average_rating = average_rating
+#         profile.save()
+
+
 
 # def add_listing(request):
 #     print("printing product info from views.py")

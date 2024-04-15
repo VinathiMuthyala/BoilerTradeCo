@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
-from .models import Profile
+from .models import Profile, SellerRating
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -196,6 +196,26 @@ def settings(request):
             messages.success(request, 'Your password was successfully updated!')
             #add_message(request, INFO, 'account-change-password')
             return redirect('settings')
+       
+        # check if form is enabling email notifications
+        elif 'email_notifications' in request.POST:
+            if request.POST['email_notifications'] == 'on':
+                try:
+                    user_email = request.user.email
+                    firstname = request.user.first_name
+                    lastname = request.user.last_name
+                    user_name = f"{firstname} {lastname}"
+                    email_text = f"Hi {user_name},\n\n\tThere is a new product posting in this category: . Go to your account on BoilerTradeCo now to see the new posting!\n\n"
+                    send_mail(subject='BoilerTradeCo New Product Notification', message=email_text, from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com', user_email], fail_silently=False)
+                    messages.success(request, 'Email notifications enabled!')
+                    return redirect('settings')
+                except Exception as e:
+                    print(e)
+                    messages.error(request, 'Email notifications were not enabled!')
+                    return redirect('settings')
+            else:
+                messages.success(request, 'Email notifications disabled!')
+                return redirect('settings')
         
         # check if the form is changing user profile info
         else:
@@ -363,8 +383,6 @@ def filter_products_by_price(request):
     return render(request, 'productdir/filtered-products.html', {'products': products,})
 
 
-
-
 # def filter_products_by_category(request, category_tag):
 #     filtered_products = ProductInfo.objects.filter(category_tag__tag=category_tag)
 
@@ -378,3 +396,40 @@ def filter_products_by_price(request):
 #     return render(request, 'productdir/filtered-products.html', {
 #         'products': products,
 #     })
+
+
+
+# this is by seller id below
+
+# def rate_seller(request, seller_id):
+#     if request.method == 'POST':
+#         rating = int(request.POST.get('rating'))
+#         comment = request.POST.get('comment')
+#         seller = User.objects.get(pk=seller_id)
+#         user = request.user
+#         SellerRating.objects.create(seller=seller, user=user, rating=rating, comment=comment)
+#         update_average_rating(seller)
+#         return redirect('seller_profile', seller_id=seller_id)
+#     return render(request, 'rate_seller.html')
+
+def rate_seller(request, seller_email):
+    if request.method == 'POST':
+        rating = int(request.POST.get('rating'))
+        comment = request.POST.get('comment')
+        seller = User.objects.get(email=seller_email)
+        user = request.user
+        SellerRating.objects.create(seller=seller, user=user, rating=rating, comment=comment)
+        update_average_rating(seller)
+        return redirect('seller_profile', seller_id=seller.id)  # Assuming you have a seller profile view
+    return render(request, 'rate_seller.html')
+
+def update_average_rating(seller):
+    all_ratings = SellerRating.objects.filter(seller=seller)
+    total_ratings = sum([rating.rating for rating in all_ratings])
+    num_ratings = len(all_ratings)
+    if num_ratings > 0:
+        average_rating = total_ratings / num_ratings
+        profile = seller.profile
+        profile.average_rating = average_rating
+        profile.save()
+
