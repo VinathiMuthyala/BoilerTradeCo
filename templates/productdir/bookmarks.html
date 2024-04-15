@@ -85,7 +85,7 @@
         .ml-35 > * {
         margin-left: 35px;
         }
-        
+
         #productName {
             color: rgb(52, 47, 47);
         }
@@ -104,6 +104,42 @@
             text-decoration-color: black;
         }
 
+        /*product filters*/
+        .product-filters {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .filter-option {
+            width: auto;
+            padding: 0 15px;
+            height: 30px;
+            border-radius: 15px;
+            /* background-color: rgb(224, 188, 250); */
+            background-color: #ffee90;
+            /* rgb(255, 255, 121); */
+            color: rgb(0, 0, 0);
+            /* color: rgb(122, 74, 143); */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            cursor: pointer;
+            border: #ffe030;
+            /* border: 2px solid rgb(122, 74, 143); */
+        }
+
+        .filter-container {
+            /*background-color: #b5b0b0;*/
+            padding: 10px;
+            border-radius: 15px;
+        }
+
+        .filter-option:hover {
+            background-color: #ffe44b;
+            /* background-color: rgb(177, 142, 222); */
+        }
     </style>
 </head>
 <body>
@@ -116,7 +152,117 @@
         <li><a href="/profile" class="active">Profile</a></li>
     </ul>
 </nav>
-<div>
+ <!--All filter options-->
+ <div class="filter-container">
+    <h2 style="text-align: center;">Filter Options</h2>
+    <!-- Product filters -->
+    <div class="product-filters">
+      <button class="filter-option" data-category="Appliances">Appliances</button>
+      <button class="filter-option" data-category="Furniture">Furniture</button>
+      <button class="filter-option" data-category="Textbooks">Textbooks</button>
+      <button class="filter-option" data-category="School supplies">School Supplies</button>
+      <button class="filter-option" data-category="Clothing">Clothing</button>
+      <button class="filter-option" data-category="Game tickets">Game Tickets</button>
+      <button class="filter-option" data-category="Other">Other</button>
+    </div>
+
+    <!-- Quality filters -->
+    <div class="product-filters">
+      <button class="filter-option" data-quality="Like New">Like New</button>
+      <button class="filter-option" data-quality="Good">Good</button>
+      <button class="filter-option" data-quality="Acceptable">Acceptable</button>
+      
+    </div>
+    <br>
+    <script>
+        document.querySelectorAll('.filter-option').forEach(function(button) {
+          button.addEventListener('click', function() {
+              // Remove the 'selected' class from all filter buttons
+              document.querySelectorAll('.filter-option').forEach(function(btn) {
+                  btn.classList.remove('selected');
+              });
+      
+              // Add the 'selected' class to the clicked button
+              this.classList.add('selected');
+      
+              // Your existing code to filter products goes here
+          });
+        });
+      </script>
+  
+      <!-- filtering by category/quality -->
+      <script>
+        document.querySelectorAll('.filter-option').forEach(function(button) {
+          button.addEventListener('click', function() {
+            var category = this.getAttribute('data-category');
+            var quality = this.getAttribute('data-quality');
+  
+            if (category) {
+              console.log("CALLING HERE");
+              filterProductsByCategory(category);
+            }
+            else if (quality) {
+              console.log("ENTERED INTO HERE");
+              console.log(quality)
+              filterProductsByQuality(quality);
+            }
+          });
+        });
+      
+        function filterProductsByCategory(category) {
+          fetch(`/bookmark/category/${category}/`)
+            .then(response => response.text())
+            .then(html => {
+              const productsContainer = document.getElementById('productsContainer');
+              productsContainer.innerHTML = html;
+              productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+              // productsContainer.innerHTML = `<div class="grid grid-cols-3 gap-3">${html}</div>`;
+              // return html;
+              console.log("FORMATTING CATEGORY");
+              formatProductPrices();
+              applyProductStyles();
+            // })
+            // .then(() => {
+            //   applyGridStyles();
+            });
+        }
+  
+        function filterProductsByQuality(quality) {
+          fetch(`/bookmark/quality/${quality}/`)
+            .then(response => response.text())
+            .then(html => {
+              const productsContainer = document.getElementById('productsContainer')
+              productsContainer.innerHTML = html;
+              productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+              // productsContainer.innerHTML = `<div class="grid grid-cols-3 gap-3">${html}</div>`;
+              // return html;
+              console.log("FORMATTING QUALITY");
+              formatProductPrices();
+              applyProductStyles();
+            // })
+            // .then(() => {
+            //   applyGridStyles();
+            });
+        }
+  
+        function applyGridStyles() {
+          const filteredProducts = document.querySelectorAll('.px-6.py-12.bg-gray-100.rounded-xl');
+          filteredProducts.forEach(product => {
+              product.classList.add('grid-cols-3', 'gap-3');
+          });
+        }
+  
+        function applyProductStyles() {
+          const filteredProducts = document.querySelectorAll('#productsContainer > div');
+          filteredProducts.forEach(product => {
+            product.classList.add('px-6', 'py-12', 'bg-gray-100', 'rounded-xl', 'text-center');
+            // product.classList.add('px-6', 'py-12', 'bg-gray-100', 'rounded-xl', 'grid-cols-3', 'gap-3', 'text-center', 'flex', 'justify-center');
+          });
+        }
+  
+      </script>
+<div id="bookmarks">
+    <br>
     <br>
     <h2 style="text-align: center;">My Bookmarked Products</h2><br>
     {% if user.is_authenticated %}

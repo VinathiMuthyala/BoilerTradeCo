@@ -16,4 +16,6 @@ urlpatterns = [
     path('bookmark/', views.bookmark_product, name='bookmark_product'),
     re_path(r'^category/(?P<category_tag>[\w\s-]+)/$', views.filter_products_by_category, name='filter_products_by_category'),
     re_path(r'^quality/(?P<quality_tag>[\w\s-]+)/$', views.filter_products_by_quality, name='filter_products_by_quality'),
+    re_path(r'^bookmark/category/(?P<category_tag>[\w\s-]+)/$', views.filter_bookmarks_by_category, name='filter_bookmarks_by_category'),
+    re_path(r'^bookmark/quality/(?P<quality_tag>[\w\s-]+)/$', views.filter_bookmarks_by_quality, name='filter_bookmarks_by_quality'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

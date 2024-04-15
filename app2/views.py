@@ -169,6 +169,21 @@ def filter_products_by_category(request, category_tag):
         'products': products,
     })
 
+def filter_bookmarks_by_category(request, category_tag):
+    filtered_bookmarks = Bookmark.objects.filter(post__category_tag__tag=category_tag, user=request.user)
+
+    products = [{
+        'name': bookmark.post.name,
+        'price': bookmark.post.price,
+        'image': bookmark.post.image.url,
+        'id': bookmark.post.pk,
+    } for bookmark in filtered_bookmarks]
+
+
+    return render(request, 'productdir/bookmark_filter.html', {
+        'products': products,
+    })
+
 def filter_products_by_quality(request, quality_tag):
     # quality_tag = quality_tag.replace('-', ' ')
 
@@ -184,6 +199,21 @@ def filter_products_by_quality(request, quality_tag):
     } for product in filtered_products])
 
     return render(request, 'productdir/filtered-products.html', {
+        'products': products,
+    })
+
+def filter_bookmarks_by_quality(request, quality_tag):
+    filtered_bookmarks = Bookmark.objects.filter(post__quality_tag__tag=quality_tag, user=request.user)
+
+    products = [{
+        'name': bookmark.post.name,
+        'price': bookmark.post.price,
+        'image': bookmark.post.image.url,
+        'id': bookmark.post.pk,
+    } for bookmark in filtered_bookmarks]
+
+
+    return render(request, 'productdir/bookmark_filter.html', {
         'products': products,
     })
 
