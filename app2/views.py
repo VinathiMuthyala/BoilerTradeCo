@@ -72,11 +72,15 @@ def new(request):
             product.seller_email = request.user
             product.save()
             category = product.category_tag
+            seller_email = product.seller_email
+            product_name = product.name
+            product_price = product.price
+            quality = product.quality_tag
             user_email = request.user.email
             firstname = request.user.first_name
             lastname = request.user.last_name
             user_name = f"{firstname} {lastname}"
-            email_text = f"Hi {user_name},\n\n\tThere is a new product posting in this category: {category}. Go to your account on BoilerTradeCo now to see the new posting!\n\n"
+            email_text = f"Hi {user_name},\n\n\tThere is a new product posting in this category: {category}.\n\nProduct details:\n\tSeller email: {seller_email}\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tQuality: {quality}\n\nGo to your account on BoilerTradeCo now to see the new posting!"
             send_mail(subject='BoilerTradeCo New Product Notification', message=email_text, from_email='boilertradeco@gmail.com', recipient_list=['boilertradeco@gmail.com', user_email], fail_silently=False)
             return redirect("/addlisting")
     else:
