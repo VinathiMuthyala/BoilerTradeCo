@@ -236,6 +236,7 @@
         <p class="filter-option">Category: {{ product.category_tag }}</p>
         <p>Seller Email: {{ product.seller_email }}</p>
         <p>Date Posted: {{ product.date_posted|date:"F j, Y" }}</p>
+        <p>{{ product.description }}</p>
         
         <br>
         {% if request.user != product.seller %}
@@ -257,13 +258,29 @@
             <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
                 <a href="/addlisting" class="back-button">Back</a>
                 <a href="#" class="contact-seller-button">Contact Seller</a>
+                <button id="bookmarkBtn" class="contact-seller-button">Bookmark Product</button>
+                <button onclick="openPopup()" class="contact-seller-button">I'm Interested!</button>
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+      <h2>Product Interest Form</h2>
+      <form id="emailSeller" method="post" action="{% url 'emailseller' %}">
+          {% csrf_token %}
+          <!-- <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br> -->
+          <!-- <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br> -->
+          <fieldset id="buyerEmail" name="buyerEmail" contenteditable=False style="display: block;">Buyer email: {{ request.user }}</fieldset><br>
+          <input type="hidden" id="sellerEmail" name="sellerEmail" value="{{ product.seller_email }}">
+          <!-- <fieldset id="sellerEmail" name="sellerEmail" contenteditable=False style="display: none;">{{ product.seller_email }}</fieldset> -->
+          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact other than account email above (Phone number, Instagram, GroupMe, etc.)?"></textarea><br><br>
+          <button onclick="submitInterest()" type="submit" name="email_seller">Submit</button>
+          <button onclick="closePopup()" type="button">Cancel</button>
+      </form>
+    </div>
             </div>
         {% endif %}
     {% else %} <!-- when user is not signed in -->
         <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
             <a href="/addlisting" class="back-button">Back</a>
             <a href="#" class="contact-seller-button">Contact Seller</a>
-            <button id="bookmarkBtn" class="contact-seller-button">Bookmark Product</button>
         </div>
     {% endif %}
 </div>
@@ -300,23 +317,6 @@
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-    <button onclick="openPopup()">I'm Interested!</button>
-    <div class="overlay" id="overlay"></div>
-    <div class="popup" id="popup">
-      <h2>Product Interest Form</h2>
-      <form id="emailSeller" method="post" action="{% url 'emailseller' %}">
-          {% csrf_token %}
-          <!-- <textarea id="buyerEmail" name="buyerEmail" rows="2" cols="40" placeholder="Enter your email" required></textarea><br> -->
-          <!-- <textarea id="sellerEmail" name="sellerEmail" rows="2" cols="40" placeholder="Enter the seller's email" required></textarea><br> -->
-          <fieldset id="buyerEmail" name="buyerEmail" contenteditable=False style="display: block;">Buyer email: {{ request.user }}</fieldset><br>
-          <input type="hidden" id="sellerEmail" name="sellerEmail" value="{{ product.seller_email }}">
-          <!-- <fieldset id="sellerEmail" name="sellerEmail" contenteditable=False style="display: none;">{{ product.seller_email }}</fieldset> -->
-          <textarea id="anotherContact" name="anotherContact" rows="4" cols="50" placeholder="Additional method of contact other than account email above (Phone number, Instagram, GroupMe, etc.)?"></textarea><br><br>
-          <button onclick="submitInterest()" type="submit" name="email_seller">Submit</button>
-          <button onclick="closePopup()" type="button">Cancel</button>
-      </form>
-    </div>
 
     <button onclick="openPopupForLink()">Generate Link</button>
 

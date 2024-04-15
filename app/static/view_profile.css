@@ -52,7 +52,8 @@ li a:hover {
 }
 
 .icon {
-    height: 20px;
+    height: 5%;
+    width: auto;
 }
 
 .profiledetails {

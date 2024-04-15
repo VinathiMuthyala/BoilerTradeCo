@@ -128,15 +128,21 @@ def delete(request, pk):
 
 def detail(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
+    productname = product.name
+    id = product.product_id
+    if not request.user.is_authenticated:
+        return render(request, 'authentication/detail.html', {
+        'product': product,
+        'id': id,
+        'productname': productname,
+    })
     current_user = request.user
     email = current_user.email
     firstname = current_user.first_name
-    productname = product.name
     print(current_user)
     print(email)
     print("Seller email", product.seller_email)
 
-    id = product.product_id
     print(id)
 
     return render(request, 'authentication/detail.html', {

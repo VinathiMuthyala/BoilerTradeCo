@@ -150,7 +150,8 @@ def viewprofile(request):
     email = current_user.email
     profile = request.user.profile
     img = profile.avatar.url
-    context = { 'firstname': firstname, 'lastname': lastname, 'email': email, 'img': img }
+    user_products = ProductInfo.objects.filter(seller_email=current_user)
+    context = { 'firstname': firstname, 'lastname': lastname, 'email': email, 'img': img, 'user_products': user_products }
     return render(request, "authentication/profile.html", context)
 
 def settings(request):
