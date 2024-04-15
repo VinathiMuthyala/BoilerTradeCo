@@ -199,12 +199,10 @@ def generate_bookmarks(request):
 
 @require_POST
 def bookmark_product(request):
-    print("im here right now")
     # Check if the user is authenticated
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'User not authenticated'}, status=401)
 
-    # Get the product ID from the AJAX request
     product_id = request.POST.get('product_id')
 
     # Check if the product ID is valid
@@ -222,16 +220,16 @@ def bookmark_product(request):
     except ProductInfo.DoesNotExist:
         return JsonResponse({'error': 'Product not found'}, status=404)
 
-    # Check if the product is already bookmarked by the user
-    if Bookmark.objects.filter(user=request.user, post_id=product_id).exists():
-        return JsonResponse({'error': 'Product already bookmarked'}, status=400)
-
-    # Create a new bookmark entry
-    bookmark = Bookmark(user=request.user, post_id=product_id)
-    bookmark.save()
-
-    # Return success response
-    return JsonResponse({'success': 'Product bookmarked successfully'})
+    bookmark = Bookmark.objects.filter(user=request.user, post_id=product_id).first()
+    if bookmark:
+        # Product is already bookmarked, so delete the bookmark
+        bookmark.delete()
+        return JsonResponse({'success': 'Product unbookmarked successfully'})
+    else:
+        # Product is not bookmarked, so create a new bookmark entry
+        bookmark = Bookmark(user=request.user, post_id=product_id)
+        bookmark.save()
+        return JsonResponse({'success': 'Product bookmarked successfully'})
 
 
 # def rate_seller(request, seller_id):
