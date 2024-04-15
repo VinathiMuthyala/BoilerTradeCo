@@ -26,6 +26,7 @@
         text-decoration: none;
         border-radius: 5px;
         transition: background-color 0.3s ease; /* Smooth transition on hover */
+        color: black;
     }
 
     .back-button,
@@ -245,23 +246,29 @@
     
 
 <div class="button-container" style="margin-bottom: 30px">
-    <!-- <a href="javascript:history.go(-1)" class="back-button">Back</a> -->
-    {% if request.user == product.seller_email %}
-    <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
-        <a href="/addlisting" class="back-button">Back</a>
-        <a href="{% url 'edit' id %}" class="edit-button">Edit</a>
-        <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="delete-button">Delete</a>
-    </div>
-    {% else %}
+    {% if user.is_authenticated %}
+        {% if user == product.seller_email %} <!-- when user is signed in and viewing their own product -->
+            <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
+                <a href="/addlisting" class="back-button">Back</a>
+                <a href="{% url 'edit' id %}" class="edit-button">Edit</a>
+                <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="delete-button">Delete</a>
+            </div>
+        {% else %} <!-- when user is signed in but not viewing their own product -->
+            <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
+                <a href="/addlisting" class="back-button">Back</a>
+                <a href="#" class="contact-seller-button">Contact Seller</a>
+            </div>
+        {% endif %}
+    {% else %} <!-- when user is not signed in -->
         <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
             <a href="/addlisting" class="back-button">Back</a>
             <a href="#" class="contact-seller-button">Contact Seller</a>
+            <button id="bookmarkBtn" class="contact-seller-button">Bookmark Product</button>
         </div>
     {% endif %}
 </div>
 
 <!-- Button to open the popup -->
-<button id="bookmarkBtn">Bookmark Product</button>
 <button onclick="openPopupForSocial()">Share on Social Media</button>
 <button onclick="openPopupForMessages()">Share via Messages</button>
 
@@ -315,7 +322,7 @@
 
     <div id="linkpopup" class="linkpopup">
         <p>Copy/paste and share:</p>
-        <textarea id="linkText" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Check out the posting with this link! :3 **insert link once generated**</textarea>
+        <textarea id="linkText" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Check out the posting with this link! **insert link once generated**</textarea>
         <br>
         <button onclick="copyText('linkText'); closePopupForLink();">Copy Text</button>
         <button onclick="closePopupForLink()">Cancel</button>
@@ -440,7 +447,7 @@ document.getElementById('deleteButton').addEventListener('click', function(event
                 },
                 success: function(response) {
                     // Alert the user on successful bookmarking
-                    alert('Product bookmarked successfully!');
+                    alert('Product bookmarked/unbookmarked successfully!');
                 },
                 error: function(xhr, errmsg, err) {
                     // Alert the user on error

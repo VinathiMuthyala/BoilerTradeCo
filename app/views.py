@@ -142,6 +142,8 @@ def delete_account(request):
     return redirect('index')
 
 def viewprofile(request):
+    if not request.user.is_authenticated:
+        return redirect('add_listing')
     current_user = request.user
     firstname = current_user.first_name
     lastname = current_user.last_name
@@ -152,6 +154,8 @@ def viewprofile(request):
     return render(request, "authentication/profile.html", context)
 
 def settings(request):
+    if not request.user.is_authenticated:
+        return redirect('add_listing')
     current_user = request.user
     firstname = current_user.first_name
     lastname = current_user.last_name
