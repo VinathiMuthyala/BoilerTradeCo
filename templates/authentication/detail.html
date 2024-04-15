@@ -231,12 +231,12 @@
     </div>
     <div class="col-span-1" style="margin-left: 30px;">
         <h1>{{ product.name }}</h1>
+        <p>{{ product.description }}</p>
         <p>Price: ${{ product.price }}</p>
         <p class="filter-option">Quality: {{ product.quality_tag }}</p>
         <p class="filter-option">Category: {{ product.category_tag }}</p>
         <p>Seller Email: {{ product.seller_email }}</p>
         <p>Date Posted: {{ product.date_posted|date:"F j, Y" }}</p>
-        <p>{{ product.description }}</p>
         
         <br>
         {% if request.user != product.seller %}
@@ -447,11 +447,11 @@ document.getElementById('deleteButton').addEventListener('click', function(event
                 },
                 success: function(response) {
                     // Alert the user on successful bookmarking
-                    alert('Product bookmarked/unbookmarked successfully!');
+                    alert('Product bookmarked successfully!');
                 },
                 error: function(xhr, errmsg, err) {
                     // Alert the user on error
-                    alert('Failed to bookmark product. Please try again later.');
+                    alert('Product unbookmarked successfully!');
                 }
             });
         });
