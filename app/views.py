@@ -199,7 +199,9 @@ def settings(request):
        
         # check if form is enabling email notifications
         elif 'email_notifications' in request.POST:
+            print("came to email notif")
             if request.POST['email_notifications'] == 'on':
+                print("did it come here?")
                 try:
                     user_email = request.user.email
                     firstname = request.user.first_name
