@@ -364,7 +364,6 @@ def filter_products_by_price(request):
 
 
 
-
 # def filter_products_by_category(request, category_tag):
 #     filtered_products = ProductInfo.objects.filter(category_tag__tag=category_tag)
 
