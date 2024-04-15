@@ -4,14 +4,13 @@ from django.db import models
 from datetime import date
 from django.contrib import messages
 from django.core.serializers import serialize
-from .models import ProductInfo, CategoryTag, QualityTag, ProductListing
+from .models import ProductInfo, CategoryTag, QualityTag, ProductListing, Bookmark
 from django.conf import settings
 import os, json
 from decimal import Decimal
 from django.contrib.auth.decorators import login_required
 from .forms import NewProductForm, EditProductForm
 from django.urls import reverse
-from .models import Bookmark
 from django.views.decorators.http import require_POST
 from django.core.mail import send_mail
 
@@ -179,10 +178,24 @@ def filter_products_by_quality(request, quality_tag):
     })
 
 def generate_bookmarks(request):
-    return render(request, "productdir/bookmarks.html")
+    # Check if the user is authenticated
+    if not request.user.is_authenticated:
+        return render(request, 'error.html', {'error_message': 'User not authenticated'}, status=401)
+
+    # Retrieve the bookmarked products for the current user
+    bookmarked_products = Bookmark.objects.filter(user=request.user)
+
+    # Extract the product IDs from the bookmarked products
+    product_ids = [bookmark.post.product_id for bookmark in bookmarked_products]
+
+    # Retrieve the actual product objects using the IDs
+    products = ProductInfo.objects.filter(pk__in=product_ids)
+
+    return render(request, 'productdir/bookmarks.html', {'bookmarked_products': products})
 
 @require_POST
 def bookmark_product(request):
+    print("im here right now")
     # Check if the user is authenticated
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'User not authenticated'}, status=401)
@@ -190,6 +203,14 @@ def bookmark_product(request):
     # Get the product ID from the AJAX request
     product_id = request.POST.get('product_id')
 
+    # Check if the product ID is valid
+    if not product_id:
+        return JsonResponse({'error': 'Invalid product ID'}, status=400)
+
+    try:
+        product_id = int(product_id)  # Convert to integer
+    except ValueError:
+        return JsonResponse({'error': 'Invalid product ID'}, status=400)
 
     # Check if the product exists
     try:
@@ -198,11 +219,11 @@ def bookmark_product(request):
         return JsonResponse({'error': 'Product not found'}, status=404)
 
     # Check if the product is already bookmarked by the user
-    if Bookmark.objects.filter(user=request.user, product=product).exists():
+    if Bookmark.objects.filter(user=request.user, post_id=product_id).exists():
         return JsonResponse({'error': 'Product already bookmarked'}, status=400)
 
     # Create a new bookmark entry
-    bookmark = Bookmark(user=request.user, product=product)
+    bookmark = Bookmark(user=request.user, post_id=product_id)
     bookmark.save()
 
     # Return success response
