@@ -236,9 +236,9 @@
         <p>Seller Email: {{ product.seller_email }}</p>
         <p>Date Posted: {{ product.date_posted|date:"F j, Y" }}</p>
         <p>hello</p>
-        <!-- {% if request.user != product.seller %}
-            <a href="{% url 'rate_seller' product_id=product.id %}" class="rate-button">Rate Seller</a>
-        {% endif %} -->
+        {% if request.user != product.seller %}
+            <a href="{% url 'rate_seller' %}" class="rate-button">Rate Seller</a>
+        {% endif %}
     </div>
 </div>
     

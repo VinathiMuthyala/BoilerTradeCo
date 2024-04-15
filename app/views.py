@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages 
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
-from .models import Profile
+from .models import Profile, SellerRating
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -363,7 +363,6 @@ def filter_products_by_price(request):
     return render(request, 'productdir/filtered-products.html', {'products': products,})
 
 
-
 # def filter_products_by_category(request, category_tag):
 #     filtered_products = ProductInfo.objects.filter(category_tag__tag=category_tag)
 
@@ -377,3 +376,27 @@ def filter_products_by_price(request):
 #     return render(request, 'productdir/filtered-products.html', {
 #         'products': products,
 #     })
+
+
+
+def rate_seller(request, seller_id):
+    if request.method == 'POST':
+        rating = int(request.POST.get('rating'))
+        comment = request.POST.get('comment')
+        seller = User.objects.get(pk=seller_id)
+        user = request.user
+        SellerRating.objects.create(seller=seller, user=user, rating=rating, comment=comment)
+        update_average_rating(seller)
+        return redirect('seller_profile', seller_id=seller_id)
+    return render(request, 'rate_seller.html')
+
+def update_average_rating(seller):
+    all_ratings = SellerRating.objects.filter(seller=seller)
+    total_ratings = sum([rating.rating for rating in all_ratings])
+    num_ratings = len(all_ratings)
+    if num_ratings > 0:
+        average_rating = total_ratings / num_ratings
+        profile = seller.profile
+        profile.average_rating = average_rating
+        profile.save()
+

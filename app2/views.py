@@ -200,6 +200,30 @@ def bookmark_product(request):
     # Return success response
     return JsonResponse({'success': 'Product bookmarked successfully'})
 
+
+# def rate_seller(request, seller_id):
+#     if request.method == 'POST':
+#         rating = int(request.POST.get('rating'))
+#         comment = request.POST.get('comment')
+#         seller = User.objects.get(pk=seller_id)
+#         user = request.user
+#         SellerRating.objects.create(seller=seller, user=user, rating=rating, comment=comment)
+#         update_average_rating(seller)
+#         return redirect('seller_profile', seller_id=seller_id)
+#     return render(request, 'rate_seller.html')
+
+# def update_average_rating(seller):
+#     all_ratings = SellerRating.objects.filter(seller=seller)
+#     total_ratings = sum([rating.rating for rating in all_ratings])
+#     num_ratings = len(all_ratings)
+#     if num_ratings > 0:
+#         average_rating = total_ratings / num_ratings
+#         profile = seller.profile
+#         profile.average_rating = average_rating
+#         profile.save()
+
+
+
 # def add_listing(request):
 #     print("printing product info from views.py")
 #     if request.method == "POST":
