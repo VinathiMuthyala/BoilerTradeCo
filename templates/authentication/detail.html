@@ -27,6 +27,7 @@
         border-radius: 5px;
         transition: background-color 0.3s ease; /* Smooth transition on hover */
         color: black;
+        font-family: 'Times New Roman', Times, serif;
     }
 
     .back-button,
@@ -239,7 +240,7 @@
         <p>Date Posted: {{ product.date_posted|date:"F j, Y" }}</p>
         
         <br>
-        {% if request.user != product.seller %}
+        {% if request.user != product.seller_email %}
             <a href="{% url 'rate_seller' %}" class="back-button">Rate Seller</a>
         {% endif %}
     </div>

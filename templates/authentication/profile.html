@@ -209,12 +209,13 @@
     
       <br>
       <br>
+      <br>
       <button type="submit"> <img src="{% static 'plussign.png' %}" alt="Add" class="icon"> 
-      <a href="/newproduct">Add Product</a></button>
+      <a href="/newproduct">Add Product</a></button><br>
       <br>
       <h2 style="text-decoration: underline;">Ratings</h2> 
       <br>
-      <h2 style="text-decoration: underline;">My Listings</h2>
+      <h2 style="text-decoration: underline;">My Listings</h2><br>
         {% if user_products|length > 0 %}
             <div id="productsContainer" class="grid grid-cols-2 gap-3">
                 {% for product in user_products %}
