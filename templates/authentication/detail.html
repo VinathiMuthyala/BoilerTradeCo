@@ -12,6 +12,32 @@
 
 {% block content %}
 <style>
+    ul {
+        background-color: #ffd700;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    li {
+        display: inline;
+        margin-right: 20px;
+    }
+
+    li a {
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+    }
+
+    li a:hover {
+        color: gray;
+        text-decoration: underline;
+    }
+
     .button-container {
         display: flex;
         justify-content: space-around; /* Adjust as needed */
@@ -223,6 +249,15 @@
 </style>
 
 <body>
+    <nav>
+        <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" style="height: 150px; width: 150px">
+          <ul>
+              <li><a href="/addlisting">Home</a></li>
+              <li><a href="/bookmarks">Bookmarks</a></li>
+              <li><a href="">Sales</a></li>
+              <li><a href="/profile" class="active">Profile</a></li>
+          </ul>
+    </nav>
 <div class="container" style="margin-right: 100px; margin-left: -200px; margin-bottom: 50px; margin-top: 110px">
     <div class="grid grid-cols-5 gap-6" style="width: 500px;
     margin-right: 80px; margin-top: -50px; margin-bottom: -20px;">
@@ -255,13 +290,17 @@
                 <a href="{% url 'edit' id %}" class="edit-button">Edit</a>
                 <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="delete-button">Delete</a>
                 <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
+                <button onclick="openPopupForLink()" class="contact-seller-button">Copy Link</button>
+                <button onclick="generatePDF()" class="contact-seller-button" type="submit">Generate PDF</button>
             </div>
         {% else %} <!-- when user is signed in but not viewing their own product -->
             <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
                 <a href="/addlisting" class="back-button">Back</a>
                 <button id="bookmarkBtn" class="contact-seller-button">Bookmark Product</button>
                 <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
+                <button onclick="openPopupForLink()" class="contact-seller-button">Copy Link</button>
                 <button onclick="openPopup()" class="contact-seller-button">I'm Interested!</button>
+                <button onclick="generatePDF()" class="contact-seller-button" type="submit">Generate PDF</button>
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
       <h2>Product Interest Form</h2>
@@ -283,6 +322,8 @@
         <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
             <a href="/addlisting" class="back-button">Back</a>
             <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
+            <button onclick="openPopupForLink()" class="contact-seller-button">Copy Link</button>
+            <button onclick="generatePDF()" class="contact-seller-button" type="submit">Generate PDF</button>
         </div>
     {% endif %}
 </div>
@@ -300,7 +341,6 @@
 <button onclick="closePopupForSocial()">Cancel</button>
 </div>
 
-<button onclick="generatePDF()" type="submit">Generate PDF</button>
     <script>
         function generatePDF() {
             window.location.href = "{% url 'generatepdf' %}";
@@ -309,7 +349,6 @@
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <button onclick="openPopupForLink()">Copy Link</button>
 
     <div id="linkpopup" class="linkpopup">
         <p>Copy Link:</p>
