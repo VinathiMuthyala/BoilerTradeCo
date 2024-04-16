@@ -139,11 +139,7 @@ def detail(request, pk):
     current_user = request.user
     email = current_user.email
     firstname = current_user.first_name
-    print(current_user)
-    print(email)
-    print("Seller email", product.seller_email)
-
-    print(id)
+    current_url = request.build_absolute_uri()
 
     return render(request, 'authentication/detail.html', {
         'product': product,
@@ -152,6 +148,7 @@ def detail(request, pk):
         'id': id,
         'firstname': firstname,
         'productname': productname,
+        'url': current_url,
     })
 
 def filter_products_by_category(request, category_tag):

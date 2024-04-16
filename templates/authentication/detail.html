@@ -254,12 +254,13 @@
                 <a href="/addlisting" class="back-button">Back</a>
                 <a href="{% url 'edit' id %}" class="edit-button">Edit</a>
                 <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="delete-button">Delete</a>
+                <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
             </div>
         {% else %} <!-- when user is signed in but not viewing their own product -->
             <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
                 <a href="/addlisting" class="back-button">Back</a>
-                <a href="#" class="contact-seller-button">Contact Seller</a>
                 <button id="bookmarkBtn" class="contact-seller-button">Bookmark Product</button>
+                <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
                 <button onclick="openPopup()" class="contact-seller-button">I'm Interested!</button>
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
@@ -281,33 +282,22 @@
     {% else %} <!-- when user is not signed in -->
         <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
             <a href="/addlisting" class="back-button">Back</a>
-            <a href="#" class="contact-seller-button">Contact Seller</a>
+            <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
         </div>
     {% endif %}
 </div>
 
-<!-- Button to open the popup -->
-<button onclick="openPopupForSocial()">Share on Social Media</button>
-<button onclick="openPopupForMessages()">Share via Messages</button>
 
 <div id="smpopup" class="smpopup">
 <p>Copy/paste and share:</p>
-<textarea id="socialMediaText" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
+<textarea id="socialMediaText" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Here's the product link: {{ url }}. Head over and create an account now: https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/ </textarea>
 <br>
 <button onclick="copyText('socialMediaText'); closePopupForSocial();">Copy Text</button>
 <button onclick="redirectToInstagram()"> <img src="{% static 'instagram.png' %}"  alt="Edit Icon" class="icon"> </button>
 <button onclick="redirectToFacebook()"><img src="{% static 'facebook.png' %}"  alt="Edit Icon" class="icon"></button>
 <button onclick="redirectToSnapchat()"> <img src="{% static 'snapchat.png' %}"  alt="Edit Icon" class="icon"></button>
-<button onclick="closePopupForSocial()">Cancel</button>
-</div>
-
-<div id="mpopup" class="smpopup">
-<p>Copy/paste and share:</p>
-<textarea id="messagesText" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Head over and create an account now :3 https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/</textarea>
-<br>
-<button onclick="copyText('messagesText'); closePopupForMessages();">Copy Text</button>
 <button onclick="redirectToWhatsapp()"> <img src="{% static 'whatsapp.png' %}"  alt="Edit Icon" class="icon"> </button>
-<button onclick="closePopupForMessages()">Cancel</button>
+<button onclick="closePopupForSocial()">Cancel</button>
 </div>
 
 <button onclick="generatePDF()" type="submit">Generate PDF</button>
@@ -319,13 +309,13 @@
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-    <button onclick="openPopupForLink()">Generate Link</button>
+    <button onclick="openPopupForLink()">Copy Link</button>
 
     <div id="linkpopup" class="linkpopup">
-        <p>Copy/paste and share:</p>
-        <textarea id="linkText" rows="4" cols="50">Hey! It's {{ firstname }}! You need to check out this {{ productname }} selling on BoilerTradeCo! Check out the posting with this link! **insert link once generated**</textarea>
+        <p>Copy Link:</p>
+        <textarea id="linkText" rows="4" cols="50">{{ url }}</textarea>
         <br>
-        <button onclick="copyText('linkText'); closePopupForLink();">Copy Text</button>
+        <button onclick="copyText('linkText'); closePopupForLink();">Copy Link</button>
         <button onclick="closePopupForLink()">Cancel</button>
         </div>
     <br>
@@ -382,10 +372,6 @@ document.getElementById('deleteButton').addEventListener('click', function(event
         document.getElementById('smpopup').style.display = 'block';
     }
 
-    function openPopupForMessages() {
-        document.getElementById('mpopup').style.display = 'block';
-    }
-
     function openPopupForLink() {
         document.getElementById('linkpopup').style.display = 'block';
     }
@@ -402,10 +388,6 @@ document.getElementById('deleteButton').addEventListener('click', function(event
     // Function to close the popup
     function closePopupForSocial() {
         document.getElementById('smpopup').style.display = 'none';
-    }
-
-    function closePopupForMessages() {
-        document.getElementById('mpopup').style.display = 'none';
     }
 
     function closePopupForLink() {
