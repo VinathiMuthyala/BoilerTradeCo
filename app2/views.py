@@ -128,6 +128,10 @@ def delete(request, pk):
 
 def detail(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
+    bookmarked_products = Bookmark.objects.filter(post=product, user=request.user)
+    bookmarked = False
+    if (bookmarked_products.exists()):
+        bookmarked = True
     productname = product.name
     id = product.product_id
     if not request.user.is_authenticated:
@@ -149,6 +153,7 @@ def detail(request, pk):
         'firstname': firstname,
         'productname': productname,
         'url': current_url,
+        'bookmarked': bookmarked,
     })
 
 def filter_products_by_category(request, category_tag):

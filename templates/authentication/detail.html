@@ -296,7 +296,11 @@
         {% else %} <!-- when user is signed in but not viewing their own product -->
             <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
                 <a href="/addlisting" class="back-button">Back</a>
-                <button id="bookmarkBtn" class="contact-seller-button">Bookmark Product</button>
+                {% if bookmarked %}
+                    <button id="bookmarkBtn" class="contact-seller-button">Unbookmark</button>
+                {% else %}
+                    <button id="bookmarkBtn" class="contact-seller-button">Bookmark</button>
+                {% endif %}
                 <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
                 <button onclick="openPopupForLink()" class="contact-seller-button">Copy Link</button>
                 <button onclick="openPopup()" class="contact-seller-button">I'm Interested!</button>
@@ -470,10 +474,12 @@ document.getElementById('deleteButton').addEventListener('click', function(event
                 success: function(response) {
                     // Alert the user on successful bookmarking
                     alert('Product bookmarked successfully!');
+                    location.reload();
                 },
                 error: function(xhr, errmsg, err) {
                     // Alert the user on error
                     alert('Product unbookmarked successfully!');
+                    location.reload();
                 }
             });
         });

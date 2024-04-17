@@ -160,7 +160,7 @@
 </nav>
  <!--All filter options-->
  <div class="filter-container">
-    <h2 style="text-align: center;">Filter Options</h2><br>
+    <h2 style="text-align: center;">Filter Options</h2>
     <!-- Product filters -->
     <div class="product-filters">
       <button class="filter-option" data-category="Appliances">Appliances</button>
@@ -177,13 +177,13 @@
       <button class="filter-option" data-quality="Like New">Like New</button>
       <button class="filter-option" data-quality="Good">Good</button>
       <button class="filter-option" data-quality="Acceptable">Acceptable</button>
-      <!-- <button class="filter-option" style="text-decoration: none;"><a href="">Reset</a></button> -->
+      <!-- Reset button -->
+      <button class="filter-option" style="text-decoration: none;"><a href="">Reset</a></button>
     </div>
 
-    <!-- Reset button -->
-    <div class="product-filters">
+    <!-- <div class="product-filters">
         <button class="filter-option" style="text-decoration: none;"><a href="">Reset</a></button>
-    </div>
+    </div> -->
     <br>
     <script>
         document.querySelectorAll('.filter-option').forEach(function(button) {
@@ -296,7 +296,11 @@
                 </div>
                 {% endfor %}
             </div>
-            {% endif %}
+          {% else %}
+            <div id="productsContainer">
+              <h3 style="text-align: center;">You haven't bookmarked anything yet!</h3>
+            </div>
+          {% endif %}
         {% endif %}
     </div>
 <script src="" async defer></script>
