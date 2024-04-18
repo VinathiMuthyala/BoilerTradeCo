@@ -340,8 +340,38 @@
           </div>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+          $(document).ready(function () {
+              // Setting the initial state of the toggle to be on
+              $('#emailNotifications').prop('checked', true);
+              $('#emailNotifications').change(function () {
+                  var isChecked = $(this).prop('checked');
+                  console.log("is checked: ", isChecked);
+                  var csrfToken = $('#notificationForm').find('input[name="csrfmiddlewaretoken"]').val();
+                  var user = "{{ request.user }}";
+                  $.ajax({
+                      url: '/update-notifications/',
+                      method: 'POST',
+                      headers: {
+                          'X-CSRFToken': csrfToken
+                      },
+                      data: {
+                          'user': user,
+                          'notifications_disabled': isChecked ? 'false' : 'true'
+                      },
+                      success: function (data) {
+                          console.log('Notifications updated successfully.');
+                      },
+                      error: function (xhr, status, error) {
+                          console.error('Error updating notifications:', error);
+                      }
+                  });
+              });
+          });
+          </script>
 
-            <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+            <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script>
               // CONNECT NOTIFICATION SLIDER TO BACKEND WITH THIS
               $(document).ready(function () {
@@ -376,7 +406,7 @@
                   });
                 });
               });
-            </script>
+            </script> -->
 
               <!-- Other -->
               <div class="tab-pane fade" id="account-other">
