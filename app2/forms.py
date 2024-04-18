@@ -16,6 +16,8 @@ class NewProductForm(forms.ModelForm):
         fields = ('seller_email', 'name', 'price', 'description', 'quality_tag', 'category_tag', 'is_sold', 'date_posted', 'image',)
 
 class EditProductForm(forms.ModelForm):
+    # previous_price = forms.DecimalField(required=False, widget=forms.HiddenInput)
+
     class Meta:
         model = ProductInfo
         fields = ('name', 'price', 'description', 'is_sold', 'image',)

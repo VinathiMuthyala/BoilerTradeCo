@@ -29,5 +29,6 @@ urlpatterns = [
     path('filter-products-by-price/', views.filter_products_by_price, name='filter_products_by_price'),
     #path('rate-seller/', views.rate_seller, name='rate_seller'),
     path('rate-seller/<str:seller_email>/', views.rate_seller, name='rate_seller'),
+    path('update-notifications/', views.update_notifications, name='update_notifications'),
 
 ]

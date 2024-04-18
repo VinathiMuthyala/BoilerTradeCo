@@ -311,7 +311,7 @@
 
 
               <!--Notifications-->
-      <form method="post" action="{% url 'settings' %}" enctype="multipart/form-data">
+      <form method="post" action="{% url 'settings' %}" enctype="multipart/form-data" id="notificationForm">
         {% csrf_token %}
         <div class="tab-pane fade" id="account-notifications">
           <hr class="border-light m-0">
@@ -326,7 +326,7 @@
                 <label for="emailNotifications" class="form-check-label">Enable Email Notifications</label>
               </div>
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <div class="toggle-switch">
                 <label class="switch">
                   <input type="checkbox" class="form-check-input notification-option" id="pushNotifications">
@@ -334,27 +334,79 @@
                 </label>
                 <label for="pushNotifications" class="form-check-label">Enable Push Notifications</label>
               </div>
-            </div>
+            </div> -->
             <!-- Add more notification options as needed -->
           </form>
           </div>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+          $(document).ready(function () {
+              // Setting the initial state of the toggle to be on
+              $('#emailNotifications').prop('checked', true);
+              $('#emailNotifications').change(function () {
+                  var isChecked = $(this).prop('checked');
+                  console.log("is checked: ", isChecked);
+                  var csrfToken = $('#notificationForm').find('input[name="csrfmiddlewaretoken"]').val();
+                  var user = "{{ request.user }}";
+                  $.ajax({
+                      url: '/update-notifications/',
+                      method: 'POST',
+                      headers: {
+                          'X-CSRFToken': csrfToken
+                      },
+                      data: {
+                          'user': user,
+                          'notifications_disabled': isChecked ? 'false' : 'true'
+                      },
+                      success: function (data) {
+                          console.log('Notifications updated successfully.');
+                      },
+                      error: function (xhr, status, error) {
+                          console.error('Error updating notifications:', error);
+                      }
+                  });
+              });
+          });
+          </script>
 
-
+            <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
             <script>
               // CONNECT NOTIFICATION SLIDER TO BACKEND WITH THIS
               $(document).ready(function () {
                 var notifToggle = document.getElementById('emailNotifications');
-                $('.notification-option').change(function () {
+                console.log("reached here: " , notifToggle);
+                notifToggle.addEventListener('change', function () {
+                  console.log("reached after event listener");
+                // $('.notification-option').change(function () {
                   // Logic to handle notification option changes
-                  document.body.classList.toggle('enable-category', notifToggle.checked);
-                  var optionId = $(this).attr('id'); 
-                  var isChecked = $(this).prop('checked'); 
-                  
+                  // document.body.classList.toggle('enable-category', notifToggle.checked);
+                  // var optionId = $(this).attr('id'); 
+                  var isChecked = $(this).prop('checked');
+                  console.log("ischecked: ", isChecked);
+                  var user = "{{ request.user }}";
+                  var csrfToken = $('#notificationForm').find('input[name="csrfmiddlewaretoken"]').val();
+                  $.ajax({
+                    url: '/update-notifications/',
+                    method: 'POST',
+                    headers: {
+                      'X-CSRFToken': csrfToken
+                    },
+                    data: {
+                      'user': user,
+                      'notifications_disabled': isChecked ? 'false' : 'true'
+                    },
+                    success: function (data) {
+                      console.log('Notifications updated successfully.');
+                    },
+                    error: function (xhr, status, error) {
+                      console.error('Error updating notifications:', error);
+                    }
+                  });
                 });
               });
-            </script>
+            </script> -->
 
               <!-- Other -->
               <div class="tab-pane fade" id="account-other">
