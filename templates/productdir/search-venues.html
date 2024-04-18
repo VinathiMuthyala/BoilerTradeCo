@@ -1,4 +1,10 @@
-<h>Here are the products that match your search!</h>
+<!-- <h>Here are the products that match your search!</h> -->
+
+{% if searched %}
+    <h1>You Searched For {{ searched }}</h1>
+{% else %}
+    <h1>You Forgot To Search For A Product</h1>
+{% endif %}
 
 {% for product in products %}
 <div>

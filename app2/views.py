@@ -310,9 +310,16 @@ def filter_products_by_quality(request, quality_tag):
     })
 
 def search_venues(request):
-    return render(request, 'productdir/search-venues.html', {
+    if request.method == "POST":
+        searched = request.POST['searched']
+
+        return render(request, 'productdir/search-venues.html', {
+            'searched': searched
+        })
+    else:
+        return render(request, 'productdir/search-venues.html', {
         
-    })
+        })
 
 def filter_bookmarks_by_quality(request, quality_tag):
     filtered_bookmarks = Bookmark.objects.filter(post__quality_tag__tag=quality_tag, user=request.user)
