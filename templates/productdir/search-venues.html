@@ -1,6 +1,18 @@
-<h>Here are the products that match your search!</h>
+<!-- <h>Here are the products that match your search!</h> -->
 
-{% for product in products %}
+{% if searched %}
+    <h1>You Searched For {{ searched }}</h1>
+    <br/>
+
+    {% for product in products %}
+        {{ product }}<br/>
+    {% endfor %}
+
+{% else %}
+    <h1>You Forgot To Search For A Product</h1>
+{% endif %}
+
+<!-- {% for product in products %}
 <div>
   <a href="{% url 'detail' product.id %}">
     <div>
@@ -13,4 +25,4 @@
     </div>
   </a>
 </div>
-{% endfor %}
+{% endfor %} -->

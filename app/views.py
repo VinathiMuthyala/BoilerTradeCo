@@ -254,11 +254,13 @@ def settings(request):
 
     password_change_form = PasswordChangeForm(request.user)
 
+    notifications = request.user.profile.notifications
     context = {
         'email': email,
         'firstname': firstname,
         'lastname': lastname,
         'password_change_form': password_change_form,
+        'notifications': notifications,
     }
 
     return render(request, "authentication/settings.html", context)
