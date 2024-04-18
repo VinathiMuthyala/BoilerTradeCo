@@ -29,5 +29,6 @@ urlpatterns = [
     #path('rate-seller/<int:seller_id>/', views.rate_seller, name='rate_seller'),
     path('rate-seller/', views.rate_seller, name='rate_seller'),
     #path('rate-seller/<int:seller_email>/', views.rate_seller, name='rate_seller'),
+    path('update-notifications/', views.update_notifications, name='update_notifications'),
 
 ]

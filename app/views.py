@@ -22,6 +22,8 @@ import string
 from django.urls import reverse
 from app2.models import ProductInfo
 from django.http import HttpResponseBadRequest
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
@@ -439,4 +441,20 @@ def update_average_rating(seller):
         profile = seller.profile
         profile.average_rating = average_rating
         profile.save()
+
+def update_notifications(request):
+    if request.method == 'POST':
+        user = request.POST.get('user')
+        notifications_disabled = request.POST.get('notifications_disabled')
+        print(notifications_disabled)
+        if notifications_disabled == 'true':
+            print("made notifications false")
+            request.user.profile.notifications = False
+        else:
+            print("made notifications true")
+            request.user.profile.notifications = True
+        request.user.profile.save()
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error'}, status=400)
 

@@ -13,6 +13,7 @@ from .forms import NewProductForm, EditProductForm
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.core.mail import send_mail
+from app.models import Profile
 
 # Create your views here.
 def layout(request):
@@ -76,12 +77,18 @@ def new(request):
             product_name = product.name
             product_price = product.price
             quality = product.quality_tag
-            user_email = request.user.email
-            firstname = request.user.first_name
-            lastname = request.user.last_name
-            user_name = f"{firstname} {lastname}"
-            email_text = f"Hi {user_name},\n\n\tThere is a new product posting in this category: {category}.\n\nProduct details:\n\tSeller email: {seller_email}\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tQuality: {quality}\n\nGo to your account on BoilerTradeCo now to see the new posting!"
-            send_mail(subject="BoilerTradeCo New Product Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=["boilertradeco@gmail.com", user_email], fail_silently=False)
+            users_notifications_enabled = Profile.objects.filter(notifications=True).exclude(user=request.user)
+            recipient_emails = [profile.user.email for profile in users_notifications_enabled]
+            recipient_emails.append("boilertradeco@gmail.com")
+            # Send email notifications to users with notifications enabled
+            #send_mail(subject="New Product Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=recipient_emails, fail_silently=False)
+            # user_email = request.user.email
+            # firstname = request.user.first_name
+            # lastname = request.user.last_name
+            # user_name = f"{firstname} {lastname}"
+            #recipient_list=[", ".join(recipient_emails)]
+            email_text = f"Hi BoilerTradeCo User!\n\n\tWe wanted to notify you that there is a new product posting in this category: {category}.\n\nProduct details:\n\tSeller email: {seller_email}\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tQuality: {quality}\n\nGo to your account on BoilerTradeCo now to see the new posting!"
+            send_mail(subject="BoilerTradeCo New Product Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=recipient_emails, fail_silently=False)
             return redirect("/addlisting")
     else:
         form = NewProductForm()
@@ -95,12 +102,51 @@ def new(request):
 @login_required
 def edit(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
+    price_before = product.price
     if request.method == 'POST':
         form = EditProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
+            print("form is valid after edit product form")
+            print("price before: ", price_before)
             form.save()
+            price_after = product.price
+            print("price after: ", price_after)
+            if (product.is_sold == True):
+                seller_email = product.seller_email
+                product_name = product.name
+                product_price = product.price
+                category = product.category_tag
+                quality = product.quality_tag
+                bookmarks = Bookmark.objects.filter(post=product)
+                recipient_emails = []
+                for bookmark in bookmarks:
+                    user_profile = Profile.objects.get(user=bookmark.user)
+                    if user_profile.notifications:
+                        recipient_emails.append(bookmark.user.email)
+                recipient_emails.append("boilertradeco@gmail.com")
+                # Send email notifications to users with notifications enabled
+                email_text = f"Hi BoilerTradeCo User!\n\n\tWe wanted to notify you that, unfortunately, a product you bookmarked has now been marked sold.\n\nProduct details:\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tCategory: {category}\n\tQuality: {quality}\n\tSeller email: {seller_email}\n\nGo to your account on BoilerTradeCo now to view more product postings!"
+                send_mail(subject="BoilerTradeCo Bookmarked Product Sold Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=recipient_emails, fail_silently=False)
+            if (price_after != price_before):
+                print("entered price if")
+                seller_email = product.seller_email
+                product_name = product.name
+                product_price = product.price
+                category = product.category_tag
+                quality = product.quality_tag
+                bookmarks = Bookmark.objects.filter(post=product)
+                recipient_emails = []
+                for bookmark in bookmarks:
+                    user_profile = Profile.objects.get(user=bookmark.user)
+                    if user_profile.notifications:
+                        recipient_emails.append(bookmark.user.email)
+                recipient_emails.append("boilertradeco@gmail.com")
+                # Send email notifications to users with notifications enabled
+                email_text = f"Hi BoilerTradeCo User!\n\n\tWe wanted to notify you that a product you bookmarked has changed from its initial price of {price_before}.\n\nNew product details:\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tCategory: {category}\n\tQuality: {quality}\n\tSeller email: {seller_email}\n\nGo to your account on BoilerTradeCo now to view this and more product postings!"
+                send_mail(subject="BoilerTradeCo Bookmarked Product Price Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=recipient_emails, fail_silently=False)
             return redirect("/addlisting")
     else:
+        print("created a new product form")
         form = EditProductForm(instance=product)
     return render(request, 'productdir/form.html', {
         'form': form,
@@ -111,8 +157,22 @@ def edit(request, pk):
 @login_required
 def delete(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
+    seller_email = product.seller_email
+    product_name = product.name
+    product_price = product.price
+    category = product.category_tag
+    quality = product.quality_tag
+    bookmarks = Bookmark.objects.filter(post=product)
+    recipient_emails = []
+    for bookmark in bookmarks:
+        user_profile = Profile.objects.get(user=bookmark.user)
+        if user_profile.notifications:
+            recipient_emails.append(bookmark.user.email)
+    recipient_emails.append("boilertradeco@gmail.com")
+    # Send email notifications to users with notifications enabled
+    email_text = f"Hi BoilerTradeCo User!\n\n\tWe wanted to notify you that, unfortunately, a product you bookmarked has now been deleted.\n\nProduct details:\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tCategory: {category}\n\tQuality: {quality}\n\tSeller email: {seller_email}\n\nGo to your account on BoilerTradeCo now to view more product postings!"
+    send_mail(subject="BoilerTradeCo Bookmarked Product Deleted Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=recipient_emails, fail_silently=False)
     product.delete()
-
     return redirect('/addlisting/')
 
 # def editproduct(request):
@@ -262,6 +322,21 @@ def bookmark_product(request):
         # Product is not bookmarked, so create a new bookmark entry
         bookmark = Bookmark(user=request.user, post_id=product_id)
         bookmark.save()
+        # sending notifications to seller if a buyer bookmarks their product
+        seller_email = product.seller_email
+        product_name = product.name
+        product_price = product.price
+        category = product.category_tag
+        quality = product.quality_tag
+        seller_notif = Profile.objects.get(user=seller_email).notifications
+        if seller_notif == True:
+            # Send email notifications to users with notifications enabled
+            buyer_email = request.user.email
+            firstname = request.user.first_name
+            lastname = request.user.last_name
+            buyer_name = f"{firstname} {lastname}"
+            email_text = f"Hi {seller_email},\n\n\tWe wanted to notify you that a buyer bookmarked your product.\n\nProduct details:\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tCategory: {category}\n\tQuality: {quality}\n\nThe buyer's name is {buyer_name}, and reach out to {buyer_email} to contact them!"
+            send_mail(subject="BoilerTradeCo Bookmarked Product Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=["boilertradeco@gmail.com", seller_email], fail_silently=False)
         return JsonResponse({'success': 'Product bookmarked successfully'})
 
 
