@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rate Seller</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <h2>Rate Seller</h2>
+    <h3>Seller currently rating: {{ seller_email }}</h3>
     <form action="{% url 'submit_rating' %}" method="post">
         {% csrf_token %}
+        <input type="hidden" name="seller_email" value="{{ seller_email }}">
         <label for="rating">Rating:</label>
         <select name="rating" id="rating">
             <option value="1">1</option>

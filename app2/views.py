@@ -1,9 +1,12 @@
+from audioop import avg
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from django.db import models
 from datetime import date
 from django.contrib import messages
 from django.core.serializers import serialize
+
+from app.models import SellerRating
 from .models import ProductInfo, CategoryTag, QualityTag, ProductListing, Bookmark
 from django.conf import settings
 import os, json
@@ -13,6 +16,7 @@ from .forms import NewProductForm, EditProductForm
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 from django.core.mail import send_mail
+from django.db.models import Avg
 
 # Create your views here.
 def layout(request):
@@ -145,6 +149,44 @@ def detail(request, pk):
     firstname = current_user.first_name
     current_url = request.build_absolute_uri()
 
+    all_ratings = SellerRating.objects.all()
+    total_rating = 0
+    rating_count = 0
+    average_rating = 0
+    for rating in all_ratings:
+        if rating.seller == product.seller_email:
+            total_rating += rating.rating
+            rating_count += 1
+
+    if rating_count > 0:
+        average_rating = total_rating / rating_count
+    else:
+        average_rating = "Currently no ratings"
+
+    print("Average Rating:", average_rating)      
+
+
+
+    # seller_ratings = all_ratings.filter(seller_email=product.seller_email)
+    # print('BELOW THIS')
+    # print("Filtered Seller Ratings Queryset:", seller_ratings)
+
+
+    # try:
+    #     seller_ratings = all_ratings.filter(seller_email=product.seller_email)
+
+    #     for rating in seller_ratings:
+    #         print("Seller Email:", rating.seller_email)
+    #         print("Seller:", rating.seller)
+    #         print("User:", rating.user)
+    #         print("Rating:", rating.rating)
+
+    #     average_rating = seller_ratings.aggregate(Avg('rating'))['rating__avg']
+    #     if average_rating is None:
+    #         average_rating = "Currently no ratings"
+    # except SellerRating.DoesNotExist:
+    #     average_rating = "Currently no ratings"
+
     return render(request, 'authentication/detail.html', {
         'product': product,
         'email': email,
@@ -154,6 +196,7 @@ def detail(request, pk):
         'productname': productname,
         'url': current_url,
         'bookmarked': bookmarked,
+        'average_rating': average_rating,
     })
 
 def filter_products_by_category(request, category_tag):

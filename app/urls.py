@@ -18,6 +18,7 @@ urlpatterns = [
     path('emailreport/', views.emailreport, name = 'emailreport'),
     path('generatepdf/', views.get_pdf, name='generatepdf'),
     path('logout', views.signout, name='logout'),
+    path('submit_rating/', views.submit_rating, name='submit_rating'),
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="authentication/reset_password.html"), name="reset_password"),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="authentication/reset_password_sent.html"), name="password_reset_done"),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="authentication/reset.html"), name="password_reset_confirm"),
@@ -26,8 +27,7 @@ urlpatterns = [
     path('emailseller/', views.emailseller, name = 'emailseller'),
     # path('editproduct/', views.editproduct, name = 'editproduct'),
     path('filter-products-by-price/', views.filter_products_by_price, name='filter_products_by_price'),
-    #path('rate-seller/<int:seller_id>/', views.rate_seller, name='rate_seller'),
-    path('rate-seller/', views.rate_seller, name='rate_seller'),
-    #path('rate-seller/<int:seller_email>/', views.rate_seller, name='rate_seller'),
+    #path('rate-seller/', views.rate_seller, name='rate_seller'),
+    path('rate-seller/<str:seller_email>/', views.rate_seller, name='rate_seller'),
 
 ]

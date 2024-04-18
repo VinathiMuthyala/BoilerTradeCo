@@ -420,15 +420,18 @@ def filter_products_by_price(request):
 #     return render(request, 'rate_seller.html')
 
 def rate_seller(request, seller_email):
+    return render(request, 'authentication/rate_seller.html', {'seller_email': seller_email})
+
+def submit_rating(request):
     if request.method == 'POST':
         rating = int(request.POST.get('rating'))
         comment = request.POST.get('comment')
+        seller_email = request.POST.get('seller_email')
         seller = User.objects.get(email=seller_email)
         user = request.user
-        SellerRating.objects.create(seller=seller, user=user, rating=rating, comment=comment)
+        SellerRating.objects.create(seller_email=seller_email, seller=seller, user=user, rating=rating, comment=comment)
         update_average_rating(seller)
-        return redirect('seller_profile', seller_id=seller.id)  # Assuming you have a seller profile view
-    return render(request, 'rate_seller.html')
+    return redirect('add_listing')
 
 def update_average_rating(seller):
     all_ratings = SellerRating.objects.filter(seller=seller)
@@ -439,4 +442,6 @@ def update_average_rating(seller):
         profile = seller.profile
         profile.average_rating = average_rating
         profile.save()
+    if num_ratings == 0:
+        average_rating = 0
 

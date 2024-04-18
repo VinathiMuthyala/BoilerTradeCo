@@ -273,10 +273,11 @@
         <p class="filter-option">Category: {{ product.category_tag }}</p>
         <p>Seller Email: {{ product.seller_email }}</p>
         <p>Date Posted: {{ product.date_posted|date:"F j, Y" }}</p>
+        <p>Seller Rating: {{ average_rating }}</p>
         
         <br>
         {% if request.user != product.seller_email %}
-            <a href="{% url 'rate_seller' %}" class="back-button">Rate Seller</a>
+            <a href="{% url 'rate_seller' seller_email=product.seller_email %}" class="back-button">Rate Seller</a>
         {% endif %}
     </div>
 </div>
