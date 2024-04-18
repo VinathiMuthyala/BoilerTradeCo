@@ -19,6 +19,7 @@ class Profile(models.Model):
         return str(self.user)
 
 class SellerRating(models.Model):
+    seller_email = models.EmailField(default='example@example.com')
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='seller_ratings')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings_given')
     rating = models.IntegerField()
