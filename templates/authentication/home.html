@@ -185,7 +185,8 @@
       border-radius: 15px;
     }
 
-    .filter-option:hover {
+    .filter-option:hover,
+    .search-button:hover {
         background-color: #ffe44b;
         /* background-color: rgb(177, 142, 222); */
     }
@@ -487,8 +488,10 @@
         </div>
       </div>
 
-      <form action="/search/" method="GET" class="search-container">
-        <input type="text" name="query" placeholder="Search for a Product!" class="search-bar">
+      <form action="{% url 'search_venues' %}" method=POST class="search-container">
+        {% csrf_token %}
+
+        <input type="search" placeholder="Search for a Product!" class="search-bar">
         <button type="submit" class="search-button">Search</button>
       </form>
 

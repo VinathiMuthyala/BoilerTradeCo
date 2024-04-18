@@ -267,7 +267,7 @@ def filter_products_by_quality(request, quality_tag):
     })
 
 def search_venues(request):
-    return render(request, 'productdir/search_venues.html', {
+    return render(request, 'productdir/search-venues.html', {
         
     })
 
