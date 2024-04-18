@@ -309,17 +309,29 @@ def filter_products_by_quality(request, quality_tag):
         'products': products,
     })
 
+@require_POST
 def search_venues(request):
-    if request.method == "POST":
-        searched = request.POST['searched']
+    # if request.method == "POST":
+    searched = request.POST.get('searched')
+    print("SEARCHED IS", searched)
+    filtered_products = ProductInfo.objects.filter(name__contains=searched)
+    # print("CURRENT", products)
 
-        return render(request, 'productdir/search-venues.html', {
-            'searched': searched
-        })
-    else:
-        return render(request, 'productdir/search-venues.html', {
+    products = ([{
+        'name': product.name,
+        'price': product.price,
+        'image': product.image.url,
+        'id': product.pk,
+    } for product in filtered_products])
+
+    return render(request, 'productdir/search-venues.html', {
+        'searched': searched,
+        'products': products
+    })
+    # else:
+    #     return render(request, 'productdir/search-venues.html', {
         
-        })
+    #     })
 
 def filter_bookmarks_by_quality(request, quality_tag):
     filtered_bookmarks = Bookmark.objects.filter(post__quality_tag__tag=quality_tag, user=request.user)
