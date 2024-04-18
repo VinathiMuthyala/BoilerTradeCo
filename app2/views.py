@@ -106,8 +106,10 @@ def edit(request, pk):
     if request.method == 'POST':
         form = EditProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
-            print("form is valid after edit product form")
-            print("price before: ", price_before)
+            # new_price = form.cleaned_data['price']
+            # if new_price != product.price:
+            #     product.previous_price = product.price
+
             form.save()
             price_after = product.price
             print("price after: ", price_after)
@@ -262,6 +264,11 @@ def filter_products_by_quality(request, quality_tag):
 
     return render(request, 'productdir/filtered-products.html', {
         'products': products,
+    })
+
+def search_venues(request):
+    return render(request, 'productdir/search_venues.html', {
+        
     })
 
 def filter_bookmarks_by_quality(request, quality_tag):
