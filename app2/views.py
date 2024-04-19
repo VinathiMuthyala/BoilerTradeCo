@@ -42,6 +42,8 @@ def add_listing(request):
 
     products = ([{
         'name': product.name,
+        'price_changed': product.price_changed,
+        'previous_price': product.previous_price,
         'price': product.price,
         'image': product.image.url,
         'quality_tag': product.quality_tag,
@@ -154,6 +156,7 @@ def edit(request, pk):
                 print("entered price if")
                 seller_email = product.seller_email
                 product_name = product.name
+                price_changed = product.price_changed
                 product_price = product.price
                 category = product.category_tag
                 quality = product.quality_tag
