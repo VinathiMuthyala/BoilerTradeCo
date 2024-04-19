@@ -288,11 +288,30 @@
 
         {% if average_rating %}
             <a href="{% url 'edit_seller' seller_email=product.seller_email %}" class="edit-button">Edit Rating</a>
-            <a href="{% url 'delete_rating' seller_email=product.seller_email %}" class="edit-button">Delete Rating</a>
+            <a href="{% url 'delete_rating' seller_email=product.seller_email %}" id="deleteRatingBtn" class="delete-button">Delete Rating</a>
         {% endif %}
     </div>
 </div>
     
+<script>
+    document.getElementById('deleteRatingBtn').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        // Display a confirmation dialog
+        var confirmation = confirm("Are you sure you want to delete your rating?");
+
+        // If user confirms, proceed with the deletion
+        if (confirmation) {
+            var url = "{% url 'delete_rating' seller_email=product.seller_email %}";
+
+            // Redirect to the delete URL
+            window.location.href = url;
+        } else {
+            // If user cancels, do nothing
+            return;
+        }
+    });
+</script>
 
 <div class="button-container" style="margin-bottom: 30px">
     {% if user.is_authenticated %}
