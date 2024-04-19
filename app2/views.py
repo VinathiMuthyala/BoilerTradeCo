@@ -233,10 +233,13 @@ def detail(request, pk):
     total_rating = 0
     rating_count = 0
     average_rating = 0
+    user_rated = False
     for rating in all_ratings:
         if rating.seller == product.seller_email:
             total_rating += rating.rating
             rating_count += 1
+        if rating.user == request.user:
+            user_rated = True
 
     if rating_count > 0:
         average_rating = total_rating / rating_count
@@ -277,6 +280,7 @@ def detail(request, pk):
         'url': current_url,
         'bookmarked': bookmarked,
         'average_rating': average_rating,
+        'user_rated': user_rated,
     })
 
 def filter_products_by_category(request, category_tag):
