@@ -21,7 +21,7 @@
 
         .container {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
         }
@@ -80,8 +80,8 @@
             background-color: #333; /* Darker gray color */
         }
         form {
-    text-align: center;
-}
+            text-align: center;
+        }
 
         label, select, button {
             display: block;
@@ -110,6 +110,14 @@
             background-color: #333; /* Darker gray color */
         }
 
+        .previous-rating-box {
+            /* Your previous rating box styles here */
+            background-color: #eee; /* Light gray color */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Adjust width as needed */
+        }
 
     </style>
 
@@ -122,8 +130,10 @@
             <div class="logo-container">
                 <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" class="logo">
             </div>
+
             <h3>Rate Seller</h3>
             <h4 class="seller">Seller: {{ seller_email }}</h4>
+
             <form action="{% url 'submit_rating' %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="seller_email" value="{{ seller_email }}">
@@ -142,6 +152,16 @@
                 <button type="submit">Submit</button>
             </form>
         </div>
+
+        <!-- Previous rating box -->
+        <div class="previous-rating-box">
+            {% if existing_rating %}
+                <h3>Your Previous Rating</h3>
+                <p>Your previous rating: {{ existing_rating.rating }}</p>
+                <p>Your comment: {{ existing_rating.comment }}</p>
+            {% endif %}
+        </div>
+
     </div>
 </body>
 </html>
