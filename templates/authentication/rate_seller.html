@@ -137,7 +137,7 @@
             <br>
 
 
-            <form action="{% url 'submit_rating' %}" method="post">
+            <form id="ratingForm" action="{% url 'submit_rating' %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="seller_email" value="{{ seller_email }}">
                 <label for="rating">Rating:</label>
@@ -152,13 +152,41 @@
                 <label for="comment">Comment (optional):</label>
                 <textarea name="comment" id="comment" cols="30" rows="5"></textarea>
                 <br>
+                <label for="confirmationCode">Confirmation Code:</label>
+                <input type="text" name="confirmationCode" id="confirmationCode">
+                <br>
+                <span id="codeError" class="hidden">Incorrect confirmation code. Please enter the correct code provided by seller to verify you purchased product.</span>
+                <br>
                 <button type="submit">Submit</button>
             </form>
         </div>
 
-        
-        
-
     </div>
+
+
+    <script>
+        // Function to validate confirmation code
+        function validateCode() {
+            var confirmationCode = document.getElementById('confirmationCode').value;
+            if (confirmationCode !== '3333') {
+                console.log("YESSSS")
+                document.getElementById('codeError').classList.remove('hidden');
+                return false;
+
+            } else {
+                document.getElementById('codeError').classList.add('hidden');
+                return true;
+            }
+        }
+
+        // Event listener for form submission
+        document.getElementById('ratingForm').addEventListener('submit', function(event) {
+            if (!validateCode()) {
+                event.preventDefault(); // Prevent form submission if code is invalid
+            }
+        });
+    </script>
+
+
 </body>
 </html>
