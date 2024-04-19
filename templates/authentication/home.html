@@ -442,30 +442,34 @@
       <br>
 
       <!-- Price slider -->
-      <div class="range_container">
-        <div class="sliders_control">
-            <input id="fromSlider" type="range" value="0" min="0" max="1000"/>
-            <input id="toSlider" type="range" value="400" min="0" max="1000"/>
-        </div>
-        <div class="form_control" style="margin-top: -25px; display: flex;"> <!-- Add display: flex to create a flex container -->
-          <div class="form_control_container">
-            <div class="form_control_container__time">
-              <span id="minLabel">Min:</span>
-              <br>
-              <input class="form_control_container__time__input" type="number" id="fromInput" value="100" min="0" max="1000"/>
-            </div>
+      <form id="priceFilterForm" method="GET">
+        <div class="range_container">
+          <div class="sliders_control">
+              <input id="fromSlider" type="range" value="0" min="0" max="1000"/>
+              <input id="toSlider" type="range" value="400" min="0" max="1000"/>
           </div>
-          <div style="margin-left: 110px;"> 
+          <div class="form_control" style="margin-top: -25px; display: flex;">
             <div class="form_control_container">
               <div class="form_control_container__time">
-                <span id="maxLabel">Max:</span>
+                <span id="minLabel">Min:</span>
                 <br>
-                <input class="form_control_container__time__input" type="number" id="toInput" value="900" min="0" max="1000"/>
+                <input class="form_control_container__time__input" type="number" id="fromInput" value="0" min="0" max="1000"/>
+              </div>
+            </div>
+            <div style="margin-left: 110px;"> 
+              <div class="form_control_container">
+                <div class="form_control_container__time">
+                  <span id="maxLabel">Max:</span>
+                  <br>
+                  <input class="form_control_container__time__input" type="number" id="toInput" value="400" min="0" max="1000"/>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+        <button type="submit" id="priceFilterButton">Apply Price Filter</button>
+      </form>
+      
 
       <!-- <script>
         console.log("GHWEREREHREHFBHJEF")
@@ -494,7 +498,7 @@
         
       </script> -->
 
-      
+
 
       <!-- <form action="{% url 'search_venues' %}" method=POST class="search-container">
         {% csrf_token %}
@@ -621,19 +625,68 @@
           });
       }
 
+
+
+      // Function to handle form submission
+      document.getElementById('priceFilterForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+          
+          const minPrice = document.getElementById('fromSlider').value;
+          const maxPrice = document.getElementById('toSlider').value;
+          filterProductsByPrice(minPrice, maxPrice);
+      });
+
+      // Function to filter products by price
       function filterProductsByPrice(minPrice, maxPrice) {
-        console.log("FUNC MIN", minPrice)
-        console.log("FUNC MAX", maxPrice)
-        fetch(`/price/${minPrice}/${maxPrice}/`)
-            .then(response => response.text())
-            .then(html => {
-                const productsContainer = document.getElementById('productsContainer');
-                productsContainer.innerHTML = html;
-                productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
-                formatProductPrices();
-                applyProductStyles();
-            });
+          fetch(`/price/${minPrice}/${maxPrice}/`)
+              .then(response => response.text())
+              .then(html => {
+                  const productsContainer = document.getElementById('productsContainer');
+                  productsContainer.innerHTML = html;
+                  productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+                  formatProductPrices();
+                  applyProductStyles();
+              });
       }
+
+
+
+    //   document.addEventListener("DOMContentLoaded", function() {
+    //     const fromSlider = document.getElementById('fromSlider');
+    //     const toSlider = document.getElementById('toSlider');
+    //     console.log("fromSlider BELOW")
+    //     console.log(fromSlider)
+    //     console.log(toSlider)
+
+    //     // Add event listeners to the range inputs
+    //     fromSlider.addEventListener('input', updatePriceRange);
+    //     toSlider.addEventListener('input', updatePriceRange);
+    //     console.log(toSlider.value)
+
+    //     // Function to update the price range and trigger filtering
+    //     function updatePriceRange() {
+    //         const minPrice = fromSlider.value;
+    //         console.log("the minPrice")
+    //         console.log(minPrice)
+    //         const maxPrice = toSlider.value;
+    //         filterProductsByPrice(minPrice, maxPrice);
+    //     }
+    // });
+
+
+    //   function filterProductsByPrice(minPrice, maxPrice) {
+    //     console.log("FUNC MIN", minPrice)
+    //     console.log("FUNC MAX", maxPrice)
+    //     fetch(`/price/${minPrice}/${maxPrice}/`)
+    //         .then(response => response.text())
+    //         .then(html => {
+    //             const productsContainer = document.getElementById('productsContainer');
+    //             productsContainer.innerHTML = html;
+    //             productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+    //             formatProductPrices();
+    //             applyProductStyles();
+    //         });
+    //   }
 
       function applyGridStyles() {
         const filteredProducts = document.querySelectorAll('.px-6.py-12.bg-gray-100.rounded-xl');
