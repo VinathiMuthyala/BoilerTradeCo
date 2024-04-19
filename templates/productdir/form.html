@@ -21,9 +21,9 @@
                             <div style="margin-top: 15px; margin-bottom: -10px;">Product Name:</div>
                             {% elif field.label == 'Price' %}
                             <div style="margin-top: 15px; margin-bottom: -10px;">Product Price:</div>
-                                <!-- {% if form.previous_price.value != form.price %}
-                                <div style="margin-top: 15px; margin-bottom: -10px;">Previous Price: ${{ form.previous_price.value }}</div>
-                                {% endif %} -->
+                                {% if form.price_changed %}
+                                <div style="margin-top: 15px; margin-bottom: -10px;">Previous Price: ${{ form.previous_price }}</div>
+                                {% endif %}
                             {% elif field.label == 'Description' %}
                             <div style="margin-top: 15px; margin-bottom: -10px;">Product Description:</div>
                             {% elif field.label == 'Quality tag' %}

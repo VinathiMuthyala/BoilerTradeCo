@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.core.serializers import serialize
 
 from app.models import SellerRating
-from .models import ProductInfo, CategoryTag, QualityTag, ProductListing, Bookmark
+from .models import ProductInfo, CategoryTag, QualityTag, Bookmark, Sales
 from django.conf import settings
 import os, json
 from decimal import Decimal
@@ -21,6 +21,7 @@ from django.db.models import Avg
 from django.db.models import Q
 from django.db.models import F
 from django.views.decorators.http import require_http_methods
+from itertools import zip_longest
 
 # Create your views here.
 def layout(request):
@@ -110,6 +111,8 @@ def new(request):
 def edit(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
     price_before = product.price
+    previous_price = price_before
+    price_changed = False
     if request.method == 'POST':
         form = EditProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
@@ -137,6 +140,16 @@ def edit(request, pk):
                 email_text = f"Hi BoilerTradeCo User!\n\n\tWe wanted to notify you that, unfortunately, a product you bookmarked has now been marked sold.\n\nProduct details:\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tCategory: {category}\n\tQuality: {quality}\n\tSeller email: {seller_email}\n\nGo to your account on BoilerTradeCo now to view more product postings!"
                 send_mail(subject="BoilerTradeCo Bookmarked Product Sold Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=recipient_emails, fail_silently=False)
             if (price_after != price_before):
+                price_changed = True
+                # implement logic for strikethrough of price_before with price_after displayed below it
+                if (price_after < price_before):
+                    # implement logic for loading onto sales page
+                    previous_price = price_before
+                    print("PREVIOUS PRICE", previous_price)
+                    sales_entry = Sales(user=request.user, post=product, previous_price=previous_price)
+                    sales_entry.save()
+
+                    return redirect("/sales")
                 print("entered price if")
                 seller_email = product.seller_email
                 product_name = product.name
@@ -153,6 +166,7 @@ def edit(request, pk):
                 # Send email notifications to users with notifications enabled
                 email_text = f"Hi BoilerTradeCo User!\n\n\tWe wanted to notify you that a product you bookmarked has changed from its initial price of {price_before}.\n\nNew product details:\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tCategory: {category}\n\tQuality: {quality}\n\tSeller email: {seller_email}\n\nGo to your account on BoilerTradeCo now to view this and more product postings!"
                 send_mail(subject="BoilerTradeCo Bookmarked Product Price Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=recipient_emails, fail_silently=False)
+                product_price = product.price
             return redirect("/addlisting")
     else:
         print("created a new product form")
@@ -161,6 +175,8 @@ def edit(request, pk):
         'form': form,
         'title': 'Edit Product Posting!',
         'is_sold_option': True,
+        'previous_price': previous_price,
+        'price_changed': price_changed,
     })
 
 @login_required
@@ -447,11 +463,20 @@ def bookmark_product(request):
             send_mail(subject="BoilerTradeCo Bookmarked Product Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=["boilertradeco@gmail.com", seller_email], fail_silently=False)
         return JsonResponse({'success': 'Product bookmarked successfully'})
 
-def sales(request):
-    reduced_products = ProductInfo.objects.filter(price__lt=F('previous_price'))
+def generate_sales(request):
+    # reduced_products = ProductInfo.objects.filter(price__lt=F('previous_price'))
+    reduced_products = Sales.objects.filter(user=request.user).select_related('post').all()
+
+    product_info_postings = [sale.post for sale in reduced_products]
+
+    previous_prices = [sale.previous_price for sale in reduced_products]
+
+    product_info_with_previous_prices = zip_longest(product_info_postings, previous_prices)
 
     return render(request, 'productdir/sales.html', {
-        'reduced_products': reduced_products,
+        # 'product_info_postings': product_info_postings,
+        # 'previous_prices': previous_prices,
+        'product_info_with_previous_prices': product_info_with_previous_prices,
     })
 
 

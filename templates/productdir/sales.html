@@ -1,14 +1,5 @@
-{% for product in products %}
-<div>
-  <a href="{% url 'detail' product.id %}">
-    <div>
-      <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl">
-    </div>
-
-    <div class="p-6 bg-white rounded-b-xl">
-      <h2 class="text-2xl">{{ product.name }}</h2>
-      <p class="text-gray-500">{{ product.price }}</p>
-    </div>
-  </a>
-</div>
-{% endfor %}
+<ul>
+    {% for sale, previous_price in product_info_with_previous_prices %}
+        <li>{{ sale.name }} - {{ sale.price }} - {{ previous_price }}</li>
+    {% endfor %}
+</ul>

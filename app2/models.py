@@ -188,3 +188,8 @@ class ProductListing(models.Model):
 class Bookmark(models.Model):
     user = models.ForeignKey(User, related_name='bookmarks', on_delete=models.CASCADE)
     post = models.ForeignKey(ProductInfo, related_name='bookmarked_by', on_delete=models.CASCADE)
+
+class Sales(models.Model):
+    user = models.ForeignKey(User, related_name='sales', on_delete=models.CASCADE)
+    post = models.ForeignKey(ProductInfo, related_name='sold_by', on_delete=models.CASCADE)
+    previous_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
