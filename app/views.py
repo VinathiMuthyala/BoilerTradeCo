@@ -24,6 +24,7 @@ from app2.models import ProductInfo
 from django.http import HttpResponseBadRequest
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from .forms import RatingForm
 
 
 # Create your views here.
@@ -371,27 +372,27 @@ def email_auth(request):
     return render(request, "authentication/email_auth.html")
 
 
-def filter_products_by_price(request):
-    price_range = request.GET.get('priceRange')  # Get the priceRange parameter from the request
+# def filter_products_by_price(request):
+#     price_range = request.GET.get('priceRange')  # Get the priceRange parameter from the request
 
-    if price_range is None:
-        return HttpResponseBadRequest("Missing priceRange parameter")
+#     if price_range is None:
+#         return HttpResponseBadRequest("Missing priceRange parameter")
 
-    try:
-        max_price = int(price_range)  # Maximum price from the slider
-        filtered_products = ProductInfo.objects.filter(price__lte=max_price)
+#     try:
+#         max_price = int(price_range)  # Maximum price from the slider
+#         filtered_products = ProductInfo.objects.filter(price__lte=max_price)
 
-        products = ([{
-        'name': product.name,
-        'price': product.price,
-        'image': product.image.url,
-        'id': product.pk,
-        } for product in filtered_products])
+#         products = ([{
+#         'name': product.name,
+#         'price': product.price,
+#         'image': product.image.url,
+#         'id': product.pk,
+#         } for product in filtered_products])
         
-    except (ValueError, TypeError):
-        return HttpResponseBadRequest("Invalid priceRange parameter")
+#     except (ValueError, TypeError):
+#         return HttpResponseBadRequest("Invalid priceRange parameter")
 
-    return render(request, 'productdir/filtered-products.html', {'products': products,})
+#     return render(request, 'productdir/filtered-products.html', {'products': products,})
 
 
 # def filter_products_by_category(request, category_tag):
@@ -424,8 +425,19 @@ def filter_products_by_price(request):
 #     return render(request, 'rate_seller.html')
 
 def rate_seller(request, seller_email):
-    existing_rating = SellerRating.objects.filter(seller_email=seller_email, user=request.user).first()
-    return render(request, 'authentication/rate_seller.html', {'seller_email': seller_email, 'existing_rating': existing_rating})
+    #existing_rating = SellerRating.objects.filter(seller_email=seller_email, user=request.user).last()
+    #return render(request, 'authentication/rate_seller.html', {'seller_email': seller_email, 'existing_rating': existing_rating})
+    return render(request, 'authentication/rate_seller.html', {'seller_email': seller_email})
+
+def edit_seller(request, seller_email):
+    print("LAST RATING BELOW")
+    existing_rating = SellerRating.objects.filter(seller_email=seller_email, user=request.user).last()
+    if existing_rating:
+        print(existing_rating.rating)
+        rating = existing_rating.rating
+    else:
+        rating = 7
+    return render(request, 'authentication/edit_seller.html', {'seller_email': seller_email, 'rating': rating, 'comment': existing_rating.comment})
 
 def submit_rating(request):
     if request.method == 'POST':
@@ -450,6 +462,47 @@ def update_average_rating(seller):
     if num_ratings == 0:
         average_rating = 0
 
+def rate_edit(request):
+    if request.method == 'POST':
+        seller_email = request.POST.get('seller_email')
+        edit_rating = int(request.POST.get('editRating'))
+        edit_comment = request.POST.get('editComment', '')
+        seller = User.objects.get(email=seller_email)
+        user = request.user
+
+        existing_rating = SellerRating.objects.filter(seller_email=seller_email, user=request.user).last()
+
+        if existing_rating:
+            SellerRating.objects.filter(seller_email=seller_email, user=request.user).last().delete()
+
+        SellerRating.objects.create(seller_email=seller_email, seller=seller, user=user, rating=edit_rating, comment=edit_comment)
+        update_average_rating(seller)
+
+    return redirect('add_listing')
+
+def delete_rating(request, seller_email):
+    rating = SellerRating.objects.filter(seller_email=seller_email, user=request.user).last()
+    if rating and rating.user == request.user:
+        rating.delete()
+    return redirect('add_listing')
+
+# def edit_rating(request):
+#     print("HELOOOOOOOOO")
+#     print("we in")
+#     if request.method == 'POST':
+#         print("in post")
+#         seller_email = request.POST.get('seller_email')
+#         existing_rating = SellerRating.objects.filter(seller_email=seller_email).first()
+#         print(existing_rating)
+
+#         if existing_rating:
+#             existing_rating.rating = request.POST.get('editRating')
+#             existing_rating.comment = request.POST.get('editComment')
+#             existing_rating.save()
+#             return redirect('rate_seller', seller_email=seller_email)
+        
+#     return redirect('rate_seller')
+               
 def update_notifications(request):
     if request.method == 'POST':
         user = request.POST.get('user')
