@@ -287,11 +287,10 @@
         <br>
         {% if request.user != product.seller_email %}
             <a href="{% url 'rate_seller' seller_email=product.seller_email %}" class="back-button">Rate Seller</a>
-        {% endif %}
-
-        {% if average_rating %}
-            <a href="{% url 'edit_seller' seller_email=product.seller_email %}" class="edit-button">Edit Rating</a>
-            <a href="{% url 'delete_rating' seller_email=product.seller_email %}" id="deleteRatingBtn" class="delete-button">Delete Rating</a>
+            {% if user_rated %}
+                <a href="{% url 'edit_seller' seller_email=product.seller_email %}" class="edit-button">Edit Rating</a>
+                <a href="{% url 'delete_rating' seller_email=product.seller_email %}" id="deleteRatingBtn" class="delete-button">Delete Rating</a>
+            {% endif %}
         {% endif %}
     </div>
 </div>
