@@ -8,3 +8,7 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['avatar']
+
+class RatingForm(forms.Form):
+    rating = forms.IntegerField(min_value=1, max_value=5)
+    comment = forms.CharField(widget=forms.Textarea(attrs={'cols': 30, 'rows': 5}), required=False)

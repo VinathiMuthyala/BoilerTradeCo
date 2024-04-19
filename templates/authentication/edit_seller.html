@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rate Seller</title>
+    <title>Edit Rating</title>
     <style>
         .hidden {
             display: none;
@@ -118,7 +118,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 100%; /* Adjust width as needed */
         }
-
     </style>
 
     {% load static %}
@@ -131,34 +130,29 @@
                 <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" class="logo">
             </div>
 
-            <h3>Rate Seller</h3>
+            <h3>Edit Rating</h3>
             <h4 class="seller">Seller: {{ seller_email }}</h4>
-            <p style="text-align: center;">Please rate your experience with the seller above.</p>
+            <p style="text-align: center;">In the form below, your previous rating for the seller is being populated. You can edit it below.</p>
             <br>
-
-
-            <form action="{% url 'submit_rating' %}" method="post">
+            
+            <form id="editRatingForm" action="{% url 'rate_edit' %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="seller_email" value="{{ seller_email }}">
-                <label for="rating">Rating:</label>
-                <select name="rating" id="rating">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                <label for="editRating">Rating:</label>
+                <select name="editRating" id="editRating">
+                    <option value="1" {% if rating == 1 %} selected {% endif %}>1</option>
+                    <option value="2" {% if rating == 2 %} selected {% endif %}>2</option>
+                    <option value="3" {% if rating == 3 %} selected {% endif %}>3</option>
+                    <option value="4" {% if rating == 4 %} selected {% endif %}>4</option>
+                    <option value="5" {% if rating == 5 %} selected {% endif %}>5</option>
                 </select>
                 <br>
-                <label for="comment">Comment (optional):</label>
-                <textarea name="comment" id="comment" cols="30" rows="5"></textarea>
+                <label for="editComment">Comment (optional):</label>
+                <textarea name="editComment" id="editComment" cols="30" rows="5">{{ comment }}</textarea>
                 <br>
                 <button type="submit">Submit</button>
             </form>
         </div>
-
-        
-        
-
     </div>
 </body>
 </html>
