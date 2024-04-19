@@ -18,6 +18,8 @@ from django.views.decorators.http import require_POST
 from django.core.mail import send_mail
 from app.models import Profile
 from django.db.models import Avg
+from django.db.models import Q
+from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 def layout(request):
@@ -309,13 +311,28 @@ def filter_products_by_quality(request, quality_tag):
         'products': products,
     })
 
-@require_POST
+@require_http_methods(["GET", "POST"])
 def search_venues(request):
-    # if request.method == "POST":
-    searched = request.POST.get('searched')
+    if request.method == "POST":
+        print("storing with POST")
+        searched = request.POST.get('searched')
+    else:
+        print("storing with GET")
+        searched = request.GET.get('searched')
+        print(searched)
+
     print("SEARCHED IS", searched)
-    filtered_products = ProductInfo.objects.filter(name__contains=searched)
-    # print("CURRENT", products)
+
+    if searched:
+        filtered_products = ProductInfo.objects.filter(
+            Q(name__icontains=searched) |
+            Q(description__icontains=searched)
+        )
+    else:
+        print("EMPTY SEARCH")
+        filtered_products = ProductInfo.objects.none()
+
+    # filtered_products = ProductInfo.objects.filter(name__icontains=searched)
 
     products = ([{
         'name': product.name,

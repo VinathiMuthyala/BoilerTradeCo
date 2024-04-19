@@ -1,28 +1,48 @@
-<!-- <h>Here are the products that match your search!</h> -->
-
-{% if searched %}
-    <h1>You Searched For {{ searched }}</h1>
-    <br/>
-
-    {% for product in products %}
-        {{ product }}<br/>
-    {% endfor %}
-
-{% else %}
-    <h1>You Forgot To Search For A Product</h1>
-{% endif %}
-
-<!-- {% for product in products %}
-<div>
-  <a href="{% url 'detail' product.id %}">
-    <div>
-      <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl">
-    </div>
-
-    <div class="p-6 bg-white rounded-b-xl">
-      <h2 class="text-2xl">{{ product.name }}</h2>
-      <p class="text-gray-500">{{ product.price }}</p>
-    </div>
-  </a>
-</div>
-{% endfor %} -->
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <head>
+        <style>
+            .text-center {
+                text-align: center !important;
+            }
+        </style>
+    </head>
+    
+    <!-- <h>Here are the products that match your search!</h> -->
+    
+    <!-- {% if searched %}
+        <h1>You Searched For {{ searched }}</h1>
+        <br/>
+    
+        {% for product in products %}
+            {{ product }}<br/>
+        {% endfor %}
+    
+    {% else %}
+        <h1>You Forgot To Search For A Product</h1>
+    {% endif %} -->
+    
+    <!-- <body> -->
+    {% if products %}
+        {% for product in products %}
+        <div>
+        <a href="{% url 'detail' product.id %}">
+            <div>
+            <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl">
+            </div>
+    
+            <div class="p-6 bg-white rounded-b-xl">
+            <h2 class="text-2xl">{{ product.name }}</h2>
+            <p class="text-gray-500">{{ product.price }}</p>
+            </div>
+        </a>
+        </div>
+        {% endfor %}
+    {% else %}
+        <h3 class="text-center">There are currently no products that match this search!</h3>
+    {% endif %}
+    <!-- </body> -->
+</html>
