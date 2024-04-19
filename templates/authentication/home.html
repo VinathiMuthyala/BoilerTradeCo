@@ -442,25 +442,6 @@
       <br>
 
       <!-- Price slider -->
-    <!-- <div class="price-slider">
-      <label for="priceRange">Select Price Range:</label>
-      <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
-      <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
-
-      <script>
-        const priceRange = document.getElementById('priceRange');
-        const selectedPrice = document.getElementById('selectedPrice');
-
-        priceRange.addEventListener('input', function() {
-            selectedPrice.textContent = priceRange.value;
-        });
-      </script>
-    </div> -->
-      <!-- <form id="priceFilterForm" method="GET" action="{% url 'filter_products_by_price' %}">
-        <label for="priceRange">Select Price Range:</label>
-        <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
-        <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
-      </form> -->
       <div class="range_container">
         <div class="sliders_control">
             <input id="fromSlider" type="range" value="0" min="0" max="1000"/>
@@ -485,6 +466,35 @@
           </div>
         </div>
       </div>
+
+      <!-- <script>
+        console.log("GHWEREREHREHFBHJEF")
+        function filterProductsByPrice(minPrice, maxPrice) {
+          console.log("FUNC MIN", minPrice)
+          console.log("FUNC MAX", maxPrice)
+          fetch(`/price/${minPrice}/${maxPrice}/`)
+              .then(response => response.text())
+              .then(html => {
+                  const productsContainer = document.getElementById('productsContainer');
+                  productsContainer.innerHTML = html;
+                  productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+                  formatProductPrices();
+                  applyProductStyles();
+              });
+        }
+
+        // Add event listeners to the range inputs
+        document.getElementById('fromSlider').addEventListener('change', updatePriceRange);
+        document.getElementById('toSlider').addEventListener('change', updatePriceRange);
+    
+        // Function to update the price range and trigger filtering
+        const minPrice = document.getElementById('fromSlider').value;
+        const maxPrice = document.getElementById('toSlider').value;
+        filterProductsByPrice(minPrice, maxPrice);
+        
+      </script> -->
+
+      
 
       <!-- <form action="{% url 'search_venues' %}" method=POST class="search-container">
         {% csrf_token %}
@@ -609,6 +619,20 @@
           // .then(() => {
           //   applyGridStyles();
           });
+      }
+
+      function filterProductsByPrice(minPrice, maxPrice) {
+        console.log("FUNC MIN", minPrice)
+        console.log("FUNC MAX", maxPrice)
+        fetch(`/price/${minPrice}/${maxPrice}/`)
+            .then(response => response.text())
+            .then(html => {
+                const productsContainer = document.getElementById('productsContainer');
+                productsContainer.innerHTML = html;
+                productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+                formatProductPrices();
+                applyProductStyles();
+            });
       }
 
       function applyGridStyles() {
@@ -1000,23 +1024,6 @@
           }
       }
 
-      document.addEventListener("DOMContentLoaded", function() {
-      const priceRange = document.getElementById('priceRange');
-      const selectedPrice = document.getElementById('selectedPrice');
-      const priceFilterForm = document.getElementById('priceFilterForm');
-
-      priceRange.addEventListener('input', function() {
-          selectedPrice.textContent = priceRange.value;
-      });
-
-      priceRange.addEventListener('change', function() {
-          // Update the form action URL with the selected price range
-          priceFilterForm.action = `{% url 'filter_products_by_price' %}?min_price=0&max_price=${priceRange.value}`;
-          
-          // Submit the form
-          priceFilterForm.submit();
-      });
-  });
   </script>
 
   </body>
