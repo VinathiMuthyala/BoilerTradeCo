@@ -1,20 +1,64 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <head>
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+
         <style>
+            .px-6 {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .py-12 {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+
+            .bg-gray-100 {
+                /* background-color: #f4f4f4; */
+                background-color: #b5b0b0;
+                width: 75%;
+            }
+
+            .rounded-xl {
+                border-radius: 1rem;
+            }
+
             .text-center {
                 text-align: center !important;
-                margin-left: 250px;
-                width: 450px;
+                /* margin-left: 250px; */
+                width: 100%;
                 /* margin: 0 auto !important;
                 margin-left: 700px !important;
                 width: auto; */
             }
+
+            .grid {
+                display: grid;
+            }
+
+            .grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 35px;
+            }
+
+            .gap-3 > * {
+                margin-bottom: 1rem;
+            }
+
+            .mb-30 > * {
+                margin-bottom: 30px;
+            }
+
+            .ml-35 > * {
+                margin-left: 35px;
+            }
         </style>
-    </head>
+    </head> -->
     
     <!-- <h>Here are the products that match your search!</h> -->
     
@@ -31,23 +75,44 @@
     {% endif %} -->
     
     <!-- <body> -->
-    {% if products %}
-        {% for product in products %}
-        <div>
-        <a href="{% url 'detail' product.id %}">
-            <div>
-            <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl">
+    <!-- {% if products %}
+        <div class="grid grid-cols-3 gap-3">
+            {% for product in products %}
+            <div >
+                <a href="{% url 'detail' product.id %}">
+                    <div>
+                    <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl">
+                    </div>
+            
+                    <div class="p-6 bg-white rounded-b-xl">
+                    <h2 class="text-2xl">{{ product.name }}</h2>
+                    <p class="text-gray-500">{{ product.price }}</p>
+                    </div>
+                </a>
             </div>
-    
-            <div class="p-6 bg-white rounded-b-xl">
-            <h2 class="text-2xl">{{ product.name }}</h2>
-            <p class="text-gray-500">{{ product.price }}</p>
-            </div>
-        </a>
+            {% endfor %}
         </div>
-        {% endfor %}
     {% else %}
         <h3 class="text-center">There are currently no products that match this search!</h3>
-    {% endif %}
+    {% endif %} -->
     <!-- </body> -->
-</html>
+<!-- </html> -->
+
+{% if products %}
+    {% for product in products %}
+        <div >
+            <a href="{% url 'detail' product.id %}">
+                <div>
+                <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl">
+                </div>
+        
+                <div class="p-6 bg-white rounded-b-xl">
+                <h2 class="text-2xl">{{ product.name }}</h2>
+                <p class="text-gray-500">{{ product.price }}</p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+{% else %}
+    <h3 class="text-center">There are currently no products that match this search!</h3>
+{% endif %}

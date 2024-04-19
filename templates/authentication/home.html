@@ -569,7 +569,7 @@
           .then(html => {
               const productsContainer = document.getElementById('productsContainer');
               productsContainer.innerHTML = html;
-              productsContainer.classList.add('mb-30', 'ml-35', 'text-center');
+              productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
               console.log("SEARCHING SEARCHING", searchTerm);
               formatProductPrices();
               applyProductStyles();
