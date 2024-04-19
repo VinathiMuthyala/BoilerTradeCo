@@ -524,13 +524,13 @@
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         console.log("INSIDE HERE");
-        // Event listener for the search form
         const searchForm = document.getElementById('searchForm');
         searchForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission behavior
+            event.preventDefault();
 
             const searchInput = document.forms['searchForm'].elements['searched'];
-            const searchTerm = searchInput.value.trim(); // Get the trimmed value of the search input
+            const searchTerm = searchInput.value.trim();
+            searchForm.classList.add('text-center');
             console.log("SEARCHED FOR", searchTerm);
 
             if (searchTerm != '') {
@@ -541,7 +541,7 @@
               filterProductsBySearch(searchTerm);
             }
             else {
-              alert("Please type something into the search input field.");
+              alert("Please type something into the search field.");
             }
         });
       });
@@ -569,7 +569,7 @@
           .then(html => {
               const productsContainer = document.getElementById('productsContainer');
               productsContainer.innerHTML = html;
-              productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+              productsContainer.classList.add('mb-30', 'ml-35', 'text-center');
               console.log("SEARCHING SEARCHING", searchTerm);
               formatProductPrices();
               applyProductStyles();
