@@ -310,7 +310,7 @@ def filter_products_by_price(request, min_price, max_price):
         'id': product.pk,
     } for product in filtered_products]
 
-    return render(request, 'productdir/filtered-products.html', {
+    return render(request, 'productdir/filtered-price.html', {
         'products': products,
     })
 
