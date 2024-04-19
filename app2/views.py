@@ -292,6 +292,22 @@ def filter_products_by_category(request, category_tag):
         'products': products,
     })
 
+def filter_products_by_price(request, min_price, max_price):
+    filtered_products = ProductInfo.objects.filter(price__range=(min_price, max_price))
+    print("MIN PRICE IS:", min_price)
+    print("MAX PRICE IS:", max_price)
+
+    products = [{
+        'name': product.name,
+        'price': product.price,
+        'image': product.image.url,
+        'id': product.pk,
+    } for product in filtered_products]
+
+    return render(request, 'productdir/filtered-products.html', {
+        'products': products,
+    })
+
 def filter_bookmarks_by_category(request, category_tag):
     filtered_bookmarks = Bookmark.objects.filter(post__category_tag__tag=category_tag, user=request.user)
 
