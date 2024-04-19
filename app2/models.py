@@ -64,6 +64,7 @@ class ProductInfo(models.Model):
    is_sold = models.BooleanField(default=False)
    date_posted = models.DateField() #default=0000-00-00
    image = models.ImageField(upload_to='product_images', blank=True, null=True)
+   price_changed = models.BooleanField(default=False)
    #seller_name = models.CharField(max_length=100)
    #seller_phone_number = models.IntegerField(validators=[MaxValueValidator(9999999999)])
    #seller_instagram = models.CharField(max_length=30) # max length of valid instagram username

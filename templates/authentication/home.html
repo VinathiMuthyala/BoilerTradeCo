@@ -456,7 +456,7 @@
         });
       </script>
     </div> -->
-      <!-- <form id="priceFilterForm" method="GET" action="{% url 'filter_products_by_price' %}">
+      <!-- <form id="priceFilterForm" method="GET" action="{% url 'add_listing' %}">
         <label for="priceRange">Select Price Range:</label>
         <input type="range" id="priceRange" name="priceRange" min="0" max="1000" step="10" value="500">
         <p>Selected Price: <span id="selectedPrice">500</span> USD</p>
@@ -1011,7 +1011,7 @@
 
       priceRange.addEventListener('change', function() {
           // Update the form action URL with the selected price range
-          priceFilterForm.action = `{% url 'filter_products_by_price' %}?min_price=0&max_price=${priceRange.value}`;
+          priceFilterForm.action = `{% url 'add_listing' %}?min_price=0&max_price=${priceRange.value}`;
           
           // Submit the form
           priceFilterForm.submit();

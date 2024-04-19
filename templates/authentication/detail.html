@@ -268,10 +268,10 @@
     <div class="col-span-1" style="margin-left: 30px;">
         <h1>{{ product.name }}</h1>
         <p>{{ product.description }}</p>
-        {% if previous_price %}
-        <p>Previous Price: ${{ product.previous_price }}</p>
+        {% if product.price_changed %}
+        <p> Price: <strike>${{ product.previous_price }}</strike></p>
         {% endif %}
-        <p>Price: ${{ product.price }}</p>
+        <p>       ${{ product.price }}</p>
         <p class="filter-option">Quality: {{ product.quality_tag }}</p>
         <p class="filter-option">Category: {{ product.category_tag }}</p>
         <p>Seller Email: {{ product.seller_email }}</p>
