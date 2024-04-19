@@ -372,27 +372,27 @@ def email_auth(request):
     return render(request, "authentication/email_auth.html")
 
 
-def filter_products_by_price(request):
-    price_range = request.GET.get('priceRange')  # Get the priceRange parameter from the request
+# def filter_products_by_price(request):
+#     price_range = request.GET.get('priceRange')  # Get the priceRange parameter from the request
 
-    if price_range is None:
-        return HttpResponseBadRequest("Missing priceRange parameter")
+#     if price_range is None:
+#         return HttpResponseBadRequest("Missing priceRange parameter")
 
-    try:
-        max_price = int(price_range)  # Maximum price from the slider
-        filtered_products = ProductInfo.objects.filter(price__lte=max_price)
+#     try:
+#         max_price = int(price_range)  # Maximum price from the slider
+#         filtered_products = ProductInfo.objects.filter(price__lte=max_price)
 
-        products = ([{
-        'name': product.name,
-        'price': product.price,
-        'image': product.image.url,
-        'id': product.pk,
-        } for product in filtered_products])
+#         products = ([{
+#         'name': product.name,
+#         'price': product.price,
+#         'image': product.image.url,
+#         'id': product.pk,
+#         } for product in filtered_products])
         
-    except (ValueError, TypeError):
-        return HttpResponseBadRequest("Invalid priceRange parameter")
+#     except (ValueError, TypeError):
+#         return HttpResponseBadRequest("Invalid priceRange parameter")
 
-    return render(request, 'productdir/filtered-products.html', {'products': products,})
+#     return render(request, 'productdir/filtered-products.html', {'products': products,})
 
 
 # def filter_products_by_category(request, category_tag):
