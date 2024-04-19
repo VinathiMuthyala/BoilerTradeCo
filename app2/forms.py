@@ -16,32 +16,32 @@ class NewProductForm(forms.ModelForm):
         fields = ('seller_email', 'name', 'price', 'description', 'quality_tag', 'category_tag', 'is_sold', 'date_posted', 'image',)
 
 class EditProductForm(forms.ModelForm):
-    previous_price = forms.DecimalField(required=False, widget=forms.HiddenInput)
+    # previous_price = forms.DecimalField(required=False, widget=forms.HiddenInput)
 
     class Meta:
         model = ProductInfo
         fields = ('name', 'price', 'description', 'is_sold', 'image',)
-        # widgets = {
-        #     'name': forms.TextInput(attrs={
-        #         'class': INPUT_CLASSES
-        #     }),
-        #     'price': forms.TextInput(attrs={
-        #         'class': INPUT_CLASSES
-        #     }),
-        #     'description': forms.Textarea(attrs={
-        #         'class': INPUT_CLASSES
-        #     }),
-        #     'is_sold': forms.CheckboxInput(attrs={
-        #         'class': 'input-classes',
-        #         'onclick': 'showSoldMessage(this.checked);' 
-        #     }),
-        #     'image': forms.FileInput(attrs={
-        #         'class': INPUT_CLASSES
-        #     }),
-        # }
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': INPUT_CLASSES
+            }),
+            'price': forms.TextInput(attrs={
+                'class': INPUT_CLASSES
+            }),
+            'description': forms.Textarea(attrs={
+                'class': INPUT_CLASSES
+            }),
+            'is_sold': forms.CheckboxInput(attrs={
+                'class': 'input-classes',
+                'onclick': 'showSoldMessage(this.checked);' 
+            }),
+            'image': forms.FileInput(attrs={
+                'class': INPUT_CLASSES
+            }),
+        }
 
         def __init__(self, *args, **kwargs):
-            previous_price = kwargs.pop('previous_price', None)
+            # previous_price = kwargs.pop('previous_price', None)
             super(EditProductForm, self).__init__(*args, **kwargs)
-            if previous_price is not None:
-                self.initial['previous_price'] = previous_price
+            # if previous_price is not None:
+            #     self.initial['previous_price'] = previous_price
