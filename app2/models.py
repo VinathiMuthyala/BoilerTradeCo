@@ -192,3 +192,4 @@ class Bookmark(models.Model):
 
 class Sales(models.Model):
     post = models.ForeignKey(ProductInfo, related_name='sold_by', on_delete=models.CASCADE)
+    previous_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
