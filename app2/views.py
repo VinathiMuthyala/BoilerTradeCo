@@ -42,6 +42,8 @@ def add_listing(request):
 
     products = ([{
         'name': product.name,
+        'price_changed': product.price_changed,
+        'previous_price': product.previous_price,
         'price': product.price,
         'image': product.image.url,
         'quality_tag': product.quality_tag,
@@ -145,7 +147,9 @@ def edit(request, pk):
                     # implement logic for loading onto sales page
                     previous_price = price_before
                     print("PREVIOUS PRICE", previous_price)
-                    sales_entry = Sales(post=product, previous_price=price_before)
+                    # sales_entry = Sales(post=product, previous_price=price_before)
+                    sales_entry, created = Sales.objects.get_or_create(post=product)
+                    sales_entry.previous_price = price_before
                     sales_entry.save()
                 if (price_after > price_before):
                     original_sale = Sales.objects.filter(post=product)
@@ -154,6 +158,7 @@ def edit(request, pk):
                 print("entered price if")
                 seller_email = product.seller_email
                 product_name = product.name
+                price_changed = product.price_changed
                 product_price = product.price
                 category = product.category_tag
                 quality = product.quality_tag
@@ -310,7 +315,7 @@ def filter_products_by_price(request, min_price, max_price):
         'id': product.pk,
     } for product in filtered_products]
 
-    return render(request, 'productdir/filtered-products.html', {
+    return render(request, 'productdir/filtered-price.html', {
         'products': products,
     })
 

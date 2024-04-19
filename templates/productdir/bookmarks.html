@@ -146,6 +146,11 @@
             background-color: #ffe44b;
             /* background-color: rgb(177, 142, 222); */
         }
+
+        .selected {
+          background-color: #ffe44b;
+        }
+
     </style>
 </head>
 <body>
@@ -265,6 +270,20 @@
             // product.classList.add('px-6', 'py-12', 'bg-gray-100', 'rounded-xl', 'grid-cols-3', 'gap-3', 'text-center', 'flex', 'justify-center');
           });
         }
+
+        document.querySelectorAll('.filter-option').forEach(function(button) {
+          button.addEventListener('click', function() {
+          // Remove the 'selected' class from all filter buttons
+          document.querySelectorAll('.filter-option').forEach(function(btn) {
+              btn.classList.remove('selected');
+          });
+
+          // Add the 'selected' class to the clicked button
+          this.classList.add('selected');
+
+          // Your existing code to filter products goes here
+      });
+});
   
       </script>
 <div id="bookmarks">
