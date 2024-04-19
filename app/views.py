@@ -254,11 +254,13 @@ def settings(request):
 
     password_change_form = PasswordChangeForm(request.user)
 
+    notifications = request.user.profile.notifications
     context = {
         'email': email,
         'firstname': firstname,
         'lastname': lastname,
         'password_change_form': password_change_form,
+        'notifications': notifications,
     }
 
     return render(request, "authentication/settings.html", context)
@@ -422,7 +424,8 @@ def filter_products_by_price(request):
 #     return render(request, 'rate_seller.html')
 
 def rate_seller(request, seller_email):
-    return render(request, 'authentication/rate_seller.html', {'seller_email': seller_email})
+    existing_rating = SellerRating.objects.filter(seller_email=seller_email, user=request.user).first()
+    return render(request, 'authentication/rate_seller.html', {'seller_email': seller_email, 'existing_rating': existing_rating})
 
 def submit_rating(request):
     if request.method == 'POST':

@@ -170,14 +170,14 @@
   </head>
 
   <body>
-    <nav>
+    <nav style="height:172.5px; font-family: 'Times New Roman', Times, serif;">
       <!-- navigation -->
       <img src="{% static 'logo.png' %}" alt="BoilerTradeCo Logo" style="height: 150px; width: 150px">
-        <ul>
-            <li><a href="/addlisting">Home</a></li>
-            <li><a href="/bookmarks">Bookmarks</a></li>
-            <li><a href="">Sales</a></li>
-            <li><a href="/profile">Profile</a></li>
+        <ul style="font-family: 'Times New Roman', Times, serif;">
+            <li><a href="/addlisting" style="font-family: 'Times New Roman', Times, serif;">Home</a></li>
+            <li><a href="/bookmarks" style="font-family: 'Times New Roman', Times, serif;">Bookmarks</a></li>
+            <li><a href="" style="font-family: 'Times New Roman', Times, serif;">Sales</a></li>
+            <li><a href="/profile" style="font-family: 'Times New Roman', Times, serif;">Profile</a></li>
         </ul>
     </nav>
 
@@ -189,6 +189,7 @@
           <span class="slider round"></span>
       </label>
     </div>
+    <br>
 
     <!--start of system settings-->
     <div class="container light-style flex-grow-1 container-p-y">
@@ -320,7 +321,7 @@
             <div class="form-group">
               <div class="toggle-switch">
                 <label class="switch">
-                  <input type="checkbox" class="form-check-input notification-option" id="emailNotifications" name="email_notifications" checked>
+                  <input type="checkbox" class="form-check-input notification-option" id="emailNotifications" name="email_notifications" {% if notifications %}checked{% endif %}>
                   <span class="slider round"></span>
                 </label>
                 <label for="emailNotifications" class="form-check-label">Enable Email Notifications</label>
@@ -343,8 +344,14 @@
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <script>
           $(document).ready(function () {
-              // Setting the initial state of the toggle to be on
-              $('#emailNotifications').prop('checked', true);
+              // setting the initial state of the toggle to be on
+              // $('#emailNotifications').prop('checked', true);
+              var notificationsEnabled = "{{ notifications }}";
+              console.log("notifications enabled: ", notificationsEnabled);
+              // converting the string value to a boolean
+              var isNotificationsEnabled = notificationsEnabled === 'True';
+              console.log(isNotificationsEnabled);
+              $('#emailNotifications').prop('checked', isNotificationsEnabled);
               $('#emailNotifications').change(function () {
                   var isChecked = $(this).prop('checked');
                   console.log("is checked: ", isChecked);

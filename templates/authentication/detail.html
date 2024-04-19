@@ -273,7 +273,9 @@
         <p class="filter-option">Category: {{ product.category_tag }}</p>
         <p>Seller Email: {{ product.seller_email }}</p>
         <p>Date Posted: {{ product.date_posted|date:"F j, Y" }}</p>
-        <p>Seller Rating: {{ average_rating }}</p>
+        <!-- <p>Seller Rating: {{ average_rating }}</p> -->
+        <p>Seller Rating: {{ average_rating|default:"Currently no ratings"|floatformat:2 }}</p>
+
         
         <br>
         {% if request.user != product.seller_email %}
