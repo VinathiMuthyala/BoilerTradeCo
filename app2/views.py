@@ -49,8 +49,6 @@ def add_listing(request):
         'id': product.pk,
     } for product in products])
 
-    print("Products", products)
-
     # product_list = ([{
     #     'price': products.price,
     #     'product': products.name,
@@ -112,14 +110,12 @@ def edit(request, pk):
     product = get_object_or_404(ProductInfo, pk=pk)
     price_before = product.price
     previous_price = price_before
-    price_changed = False
     if request.method == 'POST':
         form = EditProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             # new_price = form.cleaned_data['price']
             # if new_price != product.price:
             #     product.previous_price = product.price
-
             form.save()
             price_after = product.price
             print("price after: ", price_after)
@@ -140,16 +136,21 @@ def edit(request, pk):
                 email_text = f"Hi BoilerTradeCo User!\n\n\tWe wanted to notify you that, unfortunately, a product you bookmarked has now been marked sold.\n\nProduct details:\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tCategory: {category}\n\tQuality: {quality}\n\tSeller email: {seller_email}\n\nGo to your account on BoilerTradeCo now to view more product postings!"
                 send_mail(subject="BoilerTradeCo Bookmarked Product Sold Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=recipient_emails, fail_silently=False)
             if (price_after != price_before):
-                price_changed = True
+                product.price_changed = True
+                product.previous_price = price_before
+                product.save()
                 # implement logic for strikethrough of price_before with price_after displayed below it
                 if (price_after < price_before):
+                    print("entered into sales creation")
                     # implement logic for loading onto sales page
                     previous_price = price_before
                     print("PREVIOUS PRICE", previous_price)
-                    sales_entry = Sales(user=request.user, post=product, previous_price=previous_price)
+                    sales_entry = Sales(post=product, previous_price=price_before)
                     sales_entry.save()
-
-                    return redirect("/sales")
+                if (price_after > price_before):
+                    original_sale = Sales.objects.filter(post=product)
+                    if original_sale:
+                        original_sale.delete()
                 print("entered price if")
                 seller_email = product.seller_email
                 product_name = product.name
@@ -175,8 +176,6 @@ def edit(request, pk):
         'form': form,
         'title': 'Edit Product Posting!',
         'is_sold_option': True,
-        'previous_price': previous_price,
-        'price_changed': price_changed,
     })
 
 @login_required
@@ -465,18 +464,19 @@ def bookmark_product(request):
 
 def generate_sales(request):
     # reduced_products = ProductInfo.objects.filter(price__lt=F('previous_price'))
-    reduced_products = Sales.objects.filter(user=request.user).select_related('post').all()
+    #reduced_products = Sales.objects.filter(user=request.user).select_related('post').all()
 
-    product_info_postings = [sale.post for sale in reduced_products]
+    #product_info_postings = [sale.post for sale in reduced_products]
 
-    previous_prices = [sale.previous_price for sale in reduced_products]
+    #previous_prices = [sale.previous_price for sale in reduced_products]
 
-    product_info_with_previous_prices = zip_longest(product_info_postings, previous_prices)
+    #product_info_with_previous_prices = zip_longest(product_info_postings, previous_prices)
+    all_sales = Sales.objects.all()
 
     return render(request, 'productdir/sales.html', {
         # 'product_info_postings': product_info_postings,
         # 'previous_prices': previous_prices,
-        'product_info_with_previous_prices': product_info_with_previous_prices,
+        'sales': all_sales,
     })
 
 
