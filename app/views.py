@@ -480,6 +480,12 @@ def rate_edit(request):
 
     return redirect('add_listing')
 
+def delete_rating(request, seller_email):
+    rating = SellerRating.objects.filter(seller_email=seller_email, user=request.user).last()
+    if rating and rating.user == request.user:
+        rating.delete()
+    return redirect('add_listing')
+
 # def edit_rating(request):
 #     print("HELOOOOOOOOO")
 #     print("we in")

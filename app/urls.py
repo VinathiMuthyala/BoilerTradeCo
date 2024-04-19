@@ -31,6 +31,7 @@ urlpatterns = [
     #path('rate-seller/', views.rate_seller, name='rate_seller'),
     path('rate-seller/<str:seller_email>/', views.rate_seller, name='rate_seller'),
     path('edit-seller/<str:seller_email>/', views.edit_seller, name='edit_seller'),
+    path('delete-rating/<str:seller_email>/', views.delete_rating, name='delete_rating'),
     path('update-notifications/', views.update_notifications, name='update_notifications'),
 
 ]

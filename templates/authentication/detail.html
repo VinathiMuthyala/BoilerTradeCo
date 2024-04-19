@@ -274,13 +274,21 @@
         <p>Seller Email: {{ product.seller_email }}</p>
         <p>Date Posted: {{ product.date_posted|date:"F j, Y" }}</p>
         <!-- <p>Seller Rating: {{ average_rating }}</p> -->
-        <p>Seller Rating: {{ average_rating|default:"Currently no ratings"|floatformat:2 }}</p>
+        {% if average_rating %}
+            <p>Seller Rating: {{ average_rating|floatformat:2 }}</p>
+        {% else %}
+            <p>Seller Rating: Currently no ratings</p>
+        {% endif %}
 
         
         <br>
         {% if request.user != product.seller_email %}
             <a href="{% url 'rate_seller' seller_email=product.seller_email %}" class="back-button">Rate Seller</a>
+        {% endif %}
+
+        {% if average_rating %}
             <a href="{% url 'edit_seller' seller_email=product.seller_email %}" class="edit-button">Edit Rating</a>
+            <a href="{% url 'delete_rating' seller_email=product.seller_email %}" class="edit-button">Delete Rating</a>
         {% endif %}
     </div>
 </div>
