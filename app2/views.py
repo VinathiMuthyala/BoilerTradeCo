@@ -147,7 +147,9 @@ def edit(request, pk):
                     # implement logic for loading onto sales page
                     previous_price = price_before
                     print("PREVIOUS PRICE", previous_price)
-                    sales_entry = Sales(post=product, previous_price=price_before)
+                    # sales_entry = Sales(post=product, previous_price=price_before)
+                    sales_entry, created = Sales.objects.get_or_create(post=product)
+                    sales_entry.previous_price = price_before
                     sales_entry.save()
                 if (price_after > price_before):
                     original_sale = Sales.objects.filter(post=product)
