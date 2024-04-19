@@ -57,6 +57,7 @@ class ProductInfo(models.Model):
    seller_email = models.ForeignKey(User, null=False, related_name='products', on_delete=models.CASCADE)
    name = models.CharField(max_length=100)
    price = models.DecimalField(max_digits=10, decimal_places=2)
+   previous_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
    description = models.TextField(blank=True, null=True)
    quality_tag = models.ForeignKey(QualityTag, null=False, related_name='products', on_delete=models.CASCADE)
    category_tag = models.ForeignKey(CategoryTag, null=False, related_name='products', on_delete=models.CASCADE)

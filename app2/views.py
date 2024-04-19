@@ -18,6 +18,9 @@ from django.views.decorators.http import require_POST
 from django.core.mail import send_mail
 from app.models import Profile
 from django.db.models import Avg
+from django.db.models import Q
+from django.db.models import F
+from django.views.decorators.http import require_http_methods
 
 # Create your views here.
 def layout(request):
@@ -153,7 +156,7 @@ def edit(request, pk):
             return redirect("/addlisting")
     else:
         print("created a new product form")
-        form = EditProductForm(instance=product)
+        form = EditProductForm(instance=product, initial={'previous_price': price_before})
     return render(request, 'productdir/form.html', {
         'form': form,
         'title': 'Edit Product Posting!',
@@ -309,13 +312,28 @@ def filter_products_by_quality(request, quality_tag):
         'products': products,
     })
 
-@require_POST
+@require_http_methods(["GET", "POST"])
 def search_venues(request):
-    # if request.method == "POST":
-    searched = request.POST.get('searched')
+    if request.method == "POST":
+        print("storing with POST")
+        searched = request.POST.get('searched')
+    else:
+        print("storing with GET")
+        searched = request.GET.get('searched')
+        print(searched)
+
     print("SEARCHED IS", searched)
-    filtered_products = ProductInfo.objects.filter(name__contains=searched)
-    # print("CURRENT", products)
+
+    if searched:
+        filtered_products = ProductInfo.objects.filter(
+            Q(name__icontains=searched) |
+            Q(description__icontains=searched)
+        )
+    else:
+        print("EMPTY SEARCH")
+        filtered_products = ProductInfo.objects.none()
+
+    # filtered_products = ProductInfo.objects.filter(name__icontains=searched)
 
     products = ([{
         'name': product.name,
@@ -412,6 +430,13 @@ def bookmark_product(request):
             email_text = f"Hi {seller_email},\n\n\tWe wanted to notify you that a buyer bookmarked your product.\n\nProduct details:\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tCategory: {category}\n\tQuality: {quality}\n\nThe buyer's name is {buyer_name}, and reach out to {buyer_email} to contact them!"
             send_mail(subject="BoilerTradeCo Bookmarked Product Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=["boilertradeco@gmail.com", seller_email], fail_silently=False)
         return JsonResponse({'success': 'Product bookmarked successfully'})
+
+def sales(request):
+    reduced_products = ProductInfo.objects.filter(price__lt=F('previous_price'))
+
+    return render(request, 'productdir/sales.html', {
+        'reduced_products': reduced_products,
+    })
 
 
 # def rate_seller(request, seller_id):

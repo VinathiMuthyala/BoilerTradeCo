@@ -19,4 +19,5 @@ urlpatterns = [
     re_path(r'^bookmark/category/(?P<category_tag>[\w\s-]+)/$', views.filter_bookmarks_by_category, name='filter_bookmarks_by_category'),
     re_path(r'^bookmark/quality/(?P<quality_tag>[\w\s-]+)/$', views.filter_bookmarks_by_quality, name='filter_bookmarks_by_quality'),
     path('searchvenues/', views.search_venues, name='search_venues'),
+    path('sales/', views.sales, name='sales'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

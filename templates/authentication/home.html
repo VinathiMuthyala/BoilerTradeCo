@@ -399,7 +399,7 @@
         <ul>
             <li><a href="">Home</a></li>
             <li><a href="/bookmarks">Bookmarks</a></li>
-            <li><a href="">Sales</a></li>
+            <li><a href="/sales">Sales</a></li>
             <li><a href="/profile">Profile</a></li>
         </ul>
     </nav>
@@ -434,12 +434,10 @@
         <button class="filter-option" data-quality="Like New">Like New</button>
         <button class="filter-option" data-quality="Good">Good</button>
         <button class="filter-option" data-quality="Acceptable">Acceptable</button>
-        <!-- <button class="filter-option" style="text-decoration: none;"><a href="">Reset</a></button> -->
-      </div>
 
-      <div class="product-filters">
         <!-- Reset button -->
         <button class="filter-option" style="text-decoration: none;"><a href="">Reset</a></button>
+        <!-- <button class="filter-option" style="text-decoration: none;"><a href="">Reset</a></button> -->
       </div>
       <br>
 
@@ -488,7 +486,13 @@
         </div>
       </div>
 
-      <form action="{% url 'search_venues' %}" method=POST class="search-container">
+      <!-- <form action="{% url 'search_venues' %}" method=POST class="search-container">
+        {% csrf_token %}
+
+        <input type="text" placeholder="Search for a Product!" class="search-bar" name="searched">
+        <button type="submit" class="search-button">Search</button>
+      </form> -->
+      <form id="searchForm" class="search-container" method="GET">
         {% csrf_token %}
 
         <input type="text" placeholder="Search for a Product!" class="search-bar" name="searched">
@@ -514,8 +518,32 @@
       });
     </script>
 
-    <!-- filtering by category/quality -->
+    <!-- filtering by category/quality & search -->
     <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        console.log("INSIDE HERE");
+        const searchForm = document.getElementById('searchForm');
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const searchInput = document.forms['searchForm'].elements['searched'];
+            const searchTerm = searchInput.value.trim();
+            searchForm.classList.add('text-center');
+            console.log("SEARCHED FOR", searchTerm);
+
+            if (searchTerm != '') {
+              const url = window.location.href.split('?')[0];
+              const newUrl = `${url}?searched=${encodeURIComponent(searchTerm)}`;
+              window.history.pushState({path:newUrl},'',newUrl);
+
+              filterProductsBySearch(searchTerm);
+            }
+            else {
+              alert("Please type something into the search field.");
+            }
+        });
+      });
+
       document.querySelectorAll('.filter-option').forEach(function(button) {
         button.addEventListener('click', function() {
           var category = this.getAttribute('data-category');
@@ -527,11 +555,25 @@
           }
           else if (quality) {
             console.log("ENTERED INTO HERE");
-            console.log(quality)
+            console.log(quality);
             filterProductsByQuality(quality);
           }
         });
       });
+
+      function filterProductsBySearch(searchTerm) {
+        fetch(`/searchvenues/?searched=${searchTerm}`)
+          .then(response => response.text())
+          .then(html => {
+              const productsContainer = document.getElementById('productsContainer');
+              productsContainer.innerHTML = html;
+              productsContainer.classList.add('grid', 'grid-cols-3', 'gap-3', 'mb-30', 'ml-35');
+              console.log("SEARCHING SEARCHING", searchTerm);
+              formatProductPrices();
+              applyProductStyles();
+          })
+          .catch(error => console.error('Error fetching search results:', error));
+      }
     
       function filterProductsByCategory(category) {
         fetch(`/category/${category}/`)
