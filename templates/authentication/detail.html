@@ -324,7 +324,7 @@
                 <a href="#" id="deleteButton" data-url="{% url 'delete' id %}" class="delete-button">Delete</a>
                 <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
                 <button onclick="openPopupForLink()" class="contact-seller-button">Copy Link</button>
-                <button onclick="generatePDF()" class="contact-seller-button" type="submit">Generate PDF</button>
+                <!-- <button onclick="generatePDF()" class="contact-seller-button" type="submit">Generate PDF</button> -->
             </div>
         {% else %} <!-- when user is signed in but not viewing their own product -->
             <div class="button-container" style="margin-bottom: 30px; gap: 7px; display: flex; justify-content: space-around;">
@@ -337,7 +337,7 @@
                 <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
                 <button onclick="openPopupForLink()" class="contact-seller-button">Copy Link</button>
                 <button onclick="openPopup()" class="contact-seller-button">I'm Interested!</button>
-                <button onclick="generatePDF()" class="contact-seller-button" type="submit">Generate PDF</button>
+                <!-- <button onclick="generatePDF()" class="contact-seller-button" type="submit">Generate PDF</button> -->
     <div class="overlay" id="overlay"></div>
     <div class="popup" id="popup">
       <h2>Product Interest Form</h2>
@@ -360,7 +360,7 @@
             <a href="/addlisting" class="back-button">Back</a>
             <button onclick="openPopupForSocial()" class="contact-seller-button">Share</button>
             <button onclick="openPopupForLink()" class="contact-seller-button">Copy Link</button>
-            <button onclick="generatePDF()" class="contact-seller-button" type="submit">Generate PDF</button>
+            <!-- <button onclick="generatePDF()" class="contact-seller-button" type="submit">Generate PDF</button> -->
         </div>
     {% endif %}
 </div>
