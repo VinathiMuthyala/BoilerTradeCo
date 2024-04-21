@@ -137,6 +137,8 @@ def edit(request, pk):
                 # Send email notifications to users with notifications enabled
                 email_text = f"Hi BoilerTradeCo User!\n\n\tWe wanted to notify you that, unfortunately, a product you bookmarked has now been marked sold.\n\nProduct details:\n\tProduct name: {product_name}\n\tProduct price: ${product_price}\n\tCategory: {category}\n\tQuality: {quality}\n\tSeller email: {seller_email}\n\nGo to your account on BoilerTradeCo now to view more product postings!"
                 send_mail(subject="BoilerTradeCo Bookmarked Product Sold Notification", message=email_text, from_email="boilertradeco@gmail.com", recipient_list=recipient_emails, fail_silently=False)
+                product.delete()
+                return redirect("/addlisting")
             if (price_after != price_before):
                 product.price_changed = True
                 product.previous_price = price_before
