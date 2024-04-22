@@ -303,6 +303,8 @@ def filter_products_by_category(request, category_tag):
 
     return render(request, 'productdir/filtered-products.html', {
         'products': products,
+        'tag': category_tag,
+        'filter': "Category",
     })
 
 def filter_products_by_price(request, min_price, max_price):
@@ -352,6 +354,8 @@ def filter_products_by_quality(request, quality_tag):
 
     return render(request, 'productdir/filtered-products.html', {
         'products': products,
+        'tag': quality_tag,
+        'filter': "Quality",
     })
 
 @require_http_methods(["GET", "POST"])

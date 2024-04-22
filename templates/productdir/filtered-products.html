@@ -1,14 +1,22 @@
-{% for product in products %}
-<div>
-  <a href="{% url 'detail' product.id %}">
-    <div>
-      <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl">
-    </div>
+{% if products %}
+  {% for product in products %}
+  <div>
+    <a href="{% url 'detail' product.id %}">
+      <div>
+        <img src="{{ product.image }}" alt="product-image" class="rounded-t-xl">
+      </div>
 
-    <div class="p-6 bg-white rounded-b-xl">
-      <h2 class="text-2xl">{{ product.name }}</h2>
-      <p class="text-gray-500">{{ product.price }}</p>
-    </div>
-  </a>
-</div>
-{% endfor %}
+      <div class="p-6 bg-white rounded-b-xl">
+        <h2 class="text-2xl">{{ product.name }}</h2>
+        <p class="text-gray-500">{{ product.price }}</p>
+      </div>
+    </a>
+  </div>
+  {% endfor %}
+{% else %}
+  {% if filter == "Category" %}
+    <h3 style="margin-left: 475px; width: 100%; white-space: nowrap;">There are currently no products under the {{ tag|lower }} category!</h3>
+  {% else %}
+    <h3 style="margin-left: 475px; width: 100%; white-space: nowrap;">There are currently no products that have a quality of {{ tag|lower }}!</h3>
+  {% endif %}
+{% endif %}
