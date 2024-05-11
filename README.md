@@ -1,5 +1,9 @@
 # BoilerTradeCo
 
+<p align="center" width="100%">
+    <img width="33%" src="app/static/logo.png">
+</p>
+
 Url: https://boiler-trade-co-d5c7c21c59ec.herokuapp.com/
 
 **Problem Statement**
